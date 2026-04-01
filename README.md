@@ -21,7 +21,7 @@ The plugin includes a `Stop` hook that prompts the agent to consider a brief ref
 Add the marketplace to your Claude Code settings:
 
 ```bash
-claude plugins add-marketplace https://github.com/YOUR_USERNAME/cognitive-toolkit-marketplace.git
+claude plugins add-marketplace https://github.com/atscub/cognitive-toolkit-marketplace.git
 ```
 
 Then enable the plugin:
@@ -38,7 +38,7 @@ Or manually in `~/.claude/settings.json`:
     "cognitive-toolkit-marketplace": {
       "source": {
         "source": "github",
-        "repo": "YOUR_USERNAME/cognitive-toolkit-marketplace"
+        "repo": "atscub/cognitive-toolkit-marketplace"
       }
     }
   },
