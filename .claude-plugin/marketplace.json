@@ -1,6 +1,6 @@
 {
-  "name": "metacognition-marketplace",
-  "description": "Metacognitive skills for epistemically humble, self-aware AI agents. Socratic reasoning, structured learning, reflection, premortem analysis, and problem reframing.",
+  "name": "know-your-limits",
+  "description": "Two plugins for more deliberate AI agents. Metacognition: structured reasoning protocols for bias awareness, research, reflection, and risk assessment. Operations: disciplined engineering workflows for PRs, handoffs, changelogs, coordination, and clean state.",
   "owner": {
     "name": "Abraham"
   },
@@ -8,13 +8,13 @@
     {
       "name": "metacognition",
       "source": "./plugins/metacognition",
-      "description": "Critical thinking skills: /meta:socratic, /meta:learn, /meta:reflect, /meta:premortem, /meta:reframe, /meta:steelman, /meta:decompose. Includes auto-reflection hook on task completion.",
+      "description": "Critical thinking skills: /meta:socratic, /meta:learn, /meta:reflect, /meta:premortem, /meta:reframe, /meta:steelman, /meta:decompose, /meta:coherence.",
       "version": "0.2.0"
     },
     {
       "name": "operations",
       "source": "./plugins/operations",
-      "description": "Engineering operations skills: /ops:wrapup, /ops:handoff, /ops:changelog, /ops:pr-feedback, /ops:orchestrate.",
+      "description": "Engineering operations skills: /ops:wrapup, /ops:handoff, /ops:changelog, /ops:pr-open, /ops:pr-monitor, /ops:pr-feedback, /ops:orchestrate.",
       "version": "0.1.0"
     }
   ]
