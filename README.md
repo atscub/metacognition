@@ -1,13 +1,15 @@
 # Cognitive Toolkit
 
-A Claude Code plugin with metacognitive skills that make AI agents more self-aware, epistemically humble, and capable of learning from experience... hopefully :)
+A Claude Code plugin marketplace with two plugins: **metacognition** (how the agent thinks) and **delivery** (how the agent ships). Hopefully making AI agents more self-aware, epistemically humble, and responsible... hopefully :)
 
 ## Disclaimer
 
 This plugin is experimental and provided as-is. It modifies AI agent behavior by injecting metacognitive prompts — results may vary across models, tasks, and contexts. The skills are heuristic, not guarantees: they can improve reasoning quality but do not eliminate errors, hallucinations, or other AI limitations. Use your own judgment when acting on AI-generated analysis, and always verify critical decisions independently.
 If you burn all your tokens, don't yell at me.
 
-## Skills
+## Metacognition Plugin
+
+Skills for how the agent thinks.
 
 | Skill | Description |
 |-------|-------------|
@@ -18,6 +20,18 @@ If you burn all your tokens, don't yell at me.
 | `/reframe` | Look at a problem through multiple lenses (inversion, simplicity, zoom in/out, user, adversarial, constraint) before committing to an approach. |
 | `/steelman` | Construct the strongest possible version of an idea before evaluating it. Counteracts the tendency to strawman and dismiss alternatives too quickly. |
 | `/decompose` | First-principles breakdown — strip a problem to fundamentals and rebuild, instead of reasoning by analogy. For when pattern-matching keeps failing. |
+
+## Delivery Plugin
+
+Skills for how the agent ships.
+
+| Skill | Description |
+|-------|-------------|
+| `/wrapup` | Pre-delivery sanity checks — uncommitted changes, failing tests, TODOs, temp code. Commit, push, confirm clean state. |
+| `/handoff` | Prepare context for the next person or session — what was done, what's left, gotchas, entry points. |
+| `/changelog` | Structured change summary beyond git log — categorized by impact, adapted to audience (devs, users, future context). |
+| `/pr-feedback` | Systematically address PR review comments — read all first, categorize, understand before fixing, respond to each. |
+| `/orchestrate` | Coordinate multi-step delivery workflows with dependency ordering, checkpoints, verification, and rollback plans. |
 
 ## Auto-Reflection Hook
 
@@ -31,6 +45,7 @@ Add the marketplace to your Claude Code settings:
 # In Claude Code
 /plugin marketplace add atscub/metacognition
 /plugin install metacognition
+/plugin install delivery
 # Restart Claude Code
 ```
 
@@ -47,10 +62,13 @@ Or manually in `~/.claude/settings.json`:
     }
   },
   "enabledPlugins": {
-    "metacognition": true
+    "metacognition": true,
+    "delivery": true
   }
 }
 ```
+
+You can install either plugin independently — they don't depend on each other.
 
 ## Philosophy
 

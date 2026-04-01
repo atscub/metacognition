@@ -10,6 +10,12 @@
       "source": "./plugins/metacognition",
       "description": "Critical thinking skills: /socratic, /learn, /reflect, /premortem, /reframe, /steelman, /decompose. Includes auto-reflection hook on task completion.",
       "version": "0.2.0"
+    },
+    {
+      "name": "delivery",
+      "source": "./plugins/delivery",
+      "description": "Responsible delivery skills: /wrapup, /handoff, /changelog, /pr-feedback, /orchestrate.",
+      "version": "0.1.0"
     }
   ]
 }
