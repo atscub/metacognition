@@ -1,6 +1,6 @@
 ---
-name: reflect
-description: "Post-task reflection and knowledge refinement. Use after completing a significant task, debugging session, implementation, or when something went unexpectedly wrong or right. Trigger on: /reflect, 'what did we learn', 'what went wrong', 'retrospective', 'post-mortem', or when the user asks to review how a task went."
+name: meta:reflect
+description: "Post-task reflection and knowledge refinement. Use after completing a significant task, debugging session, implementation, or when something went unexpectedly wrong or right. Trigger on: /meta:reflect, 'what did we learn', 'what went wrong', 'retrospective', 'post-mortem', or when the user asks to review how a task went."
 ---
 
 # Reflect — Post-Task Retrospective

@@ -13,13 +13,13 @@ Skills for how the agent thinks.
 
 | Skill | Description |
 |-------|-------------|
-| `/socratic` | Epistemic humility — bias awareness, assumption checking, calibrated confidence. Activates for research, planning, and high-stakes decisions. Skips trivial tasks where fast failure is cheaper. |
-| `/learn` | Research a topic using current sources (never trust memorized data), validate through experiment, persist as a reusable skill or memory. |
-| `/reflect` | Post-task retrospective — what went well, what didn't, root cause analysis. Persists lessons to skills or memory for future sessions. |
-| `/premortem` | Before committing to a plan, imagine it already failed and work backwards to find risks. Assess by likelihood, impact, and reversibility. |
-| `/reframe` | Look at a problem through multiple lenses (inversion, simplicity, zoom in/out, user, adversarial, constraint) before committing to an approach. |
-| `/steelman` | Construct the strongest possible version of an idea before evaluating it. Counteracts the tendency to strawman and dismiss alternatives too quickly. |
-| `/decompose` | First-principles breakdown — strip a problem to fundamentals and rebuild, instead of reasoning by analogy. For when pattern-matching keeps failing. |
+| `/meta:socratic` | Epistemic humility — bias awareness, assumption checking, calibrated confidence. Activates for research, planning, and high-stakes decisions. Skips trivial tasks where fast failure is cheaper. |
+| `/meta:learn` | Research a topic using current sources (never trust memorized data), validate through experiment, persist as a reusable skill or memory. |
+| `/meta:reflect` | Post-task retrospective — what went well, what didn't, root cause analysis. Persists lessons to skills or memory for future sessions. |
+| `/meta:premortem` | Before committing to a plan, imagine it already failed and work backwards to find risks. Assess by likelihood, impact, and reversibility. |
+| `/meta:reframe` | Look at a problem through multiple lenses (inversion, simplicity, zoom in/out, user, adversarial, constraint) before committing to an approach. |
+| `/meta:steelman` | Construct the strongest possible version of an idea before evaluating it. Counteracts the tendency to strawman and dismiss alternatives too quickly. |
+| `/meta:decompose` | First-principles breakdown — strip a problem to fundamentals and rebuild, instead of reasoning by analogy. For when pattern-matching keeps failing. |
 
 ## Delivery Plugin
 
@@ -27,11 +27,11 @@ Skills for how the agent ships.
 
 | Skill | Description |
 |-------|-------------|
-| `/wrapup` | Pre-delivery sanity checks — uncommitted changes, failing tests, TODOs, temp code. Commit, push, confirm clean state. |
-| `/handoff` | Prepare context for the next person or session — what was done, what's left, gotchas, entry points. |
-| `/changelog` | Structured change summary beyond git log — categorized by impact, adapted to audience (devs, users, future context). |
-| `/pr-feedback` | Systematically address PR review comments — read all first, categorize, understand before fixing, respond to each. |
-| `/orchestrate` | Coordinate multi-step delivery workflows with dependency ordering, checkpoints, verification, and rollback plans. |
+| `/delivery:wrapup` | Pre-delivery sanity checks — uncommitted changes, failing tests, TODOs, temp code. Commit, push, confirm clean state. |
+| `/delivery:handoff` | Prepare context for the next person or session — what was done, what's left, gotchas, entry points. |
+| `/delivery:changelog` | Structured change summary beyond git log — categorized by impact, adapted to audience (devs, users, future context). |
+| `/delivery:pr-feedback` | Systematically address PR review comments — read all first, categorize, understand before fixing, respond to each. |
+| `/delivery:orchestrate` | Coordinate multi-step delivery workflows with dependency ordering, checkpoints, verification, and rollback plans. |
 
 ## Auto-Reflection Hook
 
@@ -76,9 +76,9 @@ These skills are built on a few observations:
 
 - **AI agents have well-documented failure modes** (sycophancy, ungrounded imagination, anchoring, premature closure). Naming them explicitly helps avoid them.
 - **The rigor of analysis should match the cost of error.** Deep scrutiny for foundational decisions, fast failure for trivial tasks.
-- **Knowledge that isn't tested is just theory.** The `/learn` skill requires experimental validation, not just reading docs.
-- **Reflection without persistence is just talking.** The `/reflect` skill routes lessons to skills, memory, or code — somewhere durable.
-- **Your first framing determines your solution space.** The `/reframe` skill forces you to consider alternatives before committing.
+- **Knowledge that isn't tested is just theory.** The `/meta:learn` skill requires experimental validation, not just reading docs.
+- **Reflection without persistence is just talking.** The `/meta:reflect` skill routes lessons to skills, memory, or code — somewhere durable.
+- **Your first framing determines your solution space.** The `/meta:reframe` skill forces you to consider alternatives before committing.
 
 ## Contributing
 

@@ -1,5 +1,5 @@
 ---
-name: learn
+name: meta:learn
 description: "Research a topic using current sources, learn how to do something new, then save the acquired knowledge as a reusable skill or memory. Use when: the user asks to learn a new technology/tool/pattern, needs to figure out how something works from scratch, says 'learn how to', 'figure out how to', 'research how to', or when you encounter a tool/API/framework you don't have reliable knowledge about."
 ---
 

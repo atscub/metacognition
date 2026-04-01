@@ -1,6 +1,6 @@
 ---
-name: decompose
-description: "Break a problem down to its fundamental components and rebuild understanding from first principles. Use when pattern-matching keeps failing, when a problem is too complex to reason about as a whole, when inherited assumptions may be wrong, or when you need to understand *why* something works, not just *that* it works. Trigger on: /decompose, 'break this down', 'first principles', 'why does this work', 'start from scratch', or when you notice yourself applying a template solution to a problem you don't fully understand."
+name: meta:decompose
+description: "Break a problem down to its fundamental components and rebuild understanding from first principles. Use when pattern-matching keeps failing, when a problem is too complex to reason about as a whole, when inherited assumptions may be wrong, or when you need to understand *why* something works, not just *that* it works. Trigger on: /meta:decompose, 'break this down', 'first principles', 'why does this work', 'start from scratch', or when you notice yourself applying a template solution to a problem you don't fully understand."
 ---
 
 # Decompose — First Principles Breakdown

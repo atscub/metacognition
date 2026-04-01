@@ -1,6 +1,6 @@
 ---
-name: reframe
-description: "Look at a problem from multiple perspectives before committing to an approach. Use when stuck on a problem, when the first solution feels too obvious, when debugging hits a wall, or when making a design decision with trade-offs. Trigger on: /reframe, 'think about this differently', 'other approaches', 'what am I missing', 'step back', or when you notice yourself going in circles."
+name: meta:reframe
+description: "Look at a problem from multiple perspectives before committing to an approach. Use when stuck on a problem, when the first solution feels too obvious, when debugging hits a wall, or when making a design decision with trade-offs. Trigger on: /meta:reframe, 'think about this differently', 'other approaches', 'what am I missing', 'step back', or when you notice yourself going in circles."
 ---
 
 # Reframe — Multiple Perspectives Before Commitment

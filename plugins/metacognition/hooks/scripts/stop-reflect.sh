@@ -31,6 +31,6 @@ touch "$FLAG_FILE"
 cat <<'EOF'
 {
   "decision": "block",
-  "reason": "Before wrapping up, consider whether a brief reflection is warranted. Ask yourself:\n\n1. Did you just complete a significant task (implementation, debugging session, research, architecture decision)?\n2. Did anything go unexpectedly wrong or surprisingly well?\n3. Are there lessons that would be useful in future sessions?\n\nIf YES to any: run a quick /reflect — keep it to 3-5 bullet points max, only persist what matters.\nIf NO (trivial task, simple question, no lessons): just say 'No reflection needed' and finish.\n\nDo NOT block yourself in a reflection loop. One reflection pass, then stop."
+  "reason": "Before wrapping up, consider whether a brief reflection is warranted. Ask yourself:\n\n1. Did you just complete a significant task (implementation, debugging session, research, architecture decision)?\n2. Did anything go unexpectedly wrong or surprisingly well?\n3. Are there lessons that would be useful in future sessions?\n\nIf YES to any: run a quick /meta:reflect — keep it to 3-5 bullet points max, only persist what matters.\nIf NO (trivial task, simple question, no lessons): just say 'No reflection needed' and finish.\n\nDo NOT block yourself in a reflection loop. One reflection pass, then stop."
 }
 EOF

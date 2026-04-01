@@ -1,6 +1,6 @@
 ---
-name: socratic
-description: "Activate epistemic humility and bias awareness mode. Use when approaching complex decisions, debugging hard problems, making architectural choices, research tasks, planning, or any situation where a seeding mistake could compound downstream. Also trigger when the user pushes back on your reasoning. Trigger on: /socratic, 'think carefully', 'are you sure', 'check your assumptions', 'research', 'plan this'. Do NOT activate for small, easily testable tasks where fast failure is cheaper than upfront analysis."
+name: meta:socratic
+description: "Activate epistemic humility and bias awareness mode. Use when approaching complex decisions, debugging hard problems, making architectural choices, research tasks, planning, or any situation where a seeding mistake could compound downstream. Also trigger when the user pushes back on your reasoning. Trigger on: /meta:socratic, 'think carefully', 'are you sure', 'check your assumptions', 'research', 'plan this'. Do NOT activate for small, easily testable tasks where fast failure is cheaper than upfront analysis."
 ---
 
 # Socratic Mode — Epistemic Humility Protocol
