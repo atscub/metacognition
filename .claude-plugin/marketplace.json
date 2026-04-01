@@ -1,5 +1,5 @@
 {
-  "name": "metacognition",
+  "name": "metacognition-marketplace",
   "description": "Metacognitive skills for epistemically humble, self-aware AI agents. Socratic reasoning, structured learning, reflection, premortem analysis, and problem reframing.",
   "owner": {
     "name": "Abraham"
@@ -8,8 +8,8 @@
     {
       "name": "metacognition",
       "source": "./plugins/metacognition",
-      "description": "Critical thinking skills: /socrates, /learn, /reflect, /premortem, /reframe. Includes auto-reflection hook on task completion.",
-      "version": "0.1.0"
+      "description": "Critical thinking skills: /socratic, /learn, /reflect, /premortem, /reframe, /steelman, /decompose. Includes auto-reflection hook on task completion.",
+      "version": "0.2.0"
     }
   ]
 }

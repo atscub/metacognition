@@ -1,6 +1,6 @@
 {
   "name": "metacognition",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Metacognitive skills for epistemically humble, self-aware AI agents. Includes Socratic reasoning, structured learning, post-task reflection, premortem risk analysis, and problem reframing.",
   "author": {
     "name": "Abraham"

@@ -11,11 +11,13 @@ If you burn all your tokens, don't yell at me.
 
 | Skill | Description |
 |-------|-------------|
-| `/socrates` | Epistemic humility — bias awareness, assumption checking, calibrated confidence. Activates for research, planning, and high-stakes decisions. Skips trivial tasks where fast failure is cheaper. |
+| `/socratic` | Epistemic humility — bias awareness, assumption checking, calibrated confidence. Activates for research, planning, and high-stakes decisions. Skips trivial tasks where fast failure is cheaper. |
 | `/learn` | Research a topic using current sources (never trust memorized data), validate through experiment, persist as a reusable skill or memory. |
 | `/reflect` | Post-task retrospective — what went well, what didn't, root cause analysis. Persists lessons to skills or memory for future sessions. |
 | `/premortem` | Before committing to a plan, imagine it already failed and work backwards to find risks. Assess by likelihood, impact, and reversibility. |
 | `/reframe` | Look at a problem through multiple lenses (inversion, simplicity, zoom in/out, user, adversarial, constraint) before committing to an approach. |
+| `/steelman` | Construct the strongest possible version of an idea before evaluating it. Counteracts the tendency to strawman and dismiss alternatives too quickly. |
+| `/decompose` | First-principles breakdown — strip a problem to fundamentals and rebuild, instead of reasoning by analogy. For when pattern-matching keeps failing. |
 
 ## Auto-Reflection Hook
 
@@ -37,7 +39,7 @@ Or manually in `~/.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "metacognition": {
+    "metacognition-marketplace": {
       "source": {
         "source": "github",
         "repo": "atscub/metacognition"
@@ -59,10 +61,6 @@ These skills are built on a few observations:
 - **Knowledge that isn't tested is just theory.** The `/learn` skill requires experimental validation, not just reading docs.
 - **Reflection without persistence is just talking.** The `/reflect` skill routes lessons to skills, memory, or code — somewhere durable.
 - **Your first framing determines your solution space.** The `/reframe` skill forces you to consider alternatives before committing.
-
-## Disclaimer
-
-This plugin is experimental and provided as-is. It modifies AI agent behavior by injecting metacognitive prompts — results may vary across models, tasks, and contexts. The skills are heuristic, not guarantees: they can improve reasoning quality but do not eliminate errors, hallucinations, or other AI limitations. Use your own judgment when acting on AI-generated analysis, and always verify critical decisions independently.
 
 ## Contributing
 

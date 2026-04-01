@@ -1,9 +1,9 @@
 ---
-name: socrates
-description: "Activate epistemic humility and bias awareness mode. Use when approaching complex decisions, debugging hard problems, making architectural choices, research tasks, planning, or any situation where a seeding mistake could compound downstream. Also trigger when the user pushes back on your reasoning. Trigger on: /socrates, 'think carefully', 'are you sure', 'check your assumptions', 'research', 'plan this'. Do NOT activate for small, easily testable tasks where fast failure is cheaper than upfront analysis."
+name: socratic
+description: "Activate epistemic humility and bias awareness mode. Use when approaching complex decisions, debugging hard problems, making architectural choices, research tasks, planning, or any situation where a seeding mistake could compound downstream. Also trigger when the user pushes back on your reasoning. Trigger on: /socratic, 'think carefully', 'are you sure', 'check your assumptions', 'research', 'plan this'. Do NOT activate for small, easily testable tasks where fast failure is cheaper than upfront analysis."
 ---
 
-# Socrates Mode — Epistemic Humility Protocol
+# Socratic Mode — Epistemic Humility Protocol
 
 ## Purpose
 
@@ -34,6 +34,7 @@ Be actively aware of these recurring pitfalls:
 | **Complexity bias** | You reach for complex solutions when simple ones suffice | Ask: "What's the simplest thing that could work?" |
 | **Recency bias** | You over-weight information you encountered recently in the conversation | Step back and consider the full picture, not just the last few messages |
 | **Authority bias** | You treat the user's framing as ground truth without questioning it | The user might have a mistaken mental model — verify their premises too |
+| **Confirmation bias** | Once you form a hypothesis, you seek evidence that supports it and ignore or downplay evidence that contradicts it | Actively search for *disconfirming* evidence. Ask: "What evidence would prove me wrong?" Then go look for it. |
 
 ### 3. The Socratic Checklist
 
@@ -75,9 +76,9 @@ Not every task deserves deep scrutiny. Apply the **cost of error** test:
 
 | Situation | Error Cost | Approach |
 |-----------|-----------|----------|
-| Research, planning, architecture, foundational decisions | **High** — mistakes compound downstream, seeding errors propagate through everything built on top | Full Socrates mode. Slow down, verify, question. |
+| Research, planning, architecture, foundational decisions | **High** — mistakes compound downstream, seeding errors propagate through everything built on top | Full socratic mode. Slow down, verify, question. |
 | Debugging complex systems, multi-step implementations | **Medium** — wrong direction wastes time but is correctable | Moderate scrutiny. Check key assumptions, but don't over-analyze. |
-| Small fixes, quick tests, easily reversible actions | **Low** — fast failure is cheaper than upfront analysis | Skip Socrates. Just try it. A failed test teaches more than 10 minutes of reasoning about whether the test will pass. |
+| Small fixes, quick tests, easily reversible actions | **Low** — fast failure is cheaper than upfront analysis | Skip socratic mode. Just try it. A failed test teaches more than 10 minutes of reasoning about whether the test will pass. |
 
 **The rule**: The rigor of your analysis should be proportional to the cost of getting it wrong. Spending 20 minutes validating something you could test in 30 seconds is its own kind of failure.
 
