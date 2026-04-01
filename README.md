@@ -21,13 +21,10 @@ The plugin includes a `Stop` hook that prompts the agent to consider a brief ref
 Add the marketplace to your Claude Code settings:
 
 ```bash
-claude plugins add-marketplace https://github.com/atscub/metacognition.git
-```
-
-Then enable the plugin:
-
-```bash
-claude plugins enable cognitive-toolkit@metacognition
+# In Claude Code
+/plugin marketplace add atscub/metacognition
+/plugin install metacognition
+# Restart Claude Code
 ```
 
 Or manually in `~/.claude/settings.json`:
@@ -43,7 +40,7 @@ Or manually in `~/.claude/settings.json`:
     }
   },
   "enabledPlugins": {
-    "cognitive-toolkit@metacognition": true
+    "metacognition": true
   }
 }
 ```

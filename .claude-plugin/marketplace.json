@@ -6,8 +6,8 @@
   },
   "plugins": [
     {
-      "name": "cognitive-toolkit",
-      "source": "./cognitive-toolkit",
+      "name": "metacognition",
+      "source": "./plugins/metacognition",
       "description": "Critical thinking skills: /socrates, /learn, /reflect, /premortem, /reframe. Includes auto-reflection hook on task completion.",
       "version": "0.1.0"
     }
