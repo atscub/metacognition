@@ -33,10 +33,6 @@ Skills for how the agent ships.
 | `/delivery:pr-feedback` | Systematically address PR review comments — read all first, categorize, understand before fixing, respond to each. |
 | `/delivery:orchestrate` | Coordinate multi-step delivery workflows with dependency ordering, checkpoints, verification, and rollback plans. |
 
-## Auto-Reflection Hook
-
-The plugin includes a `Stop` hook that prompts the agent to consider a brief reflection before finishing. The agent decides whether reflection is warranted — trivial tasks are skipped. A flag-file mechanism prevents infinite loops.
-
 ## Installation
 
 Add the marketplace to your Claude Code settings:
