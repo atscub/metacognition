@@ -1,0 +1,15 @@
+{
+  "name": "cognitive-toolkit-marketplace",
+  "description": "Metacognitive skills for epistemically humble, self-aware AI agents. Socratic reasoning, structured learning, reflection, premortem analysis, and problem reframing.",
+  "owner": {
+    "name": "Abraham"
+  },
+  "plugins": [
+    {
+      "name": "cognitive-toolkit",
+      "source": "./cognitive-toolkit",
+      "description": "Critical thinking skills: /socrates, /learn, /reflect, /premortem, /reframe. Includes auto-reflection hook on task completion.",
+      "version": "0.1.0"
+    }
+  ]
+}
