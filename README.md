@@ -1,6 +1,11 @@
 # Cognitive Toolkit
 
-A Claude Code plugin with metacognitive skills that make AI agents more self-aware, epistemically humble, and capable of learning from experience.
+A Claude Code plugin with metacognitive skills that make AI agents more self-aware, epistemically humble, and capable of learning from experience... hopefully :)
+
+## Disclaimer
+
+This plugin is experimental and provided as-is. It modifies AI agent behavior by injecting metacognitive prompts — results may vary across models, tasks, and contexts. The skills are heuristic, not guarantees: they can improve reasoning quality but do not eliminate errors, hallucinations, or other AI limitations. Use your own judgment when acting on AI-generated analysis, and always verify critical decisions independently.
+If you burn all your tokens, don't yell at me.
 
 ## Skills
 
@@ -54,6 +59,14 @@ These skills are built on a few observations:
 - **Knowledge that isn't tested is just theory.** The `/learn` skill requires experimental validation, not just reading docs.
 - **Reflection without persistence is just talking.** The `/reflect` skill routes lessons to skills, memory, or code — somewhere durable.
 - **Your first framing determines your solution space.** The `/reframe` skill forces you to consider alternatives before committing.
+
+## Disclaimer
+
+This plugin is experimental and provided as-is. It modifies AI agent behavior by injecting metacognitive prompts — results may vary across models, tasks, and contexts. The skills are heuristic, not guarantees: they can improve reasoning quality but do not eliminate errors, hallucinations, or other AI limitations. Use your own judgment when acting on AI-generated analysis, and always verify critical decisions independently.
+
+## Contributing
+
+Contributions are welcome but will be accepted at my discretion. I will try to be unbiased, so I react more positively if you can substantiate your suggestion, ideally with data.
 
 ## License
 
