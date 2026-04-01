@@ -1,6 +1,6 @@
 # Cognitive Toolkit
 
-A Claude Code plugin marketplace with two plugins: **metacognition** (how the agent thinks) and **delivery** (how the agent ships). Hopefully making AI agents more self-aware, epistemically humble, and responsible... hopefully :)
+A Claude Code plugin marketplace with two plugins: **metacognition** (how the agent thinks) and **operations** (engineering operations). Hopefully making AI agents more self-aware, epistemically humble, and responsible... hopefully :)
 
 ## Disclaimer
 
@@ -21,17 +21,17 @@ Skills for how the agent thinks.
 | `/meta:steelman` | Construct the strongest possible version of an idea before evaluating it. Counteracts the tendency to strawman and dismiss alternatives too quickly. |
 | `/meta:decompose` | First-principles breakdown — strip a problem to fundamentals and rebuild, instead of reasoning by analogy. For when pattern-matching keeps failing. |
 
-## Delivery Plugin
+## Operations Plugin
 
-Skills for how the agent ships.
+Skills for engineering operations.
 
 | Skill | Description |
 |-------|-------------|
-| `/delivery:wrapup` | Pre-delivery sanity checks — uncommitted changes, failing tests, TODOs, temp code. Commit, push, confirm clean state. |
-| `/delivery:handoff` | Prepare context for the next person or session — what was done, what's left, gotchas, entry points. |
-| `/delivery:changelog` | Structured change summary beyond git log — categorized by impact, adapted to audience (devs, users, future context). |
-| `/delivery:pr-feedback` | Systematically address PR review comments — read all first, categorize, understand before fixing, respond to each. |
-| `/delivery:orchestrate` | Coordinate multi-step delivery workflows with dependency ordering, checkpoints, verification, and rollback plans. |
+| `/ops:wrapup` | Pre-delivery sanity checks — uncommitted changes, failing tests, TODOs, temp code. Commit, push, confirm clean state. |
+| `/ops:handoff` | Prepare context for the next person or session — what was done, what's left, gotchas, entry points. |
+| `/ops:changelog` | Structured change summary beyond git log — categorized by impact, adapted to audience (devs, users, future context). |
+| `/ops:pr-feedback` | Systematically address PR review comments — read all first, categorize, understand before fixing, respond to each. |
+| `/ops:orchestrate` | Coordinate multi-step delivery workflows with dependency ordering, checkpoints, verification, and rollback plans. |
 
 ## Installation
 
@@ -41,7 +41,7 @@ Add the marketplace to your Claude Code settings:
 # In Claude Code
 /plugin marketplace add atscub/metacognition
 /plugin install metacognition
-/plugin install delivery
+/plugin install operations
 # Restart Claude Code
 ```
 
@@ -59,7 +59,7 @@ Or manually in `~/.claude/settings.json`:
   },
   "enabledPlugins": {
     "metacognition": true,
-    "delivery": true
+    "operations": true
   }
 }
 ```

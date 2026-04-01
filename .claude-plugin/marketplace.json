@@ -12,9 +12,9 @@
       "version": "0.2.0"
     },
     {
-      "name": "delivery",
-      "source": "./plugins/delivery",
-      "description": "Responsible delivery skills: /delivery:wrapup, /delivery:handoff, /delivery:changelog, /delivery:pr-feedback, /delivery:orchestrate.",
+      "name": "operations",
+      "source": "./plugins/operations",
+      "description": "Engineering operations skills: /ops:wrapup, /ops:handoff, /ops:changelog, /ops:pr-feedback, /ops:orchestrate.",
       "version": "0.1.0"
     }
   ]

@@ -1,6 +1,6 @@
 ---
-name: delivery:handoff
-description: "Prepare context for another person or a future session to continue work seamlessly. Use when stopping mid-task, handing off to a teammate, or when the next session will need to pick up where this one left off. Trigger on: /delivery:handoff, 'hand this off', 'someone else will continue', 'pick this up later', 'context for next session'."
+name: ops:handoff
+description: "Prepare context for another person or a future session to continue work seamlessly. Use when stopping mid-task, handing off to a teammate, or when the next session will need to pick up where this one left off. Trigger on: /ops:handoff, 'hand this off', 'someone else will continue', 'pick this up later', 'context for next session'."
 ---
 
 # Handoff — Context for Continuity

@@ -1,0 +1,9 @@
+{
+  "name": "operations",
+  "version": "0.1.0",
+  "description": "Engineering operations skills for AI agents. Sanity checks, handoffs, changelogs, PR feedback, and workflow orchestration.",
+  "author": {
+    "name": "Abraham"
+  },
+  "keywords": ["delivery", "operations", "handoff", "changelog", "orchestration"]
+}
