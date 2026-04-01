@@ -33,11 +33,14 @@ Run through these checks in order:
 
 ### Step 2: Commit and Push
 
-If everything checks out:
+If everything checks out, **commit and push without asking**. The user invoked wrapup because they want to ship — don't slow them down with confirmation prompts when the state is clean.
+
 1. Stage the relevant files (not blindly `git add .` — review what's being added)
 2. Write a clear commit message that explains *why*, not just *what*
 3. Push to remote
 4. Confirm the push succeeded
+
+Only pause to ask if something looks wrong — conflicts, failing tests, suspicious untracked files. Confidence means action.
 
 ### Step 3: Report
 
