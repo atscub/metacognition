@@ -2,11 +2,7 @@
 
 Formalized routine engineering practices — the things experienced engineers do consistently that AI agents tend to skip.
 
-## Why this plugin?
-
-Software engineering has established practices that aren't creative or complex, but matter: check your work before walking away, write PR descriptions that reviewers can follow, hand off context when someone else picks up the work, summarize changes for the people who need to know. Experienced engineers do these habitually. AI agents don't — not because they can't, but because nobody formalized the expectation.
-
-This plugin turns those routine practices into structured skills the agent follows consistently.
+The routine practices experienced engineers follow without thinking — formalized so the agent follows them consistently.
 
 ## Skills
 
