@@ -1,0 +1,121 @@
+id: debug-01
+category: debugging
+title: "API latency spikes correlating with deployments"
+difficulty: medium
+primary_skill: socratic
+secondary_skills: []
+prompt: |
+  Our API has been experiencing severe latency spikes over the past two weeks. The ops team is
+  convinced it's caused by our deployment process, because every spike lines up perfectly with a
+  deploy. They want to halt all deployments until we "fix the deploy pipeline." Before we do
+  something that drastic, can you investigate?
+
+  Here's the timeline from our Datadog dashboard:
+
+  ```
+  === p99 Latency (ms) — api-gateway service ===
+  Date/Time               p99     deploys
+  2026-03-20 02:00 UTC    210     —
+  2026-03-20 02:15 UTC    2,840   deploy #447 (config: bump rate-limit threshold)
+  2026-03-20 02:30 UTC    380     —
+  2026-03-20 02:45 UTC    195     —
+  ...
+  2026-03-23 02:00 UTC    205     —
+  2026-03-23 02:15 UTC    3,120   deploy #448 (feat: add /v2/users endpoint)
+  2026-03-23 02:30 UTC    410     —
+  2026-03-23 02:45 UTC    198     —
+  ...
+  2026-03-27 02:00 UTC    215     —
+  2026-03-27 02:15 UTC    2,950   deploy #449 (fix: null-check on billing response)
+  2026-03-27 02:30 UTC    370     —
+  2026-03-27 02:45 UTC    190     —
+  ```
+
+  Deployment logs (all three follow the same pattern):
+
+  ```
+  [02:12:03] Starting rolling deploy to api-gateway (3 pods)
+  [02:12:05] Pod api-gw-1 draining connections...
+  [02:12:08] Pod api-gw-1 terminated, starting new pod
+  [02:12:15] Pod api-gw-1 healthy (readiness probe passed)
+  [02:12:18] Pod api-gw-2 draining connections...
+  [02:12:21] Pod api-gw-2 terminated, starting new pod
+  [02:12:28] Pod api-gw-2 healthy
+  [02:12:31] Pod api-gw-3 draining connections...
+  [02:12:34] Pod api-gw-3 terminated, starting new pod
+  [02:12:41] Pod api-gw-3 healthy
+  [02:12:42] Rolling deploy complete. Total time: 39s
+  ```
+
+  The deploy itself takes under 40 seconds with graceful draining — there's no reason a
+  rolling restart should cause 15 minutes of elevated latency.
+
+  Here's the relevant infrastructure config:
+
+  ```yaml
+  # k8s/api-gateway/deployment.yaml
+  spec:
+    replicas: 3
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 1
+        maxSurge: 1
+    template:
+      spec:
+        terminationGracePeriodSeconds: 30
+        containers:
+        - name: api-gateway
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 3
+  ```
+
+  ```
+  # Redis cache config (application.yaml)
+  cache:
+    provider: redis
+    cluster: redis-prod.internal:6379
+    ttl: 3600        # 1 hour TTL
+    warm_on_start: false
+  ```
+
+  ```
+  # crontab -l (on ops-tooling-1 host)
+  0 2 * * 1,4,0   /opt/scripts/warm-cache.sh --flush-first --rebuild
+  15 3 * * *       /opt/scripts/rotate-logs.sh
+  0 6 * * 1        /opt/scripts/weekly-report.sh
+  ```
+
+  The team has also tried adding more pods (scaled to 6 replicas) during a deploy window — the
+  latency spike still happened, which further puzzled them.
+
+  Can you identify the root cause of the latency spikes?
+expected_outcome: |
+  The root cause is the crontab entry for warm-cache.sh which runs at 02:00 UTC on
+  Sundays (0), Mondays (1), and Thursdays (4) — matching the three spike dates
+  (March 20 = Thursday, March 23 = Sunday, March 27 = Thursday). The script uses
+  --flush-first which purges the entire Redis cache before rebuilding it. This creates
+  a thundering herd: all API requests become cache misses simultaneously, hitting the
+  backend database directly, causing the latency spike. The deployments happen to be
+  scheduled around 02:12 UTC because the team deploys during "low traffic" windows —
+  the same windows chosen for the cache job. The correlation is coincidental (both
+  happen in the 02:00 UTC maintenance window). Scaling pods doesn't help because the
+  bottleneck is the backend DB being hammered by cache misses, not the API pods
+  themselves.
+traps: |
+  The deployment correlation is nearly perfect — three spikes, three deploys, same
+  time windows. The deployment logs are shown prominently and the ops team's narrative
+  is presented as the working hypothesis. A naive agent will anchor on "deployment
+  causes latency" and look for issues in the rolling update strategy, readiness probes,
+  or connection draining. The crontab entry is buried among other cron jobs and requires
+  noticing that (a) the schedule days match the spike dates, (b) --flush-first means
+  full cache purge, and (c) the cache TTL of 1 hour means rebuilding takes significant
+  time.
+treatment_prefix: |
+  Before debugging, invoke /meta:socratic and actively question your first hypothesis.
+  Consider: what else could explain these symptoms? What evidence would disprove your
+  initial theory?

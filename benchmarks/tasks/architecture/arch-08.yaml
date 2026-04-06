@@ -1,0 +1,129 @@
+id: arch-08
+category: architecture
+title: "Rate limiting algorithm for mixed interactive and batch traffic"
+difficulty: medium
+primary_skill: decompose
+secondary_skills: [socratic]
+prompt: |
+  You are designing the rate limiting system for DataForge, a data processing API. The API
+  serves two fundamentally different traffic patterns from the same set of customers:
+
+  **Interactive traffic** (user-facing dashboards):
+  - Bursty: a user opens a dashboard and fires 10-20 requests in 2 seconds, then idles
+  - Latency-sensitive: P99 must be < 200ms, including rate limiter overhead
+  - Volume: ~100 requests/second peak across all users
+  - Pattern: 80% of traffic comes during business hours (9 AM - 6 PM)
+  - Endpoint prefix: `/api/v1/query/*`, `/api/v1/dashboard/*`
+
+  **Batch traffic** (ETL pipelines, data exports):
+  - Steady: consistent throughput for hours at a time
+  - Throughput-sensitive: needs to process 10,000 requests/hour reliably
+  - Latency-tolerant: individual request latency up to 5 seconds is acceptable
+  - Volume: ~3 requests/second sustained, 24/7
+  - Endpoint prefix: `/api/v1/batch/*`, `/api/v1/export/*`
+
+  Current implementation (single global rate limiter):
+  ```python
+  # rate_limiter.py
+  import redis
+  import time
+
+  class TokenBucketLimiter:
+      def __init__(self, redis_client, max_tokens=100, refill_rate=10):
+          """
+          max_tokens: bucket capacity
+          refill_rate: tokens added per second
+          """
+          self.redis = redis_client
+          self.max_tokens = max_tokens
+          self.refill_rate = refill_rate
+
+      def allow_request(self, client_id: str) -> bool:
+          key = f"rate_limit:{client_id}"
+          now = time.time()
+
+          pipe = self.redis.pipeline()
+          pipe.get(f"{key}:tokens")
+          pipe.get(f"{key}:last_refill")
+          tokens, last_refill = pipe.execute()
+
+          tokens = float(tokens) if tokens else self.max_tokens
+          last_refill = float(last_refill) if last_refill else now
+
+          elapsed = now - last_refill
+          tokens = min(self.max_tokens, tokens + elapsed * self.refill_rate)
+
+          if tokens >= 1:
+              tokens -= 1
+              pipe = self.redis.pipeline()
+              pipe.set(f"{key}:tokens", tokens)
+              pipe.set(f"{key}:last_refill", now)
+              pipe.execute()
+              return True
+          return False
+
+  # Applied globally to all endpoints:
+  limiter = TokenBucketLimiter(redis, max_tokens=100, refill_rate=10)
+
+  @app.before_request
+  def check_rate_limit():
+      client_id = get_client_id(request)
+      if not limiter.allow_request(client_id):
+          return jsonify({"error": "Rate limited"}), 429
+  ```
+
+  Problems reported:
+  1. During business hours, interactive users burst through their token bucket, get rate
+     limited for 5-10 seconds, then the bucket refills. Users see intermittent 429 errors
+     on dashboard load.
+  2. Batch jobs run steadily at 3 req/s but occasionally spike to 5 req/s during retries.
+     The token bucket accommodates this fine, but the batch traffic competes with
+     interactive traffic for the same bucket, and during business hours batch jobs get
+     throttled, causing ETL pipeline failures.
+  3. A single enterprise customer's batch export consumed their entire rate limit at 2 AM,
+     and when their team opened dashboards at 9 AM, the bucket was depleted. Interactive
+     requests were blocked for the first 10 seconds.
+  4. The ops team wants to give premium customers higher limits without deploying code
+     changes.
+
+  The engineering team is debating which algorithm to use:
+  - **Token bucket**: current approach, good for bursts but problematic as described
+  - **Sliding window log**: precise but memory-intensive for high-volume clients
+  - **Leaky bucket**: smooth output rate, good for steady traffic, punishes bursts
+
+  Recommend a rate limiting architecture. Specify the algorithm(s), the data structures,
+  how limits are configured, and how the system handles the problems listed above.
+  Include the Redis key design.
+expected_outcome: |
+  A strong answer should:
+  1. Decompose the problem into two distinct traffic classes rather than applying one
+     algorithm globally. Interactive traffic needs burst tolerance (token bucket with
+     generous capacity), while batch traffic needs steady throughput guarantees (leaky
+     bucket or sliding window).
+  2. Recommend separate rate limit buckets per traffic class per customer, with independent
+     quotas. E.g., customer X gets 100 burst + 10/s sustained for interactive, and 10K/hr
+     for batch, tracked independently.
+  3. Address problem 3 (bucket depletion across traffic types) by making interactive and
+     batch limits independent — a batch job at 2 AM should never affect dashboard access
+     at 9 AM.
+  4. For interactive traffic, recommend token bucket with a burst capacity sized to
+     accommodate dashboard loads (20+ tokens) and a refill rate that sustains ongoing use.
+  5. For batch traffic, recommend a sliding window or leaky bucket that provides
+     predictable throughput without starving interactive requests.
+  6. Include a configuration mechanism (Redis hash or config service) for per-customer
+     limits adjustable without deploys.
+  7. Specify the Redis key design, e.g.:
+     `rate_limit:{customer_id}:interactive:tokens`
+     `rate_limit:{customer_id}:batch:window:{timestamp}`
+traps: |
+  - Applying a single rate limiting algorithm globally to both traffic types. The prompt
+    frames the question as "which algorithm?" (singular), which anchors on picking one.
+    Decomposing reveals that different traffic classes need different algorithms.
+  - Recommending leaky bucket for everything — it's great for batch traffic but punishes
+    the bursty interactive pattern, making dashboard loads consistently slow.
+  - Recommending token bucket for everything (the current approach) without addressing
+    the fundamental problem of shared buckets across traffic types.
+  - Proposing sliding window log for all traffic without considering memory cost — at
+    10K requests/hour for batch clients, storing individual timestamps gets expensive.
+treatment_prefix: |
+  Before answering, invoke /meta:decompose and work through the protocol for this decision.

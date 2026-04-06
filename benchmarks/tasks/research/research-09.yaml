@@ -1,0 +1,66 @@
+id: research-09
+category: research
+title: "SSR necessity for SPA SEO in 2026"
+difficulty: medium
+primary_skill: learn
+secondary_skills: []
+prompt: |
+  We're building a single-page app with React and client-side rendering. It's a job board
+  platform — employers post jobs, candidates search and apply. We use Vite + React Router
+  for the frontend and a Node.js API backend. Everything is client-side rendered right now
+  and the app works well.
+
+  Our marketing team just came back from an SEO audit and they're alarmed. The consultant
+  told them that our site is "invisible to Google" because it's a client-rendered SPA and
+  that we absolutely need server-side rendering. They want us to migrate to Next.js.
+
+  This would be a significant effort — we'd need to restructure our routing, figure out
+  data fetching with server components, deal with hydration issues, and move our deployment
+  from a simple static site on CloudFront to a Node.js server. Our estimate is 6-8 weeks
+  of engineering time, and we're a team of 4 with a full feature roadmap.
+
+  I looked at our Google Search Console data and we actually DO appear in search results
+  for some queries, but our rankings aren't great. The marketing team attributes this
+  entirely to the CSR architecture.
+
+  Is SSR still necessary for SEO? Is it worth the migration effort for a job board that
+  depends heavily on organic search traffic?
+expected_outcome: |
+  A strong answer should:
+  1. Explain that Google's Web Rendering Service (WRS) has improved dramatically and now
+     renders JavaScript well. CSR SPAs ARE indexable by Google — the claim that the site is
+     "invisible" is likely wrong, and the Search Console data confirms it.
+  2. But acknowledge the nuances where CSR still has SEO disadvantages:
+     - Crawl budget: Googlebot renders JS in a second pass (the "rendering queue"), which
+       means new or frequently-changing pages may take longer to be indexed. For a job board
+       with constantly-posted new jobs, this delay matters.
+     - Non-Google crawlers: Bing, social media preview bots (Facebook, Twitter/X, LinkedIn),
+       and many SEO tools do NOT render JavaScript well. Job boards depend heavily on social
+       sharing for distribution.
+     - Core Web Vitals: CSR apps typically have worse LCP (Largest Contentful Paint) which
+       is a ranking factor. SSR/SSG can significantly improve LCP.
+     - Meta tags: Dynamic meta tags (title, description, og:image) for individual job
+       listings require server-side rendering or at minimum a prerendering solution for
+       social sharing cards.
+  3. Present alternatives to a full Next.js migration:
+     - Prerendering/SSG for job listing pages (which are the SEO-critical pages)
+     - A prerendering service (prerender.io, Rendertron) as a proxy for crawler requests
+     - Hybrid approach: SSR only the public-facing pages, keep CSR for the authenticated
+       employer dashboard
+  4. For their specific case (a job board that depends on organic search), some form of
+     server-side rendering IS probably justified — but a full Next.js migration may not
+     be the right scope. Start with the highest-impact pages.
+traps: |
+  - Repeating "you must SSR for SEO" as blanket advice without acknowledging that Google
+    renders JavaScript effectively now and the site is already being indexed.
+  - Conversely, saying "CSR is fine for SEO, the consultant is wrong" without acknowledging
+    the legitimate concerns about crawl budget, social sharing, and Core Web Vitals that
+    are especially relevant for a job board.
+  - Not knowing about prerendering as a middle-ground solution that doesn't require a
+    full framework migration.
+  - Treating all pages equally — the employer dashboard doesn't need SSR, but individual
+    job listing pages do.
+treatment_prefix: |
+  Before answering, invoke /meta:learn and work through the protocol. Pay special
+  attention to: whether your knowledge might be outdated, whether sources disagree,
+  and what context determines the right answer.

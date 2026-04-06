@@ -1,0 +1,201 @@
+id: debug-08
+category: debugging
+title: "Elasticsearch returning stale results after index rebuild"
+difficulty: medium
+primary_skill: reframe
+secondary_skills: []
+prompt: |
+  We rebuilt our Elasticsearch product index last night to pick up schema changes, but
+  search results are still returning stale data. Products updated in the last two weeks
+  show old prices and descriptions. The engineering team thinks the reindex didn't complete
+  fully, but the logs show success. Can you figure out what went wrong?
+
+  Index rebuild script (scripts/rebuild-product-index.sh):
+
+  ```bash
+  #!/bin/bash
+  set -euo pipefail
+
+  ES_HOST="http://es-prod-cluster:9200"
+  NEW_INDEX="products-$(date +%Y%m%d%H%M%S)"
+  ALIAS="products-live"
+
+  echo "[$(date)] Step 1: Creating new index ${NEW_INDEX}"
+  curl -s -X PUT "${ES_HOST}/${NEW_INDEX}" \
+    -H 'Content-Type: application/json' \
+    -d @/opt/config/product-index-mapping.json
+
+  echo "[$(date)] Step 2: Reindexing from database"
+  node /opt/scripts/db-to-es-sync.js --target="${NEW_INDEX}" --batch-size=5000
+
+  echo "[$(date)] Step 3: Verifying document count"
+  DB_COUNT=$(psql -t -c "SELECT count(*) FROM products WHERE active = true" | tr -d ' ')
+  ES_COUNT=$(curl -s "${ES_HOST}/${NEW_INDEX}/_count" | jq '.count')
+
+  echo "  DB count: ${DB_COUNT}"
+  echo "  ES count: ${ES_COUNT}"
+
+  if [ "${DB_COUNT}" != "${ES_COUNT}" ]; then
+    echo "ERROR: Count mismatch! Aborting."
+    exit 1
+  fi
+
+  echo "[$(date)] Step 4: Swapping alias"
+  SWAP_RESPONSE=$(curl -s -X POST "${ES_HOST}/_aliases" \
+    -H 'Content-Type: application/json' \
+    -d "{
+      \"actions\": [
+        { \"remove\": { \"index\": \"*\", \"alias\": \"product-live\" } },
+        { \"add\": { \"index\": \"${NEW_INDEX}\", \"alias\": \"product-live\" } }
+      ]
+    }")
+
+  echo "  Alias swap response: ${SWAP_RESPONSE}"
+
+  echo "[$(date)] Step 5: Cleanup old indices"
+  OLD_INDICES=$(curl -s "${ES_HOST}/_cat/indices/products-*" \
+    | awk '{print $3}' \
+    | grep -v "${NEW_INDEX}" \
+    | head -5)
+
+  for idx in ${OLD_INDICES}; do
+    echo "  Deleting old index: ${idx}"
+    curl -s -X DELETE "${ES_HOST}/${idx}"
+  done
+
+  echo "[$(date)] Rebuild complete!"
+  ```
+
+  Rebuild log output (from last night):
+
+  ```
+  [2026-03-27 03:00:01] Step 1: Creating new index products-20260327030001
+  [2026-03-27 03:00:02] Step 2: Reindexing from database
+    Batch 1/47: 5000 docs indexed
+    Batch 2/47: 5000 docs indexed
+    ...
+    Batch 47/47: 2341 docs indexed
+    Total: 232,341 documents indexed
+  [2026-03-27 03:12:45] Step 3: Verifying document count
+    DB count: 232341
+    ES count: 232341
+  [2026-03-27 03:12:46] Step 4: Swapping alias
+    Alias swap response: {"acknowledged":true}
+  [2026-03-27 03:12:47] Step 5: Cleanup old indices
+    Deleting old index: products-20260313030001
+    Deleting old index: products-20260120030002
+  [2026-03-27 03:12:48] Rebuild complete!
+  ```
+
+  Elasticsearch cluster health:
+
+  ```
+  $ curl -s es-prod-cluster:9200/_cluster/health | jq .
+  {
+    "cluster_name": "prod-search",
+    "status": "green",
+    "number_of_nodes": 3,
+    "active_primary_shards": 15,
+    "active_shards": 30,
+    "unassigned_shards": 0
+  }
+  ```
+
+  Current alias state:
+
+  ```
+  $ curl -s es-prod-cluster:9200/_cat/aliases/products*
+  products-live  products-20260313030001  - - -
+  product-live   products-20260327030001  - - -
+  ```
+
+  Search query used by the application:
+
+  ```typescript
+  // src/services/search.ts
+  const searchProducts = async (query: string) => {
+    const result = await esClient.search({
+      index: 'products-live',    // uses the alias
+      body: {
+        query: {
+          multi_match: {
+            query,
+            fields: ['name^3', 'description', 'category'],
+          },
+        },
+      },
+    });
+    return result.hits.hits;
+  };
+  ```
+
+  The team verified:
+  - The new index `products-20260327030001` has all 232,341 documents with correct data
+  - Querying the new index directly returns fresh results
+  - The application is definitely using the `products-live` alias (confirmed in logs)
+  - Cluster health is green, no shard allocation issues
+
+  Spot-check on the new index (direct query):
+
+  ```
+  GET products-20260327030001/_doc/prod_1234
+  {
+    "name": "Wireless Headphones Pro",
+    "price": 79.99,           // ← correct new price
+    "description": "Updated 2026 model with noise cancellation"
+  }
+  ```
+
+  Spot-check via the alias:
+
+  ```
+  GET products-live/_doc/prod_1234
+  {
+    "name": "Wireless Headphones Pro",
+    "price": 99.99,           // ← old price!
+    "description": "Premium wireless headphones"
+  }
+  ```
+
+  What's going on?
+expected_outcome: |
+  The root cause is a typo in the alias swap step of the rebuild script. The script
+  defines `ALIAS="products-live"` at the top, but the curl command in Step 4 hardcodes
+  `"product-live"` (missing the 's') instead of using `"${ALIAS}"`. So the script:
+
+  1. Removes the alias `product-live` from all indices (this alias didn't exist before,
+     so this was a no-op).
+  2. Adds the alias `product-live` (typo) to the new index.
+
+  The actual alias `products-live` (with 's') still points to the OLD index
+  `products-20260313030001`. The application queries `products-live`, which resolves
+  to the old index with stale data.
+
+  The current alias state confirms this:
+  - `products-live` -> `products-20260313030001` (old index, stale data)
+  - `product-live` -> `products-20260327030001` (new index, correct data, wrong alias)
+
+  The cleanup step didn't delete the old index because it was still associated with
+  the `products-live` alias (actually it tried to delete it but the old index is still
+  there — the script only deletes indices NOT matching the new index name, and it did
+  delete `products-20260313030001`... wait, the alias state shows it still exists).
+
+  Actually, looking at the cleanup: it deletes old `products-*` indices. But
+  `products-20260313030001` still appears in the alias listing. The cleanup may have
+  failed silently because ES won't delete an index that has an alias pointing to it,
+  or the grep/head filtered it out. Either way, the fix is to correct the alias swap
+  to use `products-live` instead of `product-live`.
+traps: |
+  The rebuild log shows "acknowledged: true" for the alias swap, which looks like
+  success. ES returns 200 with acknowledged:true even when the actions operate on
+  non-existent aliases (removing a non-existent alias is a no-op). The document count
+  verification passes (232,341 = 232,341), reinforcing the belief that the reindex
+  succeeded. A naive agent will focus on reindex completeness, shard allocation, or
+  cache issues. The typo is a single missing character ('products-live' vs
+  'product-live') buried in a JSON string inside a bash script — easy to overlook.
+  The alias state output at the bottom is the definitive clue, showing two different
+  alias names pointing to different indices.
+treatment_prefix: |
+  Before debugging, invoke /meta:reframe and actively question your first hypothesis.
+  Consider: what else could explain these symptoms? What evidence would disprove your
+  initial theory?

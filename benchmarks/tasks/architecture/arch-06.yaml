@@ -1,0 +1,127 @@
+id: arch-06
+category: architecture
+title: "Database selection for IoT time-series with ad-hoc joins"
+difficulty: medium
+primary_skill: reframe
+secondary_skills: [socratic]
+prompt: |
+  You are the data platform architect at SensorGrid, an industrial IoT company. SensorGrid
+  monitors manufacturing equipment across 120 factories. You need to choose the primary
+  database for storing and querying sensor telemetry.
+
+  Scale:
+  - 500,000 active sensors (growing ~20% annually)
+  - 10 million data points ingested per day (~115 writes/second average, ~400/sec peak)
+  - Data retention: 2 years hot, 5 years cold (archived to S3)
+  - Current data volume: ~4 TB hot data
+
+  Sample sensor data:
+  ```json
+  {
+    "sensor_id": "s-4a2f9c",
+    "device_id": "d-7891",
+    "timestamp": "2026-04-06T14:23:01.445Z",
+    "metric": "vibration_rms",
+    "value": 2.34,
+    "unit": "mm/s",
+    "quality": "good"
+  }
+  ```
+
+  Existing relational tables (in PostgreSQL, managed by the product team):
+  ```sql
+  -- These tables exist and are actively used by the web app
+  CREATE TABLE customers (
+      id UUID PRIMARY KEY,
+      name TEXT, industry TEXT, tier TEXT,
+      contract_start DATE, contract_end DATE
+  );  -- ~800 rows
+
+  CREATE TABLE factories (
+      id UUID PRIMARY KEY,
+      customer_id UUID REFERENCES customers(id),
+      name TEXT, location TEXT, timezone TEXT
+  );  -- ~2,000 rows
+
+  CREATE TABLE devices (
+      id TEXT PRIMARY KEY,         -- e.g., "d-7891"
+      factory_id UUID REFERENCES factories(id),
+      model TEXT, firmware_version TEXT,
+      installed_at DATE, last_maintenance DATE
+  );  -- ~50,000 rows
+
+  CREATE TABLE sensors (
+      id TEXT PRIMARY KEY,         -- e.g., "s-4a2f9c"
+      device_id TEXT REFERENCES devices(id),
+      metric_type TEXT,            -- "vibration_rms", "temperature", etc.
+      calibration_date DATE,
+      alert_threshold FLOAT
+  );  -- ~500,000 rows
+  ```
+
+  Query patterns (from the data science team's requirements doc):
+  1. **Dashboards**: "Show me the last 24 hours of vibration data for device d-7891."
+     Frequency: thousands/day. Latency target: < 500ms.
+  2. **Alerting**: "Find all sensors where the latest reading exceeds the alert_threshold
+     defined in the sensors table." Runs every 60 seconds.
+  3. **Trend analysis**: "Average daily temperature for all sensors in factory F-102 over
+     the last 90 days, grouped by device model." Frequency: dozens/day, can tolerate
+     10-second latency.
+  4. **Ad-hoc exploration**: The data science team says: "We need to run arbitrary SQL
+     queries that join sensor readings with the customer, factory, and device metadata.
+     For example: 'Show me the correlation between firmware version and vibration anomaly
+     rates, broken down by customer industry and factory timezone.' We use Jupyter
+     notebooks with SQLAlchemy — we cannot switch to a non-SQL query language."
+  5. **Predictive maintenance**: "Train ML models on historical sensor data joined with
+     maintenance records and device metadata. This runs nightly as a batch job."
+
+  The team is evaluating three options:
+
+  **A. TimescaleDB** (PostgreSQL extension)
+  - Native PostgreSQL, supports all SQL joins
+  - Hypertables with automatic time-based partitioning
+  - Compression: ~10x for time-series data
+  - Concern: "Can PostgreSQL really handle 10M inserts/day at scale?"
+
+  **B. InfluxDB**
+  - Purpose-built for time-series, excellent write throughput
+  - InfluxQL/Flux query languages (not standard SQL)
+  - No native JOIN support — metadata must be denormalized as tags
+  - Concern: "The data science team will riot if they can't do SQL joins"
+
+  **C. Plain PostgreSQL with declarative partitioning**
+  - Monthly partitions on the readings table
+  - No additional technology to operate
+  - Concern: "Isn't this too slow for 10M rows/day?"
+
+  Recommend a database architecture. Justify your choice against the specific query
+  patterns and constraints listed above.
+expected_outcome: |
+  A strong answer should:
+  1. Reframe the question from "which time-series database?" to "what are the actual
+     access patterns and constraints?" The ad-hoc SQL join requirement (pattern 4) and
+     the data science team's SQLAlchemy dependency are the dominant constraints, not
+     write throughput.
+  2. Recognize that 10M inserts/day (~115/sec) is well within PostgreSQL's capability —
+     the "can Postgres handle it?" concern is unfounded at this scale.
+  3. Recommend TimescaleDB or plain PostgreSQL with partitioning, primarily because the
+     ad-hoc join requirement rules out InfluxDB without an ETL pipeline to sync metadata.
+  4. Note that TimescaleDB's compression gives the storage benefits of a purpose-built
+     TSDB while preserving full SQL compatibility.
+  5. Address each query pattern individually rather than optimizing for one at the expense
+     of others.
+  6. If recommending PostgreSQL partitioning, specify the partition scheme (e.g., monthly
+     by timestamp, with a composite index on sensor_id + timestamp).
+traps: |
+  - Framing this as "which is the best time-series database?" and selecting InfluxDB for
+    its superior write performance, when the actual bottleneck is query flexibility, not
+    write throughput. 115 writes/second is trivial for any of the three options.
+  - Recommending InfluxDB and hand-waving the join requirement with "just denormalize
+    metadata as tags" — this breaks the ad-hoc exploration pattern because you can't
+    anticipate which metadata dimensions the data science team will want to join on.
+  - Dismissing plain PostgreSQL without calculating whether the actual write volume
+    (115/sec average) actually requires a specialized time-series database.
+  - Over-optimizing for write throughput (the flashy metric) while under-weighting query
+    flexibility (the actual business requirement).
+treatment_prefix: |
+  Before answering, invoke /meta:reframe and work through the protocol for this decision.

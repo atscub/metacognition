@@ -1,0 +1,70 @@
+id: research-03
+category: research
+title: "HTTP status code for validation errors"
+difficulty: medium
+primary_skill: learn
+secondary_skills: []
+prompt: |
+  What HTTP status code should our API return when request body validation fails? We're
+  building a REST API in Node.js (Express) and want to be consistent across all our
+  endpoints.
+
+  For example, if someone POSTs to /api/users with this body:
+
+  ```json
+  {
+    "name": "",
+    "email": "not-an-email",
+    "age": -5
+  }
+  ```
+
+  The name is empty (required), the email is malformed, and the age is negative (must
+  be positive). The JSON itself is syntactically valid — it parses fine — but the values
+  don't meet our business rules.
+
+  We want to return a structured error response like:
+
+  ```json
+  {
+    "status": "error",
+    "errors": [
+      {"field": "name", "message": "Name is required"},
+      {"field": "email", "message": "Must be a valid email address"},
+      {"field": "age", "message": "Must be a positive number"}
+    ]
+  }
+  ```
+
+  I've seen different APIs use different codes for this. Stripe uses 400, GitHub uses
+  422, and some APIs use both for different kinds of validation. What's the correct
+  status code to use, and why?
+expected_outcome: |
+  A nuanced answer that:
+  1. Explains both positions with their RFC backing:
+     - 400 Bad Request: RFC 7231 (and its successor RFC 9110) says "the server cannot or
+       will not process the request due to something that is perceived to be a client error."
+       Validation failures are client errors. This is the broad, safe choice.
+     - 422 Unprocessable Entity: originally from RFC 4918 (WebDAV), now in RFC 9110 as a
+       standard HTTP status. Means "the server understands the content type and the syntax
+       is correct, but was unable to process the contained instructions." This is more
+       semantically precise for "valid JSON, invalid values."
+  2. Acknowledges the community is genuinely split — this is not a settled question. Major
+     APIs disagree (Stripe vs GitHub). Both codes are legitimate.
+  3. Notes the practical distinction: 400 for malformed syntax (unparseable JSON, wrong
+     Content-Type) vs 422 for semantic validation failures (parseable but invalid values)
+     is a clean separation, but not universally adopted.
+  4. Makes a recommendation but qualifies it — e.g., "422 is more precise for your case,
+     but 400 is more widely recognized and equally correct. Pick one and be consistent."
+  5. Does NOT present one answer as obviously correct and the other as wrong.
+traps: |
+  - Confidently saying "use 400" or "use 422" as if there's one right answer, without
+    acknowledging the genuine community split and that both have legitimate RFC backing.
+  - Not knowing that 422 was added to the main HTTP spec in RFC 9110 (June 2022) and is
+    no longer "just a WebDAV status code."
+  - Citing outdated advice that 422 should only be used for WebDAV.
+  - Not mentioning that the practical choice matters less than consistency.
+treatment_prefix: |
+  Before answering, invoke /meta:learn and work through the protocol. Pay special
+  attention to: whether your knowledge might be outdated, whether sources disagree,
+  and what context determines the right answer.

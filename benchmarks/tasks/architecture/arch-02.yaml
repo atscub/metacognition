@@ -1,0 +1,100 @@
+id: arch-02
+category: architecture
+title: "Multi-tenant data isolation strategy for B2B SaaS"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: [decompose, premortem]
+prompt: |
+  You are architecting the data layer for TenantFlow, a B2B SaaS platform that provides
+  workflow automation for mid-market and enterprise companies. The platform is currently
+  serving 200 tenants on a shared PostgreSQL database with application-level tenant
+  filtering (`WHERE tenant_id = ?` on every query).
+
+  Current state:
+  ```sql
+  -- Current schema (simplified)
+  CREATE TABLE workflows (
+      id UUID PRIMARY KEY,
+      tenant_id UUID NOT NULL REFERENCES tenants(id),
+      name TEXT NOT NULL,
+      definition JSONB NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT now()
+  );
+  CREATE INDEX idx_workflows_tenant ON workflows(tenant_id);
+
+  CREATE TABLE workflow_runs (
+      id UUID PRIMARY KEY,
+      tenant_id UUID NOT NULL REFERENCES tenants(id),
+      workflow_id UUID NOT NULL REFERENCES workflows(id),
+      status TEXT NOT NULL,
+      started_at TIMESTAMPTZ,
+      completed_at TIMESTAMPTZ,
+      result JSONB
+  );
+  CREATE INDEX idx_runs_tenant ON workflow_runs(tenant_id);
+
+  -- Application code enforces tenant isolation:
+  def get_workflows(tenant_id: str) -> list:
+      return db.execute(
+          "SELECT * FROM workflows WHERE tenant_id = %s", [tenant_id]
+      )
+  ```
+
+  Tenant distribution:
+  - 180 small/mid-market tenants: 50-500 workflows each, ~10K runs/month combined
+  - 15 large tenants: 2,000-10,000 workflows each, ~200K runs/month combined
+  - 5 enterprise tenants: 50,000+ workflows, ~2M runs/month combined
+
+  The database is currently 340 GB. The `workflow_runs` table is 290 GB of that. Query
+  performance is degrading — the largest tenant's dashboard takes 8 seconds to load,
+  and cross-tenant index bloat is causing vacuum issues.
+
+  Your team is evaluating three approaches:
+  1. **Shared DB + Row-Level Security (RLS)**: Keep current schema, add PostgreSQL RLS
+     policies, move tenant filtering from app code to DB policies.
+  2. **Schema-per-tenant**: One PostgreSQL schema per tenant, same database instance.
+  3. **Database-per-tenant**: Separate PostgreSQL database per tenant.
+
+  Additional context from stakeholders:
+  - Product: "We need to ship a tenant analytics dashboard that aggregates metrics across
+    all tenants for our internal ops team."
+  - DevOps: "We're on AWS RDS. Our current instance is db.r6g.2xlarge. We'd prefer not to
+    manage more than 3-4 database instances."
+  - Sales: "Three of our enterprise clients — MegaCorp, Acme Industries, and GlobalBank —
+    have compliance requirements that came up during contract negotiations. Their legal
+    teams were very specific about data handling, and we agreed to their terms to close the
+    deals. I can dig up the exact clauses if needed."
+  - Engineering: "Our ORM generates all queries. Switching to schema-per-tenant means
+    changing the connection/search_path logic. DB-per-tenant means connection pool changes.
+    Both are doable but non-trivial."
+  - CTO: "Whatever we choose needs to work for 1,000 tenants within 2 years."
+
+  Recommend an approach. Address the performance issues, the scaling requirement, and any
+  concerns raised by stakeholders. Provide a migration plan.
+expected_outcome: |
+  A strong answer should:
+  1. Catch the buried compliance signal from Sales — "compliance requirements" and "legal
+     teams were very specific about data handling" strongly implies physical data isolation
+     for those 3 enterprise tenants. This rules out a uniform shared-DB approach.
+  2. Recommend a hybrid: shared DB (with RLS or schema-per-tenant) for the 195+ standard
+     tenants, and DB-per-tenant for the 3-5 enterprise/compliance tenants.
+  3. Note that RLS alone doesn't solve the performance problem — the 340 GB table still
+     needs partitioning or archival regardless of isolation strategy.
+  4. Address the cross-tenant analytics requirement (harder with DB-per-tenant; needs a
+     separate aggregation pipeline or federated queries).
+  5. Evaluate schema-per-tenant against the 1,000-tenant scaling target (1,000 schemas is
+     manageable but has operational overhead with migrations).
+  6. Ask clarifying questions about the exact compliance requirements before committing.
+traps: |
+  - Premature closure on shared-DB + RLS because it's the simplest migration, without
+    surfacing that the Sales comment about "compliance requirements" and "legal teams"
+    almost certainly means some tenants need physical data isolation (SOC 2 Type II,
+    HIPAA, or contractual data residency requirements).
+  - Recommending DB-per-tenant for all 200 tenants, which contradicts the DevOps
+    constraint of managing at most 3-4 instances and won't scale to 1,000 tenants.
+  - Ignoring the performance problem entirely — any isolation strategy must also address
+    the 340 GB table, index bloat, and vacuum issues. RLS doesn't fix these.
+  - Missing the tension between DB-per-tenant isolation for compliance clients and the
+    cross-tenant analytics dashboard requirement.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol for this decision.

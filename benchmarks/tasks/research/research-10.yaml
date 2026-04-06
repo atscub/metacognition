@@ -1,0 +1,71 @@
+id: research-10
+category: research
+title: "Testing strategy for B2B SaaS with zero test coverage"
+difficulty: medium
+primary_skill: socratic
+secondary_skills: []
+prompt: |
+  We're a team of 3 building a B2B SaaS product — a project management tool for
+  construction companies. Node.js backend (Express + PostgreSQL), React frontend. We have
+  about 60 API endpoints and 35 React pages. The product has been in production for
+  8 months with paying customers.
+
+  We currently have zero automated tests. We've been doing manual testing and it's
+  becoming unsustainable — we shipped a bug last week that broke invoice generation for
+  our largest customer, and it took us 4 hours to notice because nobody tested that flow
+  after a seemingly unrelated database migration.
+
+  Our tech lead says we should follow the testing pyramid: write lots of unit tests for
+  our individual functions and modules (aim for 80% code coverage), then add some
+  integration tests for key API flows, then a handful of end-to-end tests for critical
+  user journeys. He says unit tests are fast, reliable, and give you the most confidence
+  per test.
+
+  I've been reading some different perspectives though. One article argued that for web
+  applications, integration tests (testing API endpoints with a real database) give you
+  much better bang for your buck than unit testing individual utility functions. The
+  article said most bugs in web apps happen at the boundaries between components, not
+  inside individual functions.
+
+  We can probably dedicate about 20% of our engineering time to testing for the next
+  quarter. Where should we focus that limited budget for maximum impact?
+expected_outcome: |
+  A strong answer should:
+  1. Acknowledge the testing pyramid as historically influential but present the modern
+     counterargument: for web applications with database-backed APIs, the traditional
+     testing pyramid (lots of unit tests) may not be the optimal allocation of testing
+     effort.
+  2. Explain Kent C. Dodds' "testing trophy" and the philosophy "Write tests. Not too
+     many. Mostly integration." — for web apps, integration tests that exercise an API
+     endpoint through the full stack (router -> controller -> service -> database) catch
+     more real-world bugs per hour invested than unit tests of isolated functions.
+  3. For their specific context (3 engineers, zero tests, 20% time budget, B2B SaaS with
+     paying customers), recommend a pragmatic strategy:
+     - Start with integration tests for the critical revenue paths: invoice generation,
+       payment processing, user signup/login, the specific flows that breaking would lose
+       customers.
+     - Add a few end-to-end tests (Playwright) for the most critical user journeys as
+       smoke tests.
+     - Write unit tests only for genuinely complex business logic (calculations, state
+       machines, validation rules) — not for every function.
+     - Skip aiming for code coverage percentages; focus on covering the riskiest paths.
+  4. Note that the testing pyramid was developed in a different era (desktop apps, SOA
+     architecture) and the tradeoffs have shifted: spinning up a test database and making
+     HTTP requests is now fast and cheap, making integration tests more practical.
+  5. Recommend specific tools for their stack: supertest or node:test for API integration
+     tests, a test database with migrations, Playwright for E2E.
+traps: |
+  - Prescribing the testing pyramid as universal best practice ("start with lots of unit
+    tests, aim for 80% coverage") without acknowledging that for web applications with
+    limited resources, integration tests give better ROI.
+  - Conversely, dismissing unit tests entirely — some business logic genuinely benefits
+    from unit testing.
+  - Recommending 80% code coverage as a goal for a team with zero tests and 20% time
+    budget — this encourages testing trivial code instead of risky code.
+  - Not prioritizing by business risk — the answer should focus on the invoice generation
+    flow and similar revenue-critical paths, not generic advice about "testing everything."
+  - Not knowing about the testing pyramid vs testing trophy debate.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol. Pay special
+  attention to: whether your knowledge might be outdated, whether sources disagree,
+  and what context determines the right answer.

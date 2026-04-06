@@ -1,0 +1,220 @@
+id: cohere-08
+category: coherence
+title: "RBAC permissions — config vs middleware vs UI"
+difficulty: medium
+primary_skill: coherence
+secondary_skills: []
+prompt: |
+  Review the following three artifacts for consistency. Identify any discrepancies between them.
+
+  ## Artifact 1: Role Definitions (config/roles.yaml)
+
+  ```yaml
+  roles:
+    admin:
+      display_name: Administrator
+      permissions:
+        - manage_users
+        - manage_billing
+        - manage_settings
+        - view_analytics
+        - edit_content
+        - delete_content
+        - view_content
+        - manage_roles
+
+    editor:
+      display_name: Editor
+      permissions:
+        - edit_content
+        - delete_content
+        - view_content
+        - view_analytics
+
+    viewer:
+      display_name: Viewer
+      permissions:
+        - view_content
+        - view_analytics
+
+  permission_descriptions:
+    manage_users: "Create, update, and delete user accounts"
+    manage_billing: "View and modify billing information and subscriptions"
+    manage_settings: "Modify application-wide settings"
+    view_analytics: "View dashboards and analytics reports"
+    edit_content: "Create and edit articles, pages, and media"
+    delete_content: "Delete articles, pages, and media"
+    view_content: "View published and draft content"
+    manage_roles: "Create and modify role definitions"
+  ```
+
+  ## Artifact 2: Auth Middleware (src/middleware/authorize.js)
+
+  ```javascript
+  const yaml = require('js-yaml');
+  const fs = require('fs');
+  const path = require('path');
+
+  // Load role definitions
+  const rolesConfig = yaml.load(
+    fs.readFileSync(path.join(__dirname, '../../config/roles.yaml'), 'utf8')
+  );
+
+  function getRolePermissions(roleName) {
+    const role = rolesConfig.roles[roleName];
+    return role ? role.permissions : [];
+  }
+
+  function hasPermission(roleName, permission) {
+    const permissions = getRolePermissions(roleName);
+    return permissions.includes(permission);
+  }
+
+  // Middleware factory: require specific permission
+  function requirePermission(permission) {
+    return (req, res, next) => {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Authentication required' });
+      }
+      if (!hasPermission(req.user.role, permission)) {
+        return res.status(403).json({ error: 'Insufficient permissions' });
+      }
+      next();
+    };
+  }
+
+  // Route protection setup
+  function applyRouteProtection(app) {
+    // User management
+    app.get('/api/users', requirePermission('manage_users'));
+    app.post('/api/users', requirePermission('manage_users'));
+    app.put('/api/users/:id', requirePermission('manage_users'));
+    app.delete('/api/users/:id', requirePermission('manage_users'));
+
+    // Billing
+    app.get('/api/billing', requirePermission('billing_admin'));
+    app.put('/api/billing/plan', requirePermission('billing_admin'));
+    app.post('/api/billing/payment-method', requirePermission('billing_admin'));
+
+    // Content
+    app.get('/api/content', requirePermission('view_content'));
+    app.post('/api/content', requirePermission('edit_content'));
+    app.put('/api/content/:id', requirePermission('edit_content'));
+    app.delete('/api/content/:id', requirePermission('delete_content'));
+
+    // Analytics
+    app.get('/api/analytics', requirePermission('view_analytics'));
+    app.get('/api/analytics/:report', requirePermission('view_analytics'));
+
+    // Settings
+    app.get('/api/settings', requirePermission('manage_settings'));
+    app.put('/api/settings', requirePermission('manage_settings'));
+
+    // Roles
+    app.get('/api/roles', requirePermission('manage_roles'));
+    app.put('/api/roles/:id', requirePermission('manage_roles'));
+  }
+
+  module.exports = { requirePermission, hasPermission, applyRouteProtection };
+  ```
+
+  ## Artifact 3: React Admin Panel (src/components/AdminPanel.tsx)
+
+  ```tsx
+  import React from 'react';
+  import { useAuth } from '../hooks/useAuth';
+  import { UserManagement } from './UserManagement';
+  import { BillingSettings } from './BillingSettings';
+  import { ContentManager } from './ContentManager';
+  import { AnalyticsDashboard } from './AnalyticsDashboard';
+  import { AppSettings } from './AppSettings';
+  import { RoleManager } from './RoleManager';
+
+  interface TabConfig {
+    id: string;
+    label: string;
+    component: React.ComponentType;
+    requiredRole: string;
+  }
+
+  const TABS: TabConfig[] = [
+    { id: 'users', label: 'User Management', component: UserManagement, requiredRole: 'admin' },
+    { id: 'billing', label: 'Billing', component: BillingSettings, requiredRole: 'admin' },
+    { id: 'content', label: 'Content', component: ContentManager, requiredRole: 'editor' },
+    { id: 'analytics', label: 'Analytics', component: AnalyticsDashboard, requiredRole: 'viewer' },
+    { id: 'settings', label: 'Settings', component: AppSettings, requiredRole: 'admin' },
+    { id: 'roles', label: 'Roles', component: RoleManager, requiredRole: 'super_admin' },
+  ];
+
+  const ROLE_HIERARCHY: Record<string, number> = {
+    viewer: 1,
+    editor: 2,
+    admin: 3,
+    super_admin: 4,
+  };
+
+  function hasAccess(userRole: string, requiredRole: string): boolean {
+    return (ROLE_HIERARCHY[userRole] || 0) >= (ROLE_HIERARCHY[requiredRole] || 0);
+  }
+
+  export function AdminPanel() {
+    const { user } = useAuth();
+    const [activeTab, setActiveTab] = React.useState('content');
+
+    if (!user) return null;
+
+    const accessibleTabs = TABS.filter((tab) => hasAccess(user.role, tab.requiredRole));
+    const ActiveComponent = accessibleTabs.find((t) => t.id === activeTab)?.component;
+
+    return (
+      <div className="admin-panel">
+        <nav className="admin-nav">
+          {accessibleTabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+        <main className="admin-content">
+          {ActiveComponent ? <ActiveComponent /> : <p>Select a tab</p>}
+          {user.role === 'editor' && (
+            <div className="editor-actions">
+              <button className="btn-danger" onClick={() => handleDeleteUser()}>
+                Delete User
+              </button>
+            </div>
+          )}
+        </main>
+      </div>
+    );
+  }
+
+  function handleDeleteUser() {
+    if (window.confirm('Are you sure you want to delete this user?')) {
+      fetch('/api/users/selected', { method: 'DELETE' })
+        .then((res) => {
+          if (!res.ok) throw new Error('Failed to delete user');
+          window.location.reload();
+        })
+        .catch((err) => alert(err.message));
+    }
+  }
+  ```
+expected_outcome: |
+  The review should find these inconsistencies:
+
+  (a) Permission name mismatch for billing: The role config (roles.yaml) gives `admin` the `manage_billing` permission. However, the auth middleware checks for `billing_admin` permission on all billing routes (`requirePermission('billing_admin')`). Since no role has the `billing_admin` permission, ALL billing API requests will be rejected with 403, even for admins. The middleware should check `manage_billing` to match the config.
+
+  (b) UI shows Delete User button for editor but middleware blocks it: The React component renders a "Delete User" button when `user.role === 'editor'`. This button calls `DELETE /api/users/selected`. However, the middleware protects `DELETE /api/users/:id` with `requirePermission('manage_users')`, and the editor role does NOT have `manage_users` permission. The editor will see the button but get a 403 error when clicking it.
+
+  (c) Non-existent role in UI: The React component's `ROLE_HIERARCHY` includes `super_admin` at level 4, and the Roles tab requires `requiredRole: 'super_admin'`. However, `super_admin` does not exist in the role definitions YAML — only `admin`, `editor`, and `viewer` are defined. This means the Roles tab is inaccessible to everyone, including admins (who are level 3, below super_admin's level 4).
+traps: |
+  - The billing permission mismatch is a subtle string difference: `manage_billing` vs `billing_admin`. Both sound like they could be valid permission names.
+  - The Delete User button for editors looks intentional at first — editors can delete content, so maybe they can delete users? But cross-checking with the middleware reveals the mismatch.
+  - The `super_admin` role in the UI's hierarchy table looks like a legitimate escalation, but it's never defined in the authoritative role config.
+treatment_prefix: |
+  Before reviewing, invoke /meta:coherence and systematically check each artifact against every other artifact using the coherence protocol's 10 categories.

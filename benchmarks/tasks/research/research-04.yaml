@@ -1,0 +1,67 @@
+id: research-04
+category: research
+title: "Monolith vs microservices for early-stage startup"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: []
+prompt: |
+  We're a startup with 8 engineers, pre-Series A. We have three distinct product areas:
+
+  1. A real-time chat system (WebSocket connections, message persistence, typing indicators,
+     presence detection). Traffic is bursty — 10x spikes during business hours. We're
+     considering Elixir or Go for this because Python can't handle the concurrent
+     connections well.
+
+  2. A payment processing pipeline (Stripe integration, invoicing, subscription management,
+     revenue recognition). This needs PCI compliance scoping, and our compliance consultant
+     says isolating payment processing makes the audit scope much smaller.
+
+  3. An admin dashboard (CRUD operations, reporting, user management). Low traffic, mostly
+     internal. Classic Django admin territory.
+
+  Right now everything is in a single Django monolith. The chat system is built on Django
+  Channels and it works but struggles above 500 concurrent WebSocket connections on a
+  single server instance. The payment code is interleaved with the rest of the application
+  — our Stripe webhooks share the same process and database as everything else, which our
+  compliance consultant flagged.
+
+  Our CTO wants to extract the chat and payment systems into separate services. Our most
+  senior backend engineer pushes back hard: "Monolith first, always. Microservices are a
+  trap for small teams. You'll spend all your time on infrastructure instead of features."
+
+  He's very experienced (15 years) and I respect his judgment. But the compliance concern
+  is real and the chat performance ceiling worries me.
+
+  Who's right? Should we stay monolith or start splitting?
+expected_outcome: |
+  A nuanced answer that:
+  1. Acknowledges the general wisdom of "monolith first" — it IS good advice for most
+     startups. The senior engineer's concern about infrastructure overhead is valid.
+  2. But identifies why this specific case may be an exception:
+     - The chat system has fundamentally different runtime requirements (long-lived
+       connections, different language/runtime) that Django cannot serve well.
+     - PCI compliance scoping is a legitimate business reason to isolate payment
+       processing — this isn't premature optimization, it's regulatory compliance.
+     - These are genuinely distinct bounded contexts, not arbitrary microservice splits.
+  3. Recommends a middle path: extract chat and payments as separate services, but keep
+     the admin dashboard in the Django monolith. This is 2-3 services, not "microservices
+     architecture" in the Netflix sense.
+  4. Warns about the real costs: service-to-service communication, shared authentication,
+     distributed debugging, deployment complexity. These are solvable for 2-3 services
+     but would be overwhelming at 8-10.
+  5. Notes that "monolith vs microservices" is a false dichotomy — the answer depends on
+     the specific bounded contexts, team structure, and operational requirements.
+traps: |
+  - Reflexively saying "monolith first, always" because that's the popular advice in the
+    developer community, without examining whether this specific case has legitimate
+    reasons to split (compliance, language requirements, connection model).
+  - Conversely, recommending a full microservices architecture for a pre-Series A startup
+    with 8 engineers.
+  - Not recognizing that PCI compliance scoping is a hard business requirement, not a
+    preference — it genuinely affects audit cost and scope.
+  - Treating all three product areas the same when they have fundamentally different
+    runtime characteristics.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol. Pay special
+  attention to: whether your knowledge might be outdated, whether sources disagree,
+  and what context determines the right answer.

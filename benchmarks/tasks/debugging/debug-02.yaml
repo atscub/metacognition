@@ -1,0 +1,174 @@
+id: debug-02
+category: debugging
+title: "Connection refused errors pointing to database"
+difficulty: hard
+primary_skill: reframe
+secondary_skills: []
+prompt: |
+  Our Node.js API has been throwing intermittent "connection refused" errors for the past
+  48 hours. The errors come in bursts — everything is fine for 20-30 minutes, then we get a
+  flood of failures for 2-3 minutes, then it recovers. The on-call DBA says the database is
+  fine. Can you figure out what's going on?
+
+  Error logs from the application (api-service):
+
+  ```
+  [2026-03-28T14:23:17.003Z] ERROR: PostgreSQL connection failed
+    error: connect ECONNREFUSED 10.0.1.5:5432
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '10.0.1.5',
+    port: 5432
+
+  [2026-03-28T14:23:17.105Z] ERROR: PostgreSQL connection failed
+    error: connect ECONNREFUSED 10.0.1.5:5432
+    ... (47 more identical errors in a 90-second window)
+
+  [2026-03-28T14:25:02.441Z] INFO: Database connection restored
+  ```
+
+  PostgreSQL health dashboard (checked during an incident window):
+
+  ```
+  === PostgreSQL Cluster: prod-db-01 ===
+  Status:          RUNNING
+  IP Address:      10.0.2.50:5432
+  Version:         PostgreSQL 16.2
+  Connections:     45 / 100 (max_connections)
+  CPU:             12%
+  Memory:          4.2 GB / 16 GB
+  Disk I/O:        read 850 IOPS / write 120 IOPS
+  Replication lag: 0.3s
+  Uptime:          34 days
+  Last restart:    2026-02-22T03:00:00Z
+  ```
+
+  Application database config (config/database.ts):
+
+  ```typescript
+  import { Pool } from 'pg';
+
+  export const dbPool = new Pool({
+    host: process.env.DB_HOST,        // set in pod env
+    port: 5432,
+    database: 'api_production',
+    user: 'api_service',
+    password: process.env.DB_PASSWORD,
+    max: 20,                          // max pool size
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 5000,
+  });
+  ```
+
+  Environment variables (from Kubernetes pod spec):
+
+  ```yaml
+  env:
+    - name: DB_HOST
+      value: "10.0.1.5"
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: db-credentials
+          key: password
+  ```
+
+  Kubernetes pod spec for api-service:
+
+  ```yaml
+  spec:
+    containers:
+    - name: api-service
+      image: api-service:3.14.2
+      ports:
+        - containerPort: 3000
+      resources:
+        limits:
+          memory: "512Mi"
+          cpu: "500m"
+    - name: envoy-sidecar
+      image: envoyproxy/envoy:v1.29.1
+      ports:
+        - containerPort: 5432    # listens on 5432, proxies to actual DB
+          protocol: TCP
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "100m"
+      volumeMounts:
+        - name: envoy-config
+          mountPath: /etc/envoy
+    volumes:
+    - name: envoy-config
+      configMap:
+        name: envoy-db-proxy-config
+  ```
+
+  Envoy sidecar config (envoy-db-proxy-config):
+
+  ```yaml
+  static_resources:
+    listeners:
+    - address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 5432
+      filter_chains:
+      - filters:
+        - name: envoy.filters.network.tcp_proxy
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy
+            cluster: postgres_cluster
+    clusters:
+    - name: postgres_cluster
+      connect_timeout: 5s
+      type: STRICT_DNS
+      load_assignment:
+        cluster_name: postgres_cluster
+        endpoints:
+        - lb_endpoints:
+          - endpoint:
+              address:
+                socket_address:
+                  address: 10.0.2.50
+                  port_value: 5432
+  ```
+
+  Recent Kubernetes events (filtered):
+
+  ```
+  LAST SEEN   TYPE      REASON      OBJECT                          MESSAGE
+  3m          Warning   OOMKilled   pod/api-svc-7f8b9-envoy-sidecar Container envoy-sidecar exceeded memory limit
+  25m         Warning   OOMKilled   pod/api-svc-7f8b9-envoy-sidecar Container envoy-sidecar exceeded memory limit
+  52m         Warning   OOMKilled   pod/api-svc-7f8b9-envoy-sidecar Container envoy-sidecar exceeded memory limit
+  ```
+
+  The DBA team ran their standard checks during the last incident and confirmed the database
+  had no issues — connections were stable, no locks, no slow queries. They're suggesting it
+  might be a network issue and want to involve the platform team.
+
+  What's the root cause?
+expected_outcome: |
+  The root cause is the Envoy sidecar proxy being OOM-killed. The application connects
+  to 10.0.1.5:5432, which is NOT the actual PostgreSQL server (that's at 10.0.2.50:5432).
+  The 10.0.1.5 address is the pod's own IP where the Envoy sidecar listens on port 5432
+  and proxies traffic to the real database. The sidecar has a memory limit of 128Mi, but
+  during query batches its memory usage exceeds this limit. When Kubernetes OOM-kills the
+  sidecar, the application gets ECONNREFUSED because nothing is listening on 10.0.1.5:5432
+  anymore. Once Kubernetes restarts the sidecar container, connections resume. The fix is
+  to increase the Envoy sidecar memory limit (e.g., to 256Mi or 512Mi) and investigate
+  why memory spikes occur during batches.
+traps: |
+  The error message explicitly says "PostgreSQL connection failed" with a familiar
+  ECONNREFUSED on port 5432. The DBA's healthy dashboard is shown but a naive agent
+  may dismiss it as "checked at the wrong time" or "the dashboard is stale." The IP
+  address mismatch between the error (10.0.1.5) and the actual DB (10.0.2.50) is the
+  key clue, but requires reading the Envoy config to understand the proxy topology.
+  The Kubernetes OOM events are present but listed at the bottom among other events,
+  and they reference "envoy-sidecar" which a naive agent may not connect to the
+  database errors.
+treatment_prefix: |
+  Before debugging, invoke /meta:reframe and actively question your first hypothesis.
+  Consider: what else could explain these symptoms? What evidence would disprove your
+  initial theory?

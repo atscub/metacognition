@@ -1,0 +1,277 @@
+id: cohere-05
+category: coherence
+title: "GraphQL schema vs resolver vs client query"
+difficulty: hard
+primary_skill: coherence
+secondary_skills: []
+prompt: |
+  Review the following three artifacts for consistency. Identify any discrepancies between them.
+
+  ## Artifact 1: GraphQL Schema (schema.graphql)
+
+  ```graphql
+  type Query {
+    user(id: ID!): User
+    users(limit: Int = 20, offset: Int = 0): UserConnection!
+    post(id: ID!): Post
+    feed(userId: ID!, limit: Int = 10): [Post!]!
+  }
+
+  type Mutation {
+    createPost(input: CreatePostInput!): Post!
+    updateUser(id: ID!, input: UpdateUserInput!): User!
+  }
+
+  type User {
+    id: ID!
+    username: String!
+    displayName: String!
+    email: String!
+    avatar: String
+    bio: String
+    postCount: Int!
+    createdAt: DateTime!
+  }
+
+  type Post {
+    id: ID!
+    title: String!
+    body: String!
+    author: User!
+    tags: [String!]!
+    comments: [Comment!]!
+    likeCount: Int!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+  }
+
+  type Comment {
+    id: ID!
+    body: String!
+    author: User!
+    createdAt: DateTime!
+  }
+
+  type UserConnection {
+    nodes: [User!]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+  }
+
+  input CreatePostInput {
+    title: String!
+    body: String!
+    tags: [String!]
+  }
+
+  input UpdateUserInput {
+    displayName: String
+    bio: String
+    avatar: String
+  }
+
+  scalar DateTime
+  ```
+
+  ## Artifact 2: Resolvers (src/resolvers/index.js)
+
+  ```javascript
+  const { db } = require('../database');
+  const { AuthenticationError } = require('apollo-server-express');
+
+  const resolvers = {
+    Query: {
+      user: async (_, { id }) => {
+        return db('users').where({ id }).first();
+      },
+      users: async (_, { limit, offset }) => {
+        const nodes = await db('users').limit(limit).offset(offset);
+        const [{ count }] = await db('users').count('* as count');
+        return {
+          nodes,
+          totalCount: parseInt(count),
+          hasNextPage: offset + limit < parseInt(count),
+        };
+      },
+      post: async (_, { id }) => {
+        return db('posts').where({ id }).first();
+      },
+      feed: async (_, { userId, limit }) => {
+        return db('posts')
+          .where({ author_id: userId })
+          .orderBy('created_at', 'desc')
+          .limit(limit);
+      },
+    },
+
+    Mutation: {
+      createPost: async (_, { input }, context) => {
+        if (!context.user) throw new AuthenticationError('Must be logged in');
+        const [post] = await db('posts')
+          .insert({
+            title: input.title,
+            body: input.body,
+            tags: JSON.stringify(input.tags || []),
+            author_id: context.user.id,
+          })
+          .returning('*');
+        return post;
+      },
+      updateUser: async (_, { id, input }, context) => {
+        if (!context.user || context.user.id !== id) {
+          throw new AuthenticationError('Not authorized');
+        }
+        const [user] = await db('users')
+          .where({ id })
+          .update({
+            display_name: input.displayName,
+            bio: input.bio,
+            profile_image: input.avatar,
+          })
+          .returning('*');
+        return user;
+      },
+    },
+
+    User: {
+      displayName: (user) => user.display_name,
+      postCount: async (user) => {
+        const [{ count }] = await db('posts')
+          .where({ author_id: user.id })
+          .count('* as count');
+        return parseInt(count);
+      },
+      createdAt: (user) => user.created_at,
+    },
+
+    Post: {
+      author: async (post) => {
+        return db('users').where({ id: post.author_id }).first();
+      },
+      tags: (post) => {
+        return typeof post.tags === 'string' ? JSON.parse(post.tags) : post.tags;
+      },
+      comments: async (post) => {
+        const comments = await db('comments').where({ post_id: post.id });
+        return comments.length > 0 ? comments : null;
+      },
+      likeCount: async (post) => {
+        const [{ count }] = await db('likes')
+          .where({ post_id: post.id })
+          .count('* as count');
+        return parseInt(count);
+      },
+      createdAt: (post) => post.created_at,
+      updatedAt: (post) => post.updated_at,
+    },
+
+    Comment: {
+      author: async (comment) => {
+        return db('users').where({ id: comment.author_id }).first();
+      },
+      createdAt: (comment) => comment.created_at,
+    },
+  };
+
+  module.exports = resolvers;
+  ```
+
+  ## Artifact 3: Frontend Component (src/components/UserProfile.tsx)
+
+  ```tsx
+  import React from 'react';
+  import { useQuery, gql } from '@apollo/client';
+  import { PostCard } from './PostCard';
+  import { Avatar } from './Avatar';
+  import { Spinner } from './Spinner';
+
+  const USER_PROFILE_QUERY = gql`
+    query UserProfile($userId: ID!) {
+      user(id: $userId) {
+        id
+        username
+        displayName
+        email
+        avatar
+        bio
+        role
+        postCount
+        createdAt
+      }
+      feed(userId: $userId, limit: 5) {
+        id
+        title
+        body
+        tags
+        likeCount
+        createdAt
+        author {
+          id
+          username
+          avatar
+        }
+        comments {
+          id
+          body
+          author {
+            id
+            username
+          }
+          createdAt
+        }
+      }
+    }
+  `;
+
+  interface UserProfileProps {
+    userId: string;
+  }
+
+  export function UserProfile({ userId }: UserProfileProps) {
+    const { data, loading, error } = useQuery(USER_PROFILE_QUERY, {
+      variables: { userId },
+    });
+
+    if (loading) return <Spinner />;
+    if (error) return <div className="error">Failed to load profile</div>;
+
+    const { user, feed } = data;
+
+    return (
+      <div className="profile-page">
+        <header className="profile-header">
+          <Avatar src={user.avatar} alt={user.displayName} size="lg" />
+          <div className="profile-info">
+            <h1>{user.displayName}</h1>
+            <span className="username">@{user.username}</span>
+            {user.role && (
+              <span className="role-badge">{user.role}</span>
+            )}
+            {user.bio && <p className="bio">{user.bio}</p>}
+            <span className="post-count">{user.postCount} posts</span>
+          </div>
+        </header>
+        <section className="recent-posts">
+          <h2>Recent Posts</h2>
+          {feed.map((post: any) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </section>
+      </div>
+    );
+  }
+  ```
+expected_outcome: |
+  The review should find these inconsistencies:
+
+  (a) Unresolved avatar field: The schema defines `User.avatar: String` and the client queries `avatar`, but the User resolver does not include an `avatar` field resolver. The database column is `profile_image` (as seen in the `updateUser` mutation writing `profile_image: input.avatar`). Without a resolver mapping `profile_image` to `avatar`, the field will return `undefined`/`null` for every user even when a profile image exists in the database.
+
+  (b) Non-existent schema field: The client query requests `User.role` (`role` in the USER_PROFILE_QUERY), and the component renders a role badge based on it. However, `role` is not defined anywhere in the GraphQL schema's `User` type. This query will cause a GraphQL validation error at runtime.
+
+  (c) Nullable return violating non-nullable schema type: The schema declares `Post.comments: [Comment!]!` (non-nullable array of non-nullable comments). However, the `comments` resolver returns `null` when no comments exist (`return comments.length > 0 ? comments : null`). This violates the schema contract and will cause a GraphQL runtime error, nullifying the entire `Post` object. The resolver should return `[]` instead of `null`.
+traps: |
+  - The avatar issue requires tracing the column name through the mutation resolver (profile_image) and noticing the User type resolver block lacks an avatar mapping.
+  - The `role` field looks plausible in a User type and might be assumed to exist if one doesn't carefully cross-reference the schema definition.
+  - The null vs empty array distinction on comments is a single ternary expression that looks like defensive coding but actually breaks the non-null contract.
+treatment_prefix: |
+  Before reviewing, invoke /meta:coherence and systematically check each artifact against every other artifact using the coherence protocol's 10 categories.

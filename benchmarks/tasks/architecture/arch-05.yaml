@@ -1,0 +1,109 @@
+id: arch-05
+category: architecture
+title: "Auth system design — JWT vs session tokens"
+difficulty: medium
+primary_skill: decompose
+secondary_skills: [socratic, reframe]
+prompt: |
+  You are designing the authentication system for CloudDash, a cloud infrastructure
+  management platform. The product has three client types:
+
+  **1. Mobile App (iOS + Android)**
+  - Native apps, ~15K daily active users
+  - Users stay logged in for weeks; sessions rarely expire
+  - Offline mode: must access cached data without round-tripping to the auth server
+  - API calls: ~50 requests/minute per active user during infrastructure incidents
+
+  **2. Admin Panel (Web SPA)**
+  - Used by ~200 internal operators and customer support staff
+  - Handles sensitive operations: user deletion, billing adjustments, infrastructure
+    teardown, audit log access
+  - Security requirement from compliance: "Any admin session must be revocable within
+    5 seconds of a security event (e.g., compromised credentials, terminated employee)"
+  - Admin sessions should timeout after 30 minutes of inactivity
+
+  **3. Third-Party Integrations**
+  - 40+ partners use the CloudDash API for CI/CD pipelines, monitoring dashboards, etc.
+  - Authentication via API keys with scoped permissions
+  - Some integrations make 10K+ requests/hour
+  - Keys must be rotatable without downtime
+
+  Current (broken) implementation:
+  ```python
+  # auth/middleware.py — current unified approach
+  SECRET_KEY = os.environ['JWT_SECRET']
+
+  def authenticate(request):
+      token = request.headers.get('Authorization', '').replace('Bearer ', '')
+      try:
+          payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+          return User(id=payload['sub'], roles=payload['roles'])
+      except jwt.ExpiredSignatureError:
+          raise Unauthorized("Token expired")
+      except jwt.InvalidTokenError:
+          raise Unauthorized("Invalid token")
+
+  # Token issued at login:
+  def login(username, password):
+      user = verify_credentials(username, password)
+      token = jwt.encode({
+          'sub': user.id,
+          'roles': user.roles,
+          'exp': datetime.utcnow() + timedelta(hours=24),
+      }, SECRET_KEY, algorithm='HS256')
+      return {'access_token': token}
+  ```
+
+  Problems with the current system:
+  - When an admin's credentials were compromised last month, it took 24 hours to revoke
+    access (had to wait for JWT expiry). The incident report flagged this as a P0.
+  - Mobile users complain about being logged out every 24 hours and having to re-enter
+    credentials during critical infrastructure incidents.
+  - Third-party integrations have embedded JWTs in their CI configs; when tokens expire,
+    their pipelines break silently at 3 AM.
+  - All three client types share the same token format, making it impossible to apply
+    different security policies.
+
+  The team is debating: **Should we switch entirely to server-side sessions, or fix the
+  JWT implementation?**
+
+  The tech lead argues: "JWTs are stateless and scale better. We just need shorter expiry
+  times and a refresh token flow."
+
+  The security engineer argues: "Server-side sessions give us instant revocation. JWTs are
+  fundamentally unsuitable for anything requiring revocation."
+
+  Design the auth system. Specify the token format, storage, expiry, and revocation
+  strategy. Address all three client types and the problems listed above.
+expected_outcome: |
+  A strong answer should:
+  1. Recognize that this is not a binary JWT-vs-sessions choice. Different client types
+     have fundamentally different requirements that call for different auth mechanisms.
+  2. Recommend a hybrid approach, for example:
+     - Mobile: JWT access tokens (short-lived, ~15 min) + long-lived refresh tokens
+       (stored securely on device). Supports offline use and reduces auth server load.
+     - Admin Panel: Server-side sessions with Redis-backed session store. Enables instant
+       revocation (delete session from Redis). 30-min inactivity timeout enforced
+       server-side.
+     - Third-Party: API keys (not JWTs) stored hashed in the database, with scoped
+       permissions. Support key rotation via overlapping validity periods.
+  3. For the admin revocation requirement, explain why pure JWT cannot meet the 5-second
+     revocation SLA without a server-side blocklist — which effectively makes it a
+     session system anyway.
+  4. Address the mobile offline requirement — JWTs are genuinely better here because the
+     client can validate locally without a server round-trip.
+  5. Include a migration plan from the current unified JWT system.
+traps: |
+  - Treating the decision as binary (all-JWT vs all-sessions) when decomposing by client
+    type reveals each has different auth needs. The prompt deliberately frames it as an
+    either/or debate between two team members.
+  - Proposing JWT with a blocklist for admin revocation without acknowledging that a
+    blocklist checked on every request is functionally equivalent to server-side sessions,
+    negating JWT's statelessness benefit.
+  - Recommending short-lived JWTs (e.g., 5 minutes) for mobile without considering the
+    offline use case — if the auth server is unreachable, the mobile app becomes unusable
+    when the token expires.
+  - Using JWTs for third-party integrations — API keys are simpler, don't expire
+    unexpectedly, and are the industry standard for machine-to-machine auth.
+treatment_prefix: |
+  Before answering, invoke /meta:decompose and work through the protocol for this decision.

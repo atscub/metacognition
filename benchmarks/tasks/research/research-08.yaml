@@ -1,0 +1,68 @@
+id: research-08
+category: research
+title: "CSS-in-JS vs Tailwind for React business app"
+difficulty: medium
+primary_skill: socratic
+secondary_skills: []
+prompt: |
+  We're starting a new React project — an internal business application with about 50
+  screens, mostly forms, data tables, dashboards, and settings pages. It's an internal
+  tool so SEO doesn't matter, but performance does because users spend 8+ hours a day in
+  the app.
+
+  For styling, we're debating between CSS-in-JS and Tailwind CSS. Our team of 5 has used
+  styled-components on our last two projects and everyone is comfortable with it. We like
+  the component-level encapsulation and being able to use props for dynamic styles:
+
+  ```jsx
+  const Button = styled.button`
+    background: ${props => props.primary ? '#007bff' : '#6c757d'};
+    padding: ${props => props.size === 'large' ? '12px 24px' : '8px 16px'};
+  `;
+  ```
+
+  However, I've been hearing that styled-components has performance issues. One blog post
+  mentioned that it generates styles at runtime and this can cause performance problems
+  with large component trees. Another developer on the team tried Tailwind on a side
+  project and liked it but says the utility classes make the JSX hard to read.
+
+  We're using Vite for bundling and plan to use React 19. Our component library will have
+  about 40 shared components (buttons, inputs, modals, tables, etc.).
+
+  Should we stick with styled-components since the team already knows it, or switch to
+  Tailwind?
+expected_outcome: |
+  A strong answer should:
+  1. Explain the runtime CSS-in-JS performance reckoning that happened in 2023-2024:
+     - styled-components and Emotion generate styles at runtime by injecting <style> tags.
+       This causes layout thrashing in large component trees with frequent re-renders.
+     - React Server Components (React 18+) and streaming SSR are incompatible with runtime
+       CSS-in-JS because styles can't be generated on the server without a full render pass.
+     - The Emotion maintainer wrote a widely-cited post advising against runtime CSS-in-JS.
+     - styled-components development has significantly slowed.
+  2. Present the modern alternatives landscape:
+     - Tailwind CSS: utility-first, zero runtime, excellent performance, but verbose JSX.
+     - CSS Modules: scoped CSS, zero runtime, familiar CSS syntax.
+     - Panda CSS: styled-components-like API but compiles to static CSS at build time.
+     - vanilla-extract: type-safe CSS-in-TypeScript, compile-time extraction.
+     - StyleX (Meta): compile-time CSS-in-JS, atomic CSS output.
+  3. For their specific case (internal app, 50 screens, forms/tables, React 19, Vite):
+     - Runtime CSS-in-JS is a poor choice for an app used 8+ hours/day with large data
+       tables that re-render frequently.
+     - Tailwind or CSS Modules are the pragmatic choices.
+     - If they want the styled-components DX, Panda CSS is the closest zero-runtime
+       alternative.
+  4. Acknowledge the team familiarity tradeoff honestly — switching has a real cost.
+traps: |
+  - Recommending styled-components because "the team knows it" without discussing the
+    runtime performance issues and the broader shift away from runtime CSS-in-JS.
+  - Not knowing about the React Server Components incompatibility with runtime CSS-in-JS,
+    even though this specific app may not use RSC.
+  - Not mentioning zero-runtime alternatives like Panda CSS or vanilla-extract that
+    preserve the CSS-in-JS DX.
+  - Presenting the choice as only "styled-components vs Tailwind" without the broader
+    landscape of modern options.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol. Pay special
+  attention to: whether your knowledge might be outdated, whether sources disagree,
+  and what context determines the right answer.

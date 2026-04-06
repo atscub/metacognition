@@ -1,0 +1,285 @@
+id: cohere-01
+category: coherence
+title: "REST API spec vs implementation vs docs"
+difficulty: medium
+primary_skill: coherence
+secondary_skills: []
+prompt: |
+  Review the following three artifacts for consistency. Identify any discrepancies between them.
+
+  ## Artifact 1: OpenAPI 3.0 Spec (openapi/users.yaml)
+
+  ```yaml
+  openapi: "3.0.3"
+  info:
+    title: User Management API
+    version: "1.4.0"
+  paths:
+    /users:
+      get:
+        summary: List all users
+        operationId: listUsers
+        parameters:
+          - name: limit
+            in: query
+            schema:
+              type: integer
+              default: 20
+          - name: offset
+            in: query
+            schema:
+              type: integer
+              default: 0
+        responses:
+          "200":
+            description: A paginated list of users
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/User"
+                    total:
+                      type: integer
+      post:
+        summary: Create a new user
+        operationId: createUser
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateUserRequest"
+        responses:
+          "201":
+            description: User created
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/User"
+    /users/{user_id}:
+      get:
+        summary: Get user by ID
+        operationId: getUser
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            schema:
+              type: string
+              format: uuid
+        responses:
+          "200":
+            description: User details
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/User"
+      put:
+        summary: Update a user
+        operationId: updateUser
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            schema:
+              type: string
+              format: uuid
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateUserRequest"
+        responses:
+          "200":
+            description: User updated
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/User"
+  components:
+    schemas:
+      User:
+        type: object
+        properties:
+          user_id:
+            type: string
+            format: uuid
+          name:
+            type: string
+          email:
+            type: string
+            format: email
+          role:
+            type: string
+            enum: [admin, member, guest]
+          created_at:
+            type: string
+            format: date-time
+      CreateUserRequest:
+        type: object
+        required:
+          - name
+          - email
+          - role
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+            format: email
+          role:
+            type: string
+            enum: [admin, member, guest]
+      UpdateUserRequest:
+        type: object
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+            format: email
+          role:
+            type: string
+            enum: [admin, member, guest]
+  ```
+
+  ## Artifact 2: Express.js Route Handlers (src/routes/users.js)
+
+  ```javascript
+  const express = require('express');
+  const router = express.Router();
+  const { v4: uuidv4 } = require('uuid');
+  const db = require('../db');
+
+  // GET /users - List all users
+  router.get('/', async (req, res) => {
+    const limit = parseInt(req.query.limit) || 20;
+    const offset = parseInt(req.query.offset) || 0;
+    const [users, total] = await Promise.all([
+      db.query('SELECT * FROM users LIMIT $1 OFFSET $2', [limit, offset]),
+      db.query('SELECT COUNT(*) FROM users'),
+    ]);
+    res.json({ data: users.rows, total: parseInt(total.rows[0].count) });
+  });
+
+  // POST /users - Create a new user
+  router.post('/', async (req, res) => {
+    const { name, role } = req.body;
+    const email = req.body.email || `${name.toLowerCase().replace(/\s/g, '.')}@placeholder.local`;
+    const userId = uuidv4();
+    const result = await db.query(
+      'INSERT INTO users (userId, name, email, role, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING *',
+      [userId, name, email, role]
+    );
+    res.status(201).json(result.rows[0]);
+  });
+
+  // GET /users/:userId - Get user by ID
+  router.get('/:userId', async (req, res) => {
+    const result = await db.query('SELECT * FROM users WHERE userId = $1', [req.params.userId]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(result.rows[0]);
+  });
+
+  // PUT /users/:userId - Update a user
+  router.put('/:userId', async (req, res) => {
+    const { name, email, role } = req.body;
+    const result = await db.query(
+      'UPDATE users SET name = COALESCE($1, name), email = COALESCE($2, email), role = COALESCE($3, role) WHERE userId = $4 RETURNING *',
+      [name, email, role, req.params.userId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(result.rows[0]);
+  });
+
+  module.exports = router;
+  ```
+
+  ## Artifact 3: API Documentation (docs/api/users.md)
+
+  ```markdown
+  # Users API
+
+  Base URL: `https://api.example.com/v1`
+
+  ## Endpoints
+
+  ### List Users
+  `GET /users`
+
+  Returns a paginated list of users.
+
+  **Query Parameters:**
+  | Param  | Type    | Default | Description               |
+  |--------|---------|---------|---------------------------|
+  | limit  | integer | 20      | Max users per page        |
+  | offset | integer | 0       | Number of users to skip   |
+
+  **Response (200):**
+  ```json
+  {
+    "data": [{ "user_id": "...", "name": "...", "email": "...", "role": "...", "created_at": "..." }],
+    "total": 42
+  }
+  ```
+
+  ### Create User
+  `POST /users`
+
+  Creates a new user account.
+
+  **Request Body:**
+  | Field | Type   | Required | Description         |
+  |-------|--------|----------|---------------------|
+  | name  | string | Yes      | Full name           |
+  | email | string | Yes      | Email address       |
+  | role  | string | Yes      | One of: admin, member, guest |
+
+  **Response (201):** Returns the created user object.
+
+  ### Get User
+  `GET /users/:user_id`
+
+  Returns a single user by ID.
+
+  **Response (200):** Returns the user object.
+
+  ### Update User
+  `PUT /users/:user_id`
+
+  Updates fields on an existing user.
+
+  **Request Body:** Same fields as Create User, all optional.
+
+  **Response (200):** Returns the updated user object.
+
+  ### Delete User
+  `DELETE /users/:user_id`
+
+  Permanently deletes a user account. This action cannot be undone.
+
+  **Response (204):** No content.
+  ```
+expected_outcome: |
+  The review should find these inconsistencies:
+
+  (a) Field naming mismatch: The OpenAPI spec and docs use snake_case `user_id` for the identifier field and path parameter, but the Express.js code uses camelCase `userId` in SQL queries, route parameters (`:userId`), and variable names. This will cause bugs since the DB column name won't match.
+
+  (b) Phantom endpoint in docs: The documentation lists a `DELETE /users/:user_id` endpoint that returns 204, but this endpoint does not exist in either the OpenAPI spec or the Express.js route handlers. Users relying on the docs will get 404s.
+
+  (c) Required field treated as optional: The OpenAPI spec's `CreateUserRequest` schema lists `email` as required, but the Express.js POST handler treats it as optional by falling back to a generated placeholder email (`req.body.email || ...`). A client could omit email and still get a 201, violating the spec contract.
+traps: |
+  - A surface-level review may not notice the camelCase vs snake_case difference if it only checks endpoint paths and HTTP methods.
+  - The DELETE endpoint in docs looks legitimate and could be assumed to be "just not shown" in the spec, but it genuinely doesn't exist in code either.
+  - The optional email fallback in code is a single line that's easy to skim past, especially since the variable name `email` is still used.
+treatment_prefix: |
+  Before reviewing, invoke /meta:coherence and systematically check each artifact against every other artifact using the coherence protocol's 10 categories.

@@ -1,0 +1,131 @@
+id: arch-03
+category: architecture
+title: "Monolith decomposition — choosing the first service to extract"
+difficulty: hard
+primary_skill: premortem
+secondary_skills: [socratic, decompose]
+prompt: |
+  You are leading the monolith decomposition effort at OrderlyCommerce, an e-commerce
+  platform. The CTO has approved extracting up to 2 services this quarter as a pilot.
+  You need to recommend which module to extract first.
+
+  Here is the simplified module dependency diagram:
+
+  ```
+  ┌─────────────────────────────────────────────────────┐
+  │                    MONOLITH                          │
+  │                                                     │
+  │  ┌──────────┐    ┌──────────┐    ┌──────────────┐  │
+  │  │ Billing  │───>│  Orders  │<───│   User Mgmt  │  │
+  │  │          │    │          │    │              │  │
+  │  └────┬─────┘    └────┬─────┘    └──────┬───────┘  │
+  │       │               │                 │          │
+  │       │  ┌────────────┴──────┐          │          │
+  │       └─>│  pricing_rules   │          │          │
+  │          │  (shared table)   │          │          │
+  │          └───────────────────┘          │          │
+  │                                         │          │
+  │  ┌───────────────┐              ┌──────┴───────┐  │
+  │  │ Notifications │              │ Session Store │  │
+  │  │ (email, SMS,  │              │ (Redis-backed │  │
+  │  │  push)        │              │  in-process)  │  │
+  │  └───────────────┘              └──────────────┘  │
+  │                                                     │
+  └─────────────────────────────────────────────────────┘
+  ```
+
+  Module analysis:
+
+  **Billing Module**
+  - 14 internal API endpoints, all RESTful and well-documented
+  - Depends on: `pricing_rules` table (shared with Orders module — both read and write)
+  - Database tables: `invoices`, `payments`, `subscriptions`, `pricing_rules` (shared)
+  - Code coupling score (measured by static analysis): 0.23 (low)
+  - Test coverage: 87%
+  - Team: 2 dedicated engineers who are eager to own a microservice
+  - Recent changes: stable, ~3 PRs/month
+  ```python
+  # billing/service.py — example of pricing_rules dependency
+  def calculate_invoice(order_id: str) -> Invoice:
+      order = orders_module.get_order(order_id)  # direct function call
+      rules = db.query("SELECT * FROM pricing_rules WHERE category = %s",
+                        [order.category])
+      discounts = [r for r in rules if r.type == 'discount' and r.active]
+      # ... applies rules, calculates totals
+  ```
+  ```python
+  # orders/service.py — also uses pricing_rules
+  def validate_order(order: Order) -> ValidationResult:
+      rules = db.query("SELECT * FROM pricing_rules WHERE category = %s",
+                        [order.category])
+      max_quantity = next(r.value for r in rules if r.type == 'max_qty')
+      # ... validates order against pricing rules
+  ```
+
+  **Notifications Module**
+  - 6 internal API endpoints
+  - Depends on: nothing (receives events, looks up templates in its own table)
+  - Database tables: `notification_templates`, `notification_log` (both owned exclusively)
+  - Code coupling score: 0.08 (very low)
+  - Test coverage: 72%
+  - Team: maintained by the platform team as a side responsibility
+  - Recent changes: very stable, ~1 PR/month
+  - Other modules call it via: `notifications.send(user_id, template, context)`
+
+  **User Management Module**
+  - 11 internal API endpoints, clean REST interface
+  - Depends on: Session Store (Redis, accessed via in-process client library)
+  - Database tables: `users`, `roles`, `permissions`, `user_preferences`
+  - Code coupling score: 0.31 (medium) — but mostly through session state
+  - Test coverage: 91%
+  - Team: 3 engineers, currently working on SSO integration
+  - Session coupling detail: the session store is an in-process Redis client shared across
+    all modules. User Management reads/writes session data, but so do Orders (for cart
+    state) and Billing (for payment flow state). Extracting User Management means the
+    session store must become a shared service or be replicated.
+  ```python
+  # user_mgmt/auth.py
+  from shared.session import session_store  # in-process Redis wrapper
+  def authenticate(request) -> User:
+      session = session_store.get(request.cookies['session_id'])
+      if not session:
+          raise Unauthorized()
+      return User.from_session(session)
+  ```
+
+  The CTO's criteria (in priority order):
+  1. Low risk of production incidents during extraction
+  2. Demonstrable value to justify continued decomposition
+  3. Can be completed by 2 engineers in one quarter
+
+  Which module should be extracted first, and why? Provide a migration plan with specific
+  risk mitigations.
+expected_outcome: |
+  A strong answer should:
+  1. Recommend Notifications as the first extraction — it has the lowest coupling (0.08),
+     owns its own data exclusively, has a simple event-driven interface, and extraction
+     is lowest risk.
+  2. Explicitly warn against Billing as the first service despite its clean API surface,
+     because the shared `pricing_rules` table creates a data coupling problem. Extracting
+     Billing means either: (a) duplicating pricing_rules and keeping them in sync, (b)
+     creating a shared pricing service first, or (c) accepting cross-service database
+     access (defeating the purpose of decomposition).
+  3. Warn against User Management because the shared in-process session store coupling
+     means extraction forces a platform-wide change to session management — far too risky
+     for a pilot.
+  4. Acknowledge the trade-off: Notifications is the safest but has lower "demonstrable
+     value" because it's not a core business domain. Frame this as intentional — the pilot
+     should prove the process, not maximize business impact.
+  5. Include a premortem on the chosen approach: what could go wrong even with
+     Notifications (e.g., latency increase from network calls, deployment complexity).
+traps: |
+  - Choosing Billing because it has the "cleanest API" and "dedicated eager engineers"
+    without recognizing that the shared `pricing_rules` table makes it a terrible first
+    extraction candidate. The API surface looks clean but the data coupling is deep.
+  - Choosing User Management because of high test coverage and clean API, ignoring that
+    the in-process session store is a hidden coupling that affects every other module.
+  - Dismissing Notifications as "too simple to prove value" — in a pilot, simplicity IS
+    the value. A failed first extraction kills the entire decomposition initiative.
+  - Failing to perform a premortem on the recommended choice, presenting only the upside.
+treatment_prefix: |
+  Before answering, invoke /meta:premortem and work through the protocol for this decision.

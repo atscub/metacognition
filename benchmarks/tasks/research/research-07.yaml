@@ -1,0 +1,76 @@
+id: research-07
+category: research
+title: "Go error handling best practices"
+difficulty: medium
+primary_skill: learn
+secondary_skills: []
+prompt: |
+  I'm writing a Go library for internal use at our company (a REST API client that wraps
+  our payment service). I'm confused about error handling best practices. I've read a lot
+  of conflicting advice online.
+
+  Some articles say to define sentinel errors:
+
+  ```go
+  var ErrNotFound = errors.New("resource not found")
+  var ErrUnauthorized = errors.New("unauthorized")
+  ```
+
+  Others say to define custom error types:
+
+  ```go
+  type APIError struct {
+      StatusCode int
+      Message    string
+      RequestID  string
+  }
+  func (e *APIError) Error() string { return e.Message }
+  ```
+
+  And others say just use fmt.Errorf with %w:
+
+  ```go
+  return fmt.Errorf("failed to fetch user %s: %w", userID, err)
+  ```
+
+  I've also seen people using the github.com/pkg/errors package for stack traces.
+
+  Our minimum Go version is 1.21. We want our library consumers to be able to:
+  1. Check if an error is a specific known condition (e.g., "not found" vs "rate limited")
+  2. Extract structured data from errors (e.g., HTTP status code, request ID for support)
+  3. Get context about where the error originated (for debugging)
+
+  What's the right approach? Should I use one of these exclusively, or mix them?
+expected_outcome: |
+  A strong answer should:
+  1. Explain the modern error handling hierarchy for Go 1.21+:
+     - Sentinel errors (var Err... = errors.New(...)) for known conditions callers check
+       with errors.Is(). Good for: ErrNotFound, ErrRateLimited, ErrUnauthorized.
+     - Custom error types (struct implementing error) for when callers need structured
+       data, checked with errors.As(). Good for: APIError with StatusCode and RequestID.
+     - fmt.Errorf with %w for adding context while preserving the error chain. Used at
+       every layer to wrap lower-level errors.
+  2. Show how these compose: a custom APIError wraps a sentinel, and intermediate callers
+     add context with %w, so errors.Is(err, ErrNotFound) still works through the chain.
+  3. Mention errors.Join (Go 1.20+) for representing multiple errors, useful for
+     validation scenarios.
+  4. Explicitly note that github.com/pkg/errors is effectively deprecated — the standard
+     library now provides wrapping (%w since Go 1.13), Is/As (Go 1.13), and Join (Go 1.20).
+     New code should not adopt it.
+  5. Provide concrete advice for the library: export sentinel errors for known conditions,
+     export an APIError type for structured data, use %w internally for context, and
+     document which errors callers should expect.
+  6. Note the shift in community consensus: the Go error handling story was genuinely
+     incomplete before 1.13, which is why older advice varies so much.
+traps: |
+  - Giving pre-Go 1.13 advice: string matching on error messages, not using %w wrapping,
+    or recommending github.com/pkg/errors for new code.
+  - Not knowing about errors.Join (Go 1.20+) which is relevant for their minimum version.
+  - Recommending only one approach (e.g., "just use sentinel errors") without explaining
+    that different error types serve different purposes and compose together.
+  - Not explaining the errors.Is/errors.As traversal through wrapped error chains, which
+    is the key to understanding how the approaches work together.
+treatment_prefix: |
+  Before answering, invoke /meta:learn and work through the protocol. Pay special
+  attention to: whether your knowledge might be outdated, whether sources disagree,
+  and what context determines the right answer.

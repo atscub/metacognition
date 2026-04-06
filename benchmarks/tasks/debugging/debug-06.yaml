@@ -1,0 +1,171 @@
+id: debug-06
+category: debugging
+title: "CSS layout broken only in Safari after dependency update"
+difficulty: medium
+primary_skill: decompose
+secondary_skills: []
+prompt: |
+  After updating our frontend dependencies, our product grid layout is completely broken
+  in Safari 17. Items overlap, columns collapse, and the layout looks nothing like our
+  design. Chrome, Firefox, and Edge all render correctly. The team suspects the CSS itself
+  is broken, but it worked fine before the dependency update and the CSS source files
+  haven't changed.
+
+  Package.json diff (only relevant changes):
+
+  ```diff
+  {
+    "devDependencies": {
+  -    "postcss-preset-env": "8.5.1",
+  +    "postcss-preset-env": "9.4.0",
+       "postcss": "8.4.35",
+       "autoprefixer": "10.4.17",
+       "tailwindcss": "3.4.1"
+    }
+  }
+  ```
+
+  The CSS source (src/styles/product-grid.css):
+
+  ```css
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .product-card {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: subgrid;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .product-card__image {
+    grid-column: 1 / -1;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .product-card__details {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .product-card__actions {
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  ```
+
+  PostCSS config (postcss.config.js):
+
+  ```javascript
+  module.exports = {
+    plugins: [
+      require('tailwindcss'),
+      require('postcss-preset-env')({
+        stage: 2,
+        features: {
+          'nesting-rules': true,
+          'custom-media-queries': true,
+        },
+        // Note: autoprefixer is bundled in postcss-preset-env
+        autoprefixer: { grid: true },
+      }),
+    ],
+  };
+  ```
+
+  Compiled CSS output (inspected via Safari DevTools — product-card rule):
+
+  ```css
+  /* What Safari DevTools shows for .product-card */
+  .product-card {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: subgrid;
+    -webkit-grid-template-columns: subgrid;   /* ← vendor prefix added */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  ```
+
+  Safari DevTools computed styles panel:
+
+  ```
+  grid-template-columns: subgrid        [overridden]
+  -webkit-grid-template-columns: subgrid  [active]
+  ```
+
+  Chrome DevTools shows only:
+
+  ```
+  grid-template-columns: subgrid        [active]
+  ```
+
+  postcss-preset-env 9.x changelog (excerpt):
+
+  ```
+  ## 9.0.0 (2024-01-15)
+  BREAKING: Updated autoprefixer integration. Vendor prefixing now applies
+  to all grid properties by default when `autoprefixer: { grid: true }` is set.
+  Previously, only legacy grid properties were prefixed. Now includes
+  subgrid-related properties.
+
+  ## 8.5.1 (2023-11-20)
+  - No changes to grid prefixing behavior
+  ```
+
+  Browser support notes:
+  - Safari 17 supports `grid-template-columns: subgrid` natively (shipped in Safari 16.4)
+  - Safari 17 also still supports `-webkit-` prefixed grid properties (legacy)
+  - When both the standard and `-webkit-` prefixed property are present, Safari
+    applies the last one in source order
+
+  The team's attempted fixes:
+  1. Rolling back the CSS changes — but the CSS source hasn't changed
+  2. Adding `!important` to grid-template-columns — partially worked but broke
+     other layouts
+  3. Considering dropping subgrid entirely
+
+  What's the root cause and what's the correct fix?
+expected_outcome: |
+  The root cause is postcss-preset-env 9.x generating a `-webkit-grid-template-columns:
+  subgrid` vendor prefix that conflicts with the standard `grid-template-columns: subgrid`
+  in Safari. The PostCSS config has `autoprefixer: { grid: true }`, and the 9.x version
+  expanded its prefixing to include subgrid properties. Safari 17 supports subgrid
+  natively, but when it sees BOTH the standard property and the `-webkit-` prefixed
+  version, it uses the last one in source order (the `-webkit-` version). Safari
+  interprets `-webkit-grid-template-columns: subgrid` differently — it maps to its
+  legacy grid implementation rather than the modern spec, causing the layout to break.
+
+  The fix is one of:
+  (a) Set `autoprefixer: { grid: false }` or `autoprefixer: { grid: 'no-autoplace' }`
+      in the PostCSS config since modern browsers no longer need grid prefixes.
+  (b) Add a specific feature override in postcss-preset-env to disable subgrid
+      prefixing.
+  (c) Pin postcss-preset-env to 8.x until the upstream issue is addressed.
+traps: |
+  The CSS source itself is perfectly valid and hasn't changed, but an agent anchoring
+  on "CSS is broken" might try to debug the CSS rules, suggest dropping subgrid, or
+  investigate Safari's subgrid support. The real issue is in the build pipeline —
+  postcss-preset-env is transforming the CSS and adding a conflicting vendor prefix.
+  The package.json diff is shown but might be dismissed as a routine dependency bump.
+  The Safari DevTools output showing the `-webkit-` prefix is the key clue, but
+  requires understanding that (a) the prefix wasn't in the source CSS, (b) it was
+  added by the build tool, and (c) it causes a conflict in Safari specifically.
+treatment_prefix: |
+  Before debugging, invoke /meta:decompose and break the problem into fundamental
+  components. Consider: what layers exist between CSS source and rendered output?
+  Which layer changed?

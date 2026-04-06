@@ -1,0 +1,138 @@
+id: cohere-02
+category: coherence
+title: "Database schema vs migration vs ORM model"
+difficulty: hard
+primary_skill: coherence
+secondary_skills: []
+prompt: |
+  Review the following three artifacts for consistency. Identify any discrepancies between them.
+
+  ## Artifact 1: PostgreSQL Schema (sql/001_create_tables.sql)
+
+  ```sql
+  CREATE TABLE categories (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(100) NOT NULL,
+      slug VARCHAR(100) NOT NULL UNIQUE,
+      parent_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  );
+
+  CREATE TABLE products (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      description TEXT NOT NULL,
+      sku VARCHAR(50) NOT NULL UNIQUE,
+      unit_price DECIMAL(10, 2) NOT NULL,
+      quantity_in_stock INTEGER NOT NULL DEFAULT 0,
+      is_active BOOLEAN NOT NULL DEFAULT true,
+      weight_kg NUMERIC(8, 3),
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  );
+
+  CREATE INDEX idx_products_sku ON products(sku);
+  CREATE INDEX idx_products_active ON products(is_active);
+  CREATE INDEX idx_categories_slug ON categories(slug);
+  ```
+
+  ## Artifact 2: Knex.js Migration (migrations/20240115_create_products_categories.js)
+
+  ```javascript
+  exports.up = function (knex) {
+    return knex.schema
+      .createTable('categories', (table) => {
+        table.increments('id').primary();
+        table.string('name', 100).notNullable();
+        table.string('slug', 100).notNullable().unique();
+        table.integer('parent_id').unsigned().references('id').inTable('categories').onDelete('SET NULL');
+        table.timestamp('created_at').defaultTo(knex.fn.now());
+      })
+      .createTable('products', (table) => {
+        table.increments('id').primary();
+        table.string('name', 255).notNullable();
+        table.text('description');
+        table.string('sku', 50).notNullable().unique();
+        table.decimal('unit_price', 10, 2).notNullable();
+        table.integer('quantity_in_stock').notNullable().defaultTo(0);
+        table.boolean('is_active').notNullable().defaultTo(true);
+        table.decimal('weight_kg', 8, 3);
+        table.string('image_url', 500);
+        table.timestamp('created_at').defaultTo(knex.fn.now());
+        table.timestamp('updated_at').defaultTo(knex.fn.now());
+      })
+      .then(() => {
+        return knex.schema.raw('CREATE INDEX idx_products_sku ON products(sku)');
+      })
+      .then(() => {
+        return knex.schema.raw('CREATE INDEX idx_products_active ON products(is_active)');
+      })
+      .then(() => {
+        return knex.schema.raw('CREATE INDEX idx_categories_slug ON categories(slug)');
+      });
+  };
+
+  exports.down = function (knex) {
+    return knex.schema.dropTableIfExists('products').dropTableIfExists('categories');
+  };
+  ```
+
+  ## Artifact 3: Prisma Schema (prisma/schema.prisma)
+
+  ```prisma
+  generator client {
+    provider = "prisma-client-js"
+  }
+
+  datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+  }
+
+  model Category {
+    id        Int        @id @default(autoincrement())
+    name      String     @db.VarChar(100)
+    slug      String     @unique @db.VarChar(100)
+    parentId  Int?       @map("parent_id")
+    parent    Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+    children  Category[] @relation("CategoryTree")
+    products  Product[]
+    createdAt DateTime   @default(now()) @map("created_at")
+
+    @@map("categories")
+  }
+
+  model Product {
+    id             Int       @id @default(autoincrement())
+    name           String    @db.VarChar(255)
+    description    String?
+    unitPrice      Float     @map("unit_price")
+    quantityInStock Int      @default(0) @map("quantity_in_stock")
+    isActive       Boolean   @default(true) @map("is_active")
+    weightKg       Float?    @map("weight_kg")
+    imageUrl       String?   @db.VarChar(500) @map("image_url")
+    categoryId     Int       @map("category_id")
+    category       Category  @relation(fields: [categoryId], references: [id])
+    createdAt      DateTime  @default(now()) @map("created_at")
+    updatedAt      DateTime  @updatedAt @map("updated_at")
+
+    @@map("products")
+  }
+  ```
+expected_outcome: |
+  The review should find these inconsistencies:
+
+  (a) Missing column in Prisma: The Knex migration adds an `image_url` column to `products`, and the Prisma model includes `imageUrl`, but the original SQL schema does not define an `image_url` column. Also, the SQL schema has a `sku` column (`VARCHAR(50) NOT NULL UNIQUE`) and the migration creates it, but the Prisma model completely omits the `sku` field.
+
+  (b) NOT NULL constraint mismatch: The SQL schema declares `description TEXT NOT NULL` on the products table, but the Knex migration defines `table.text('description')` without `.notNullable()`, making it nullable. The Prisma model also marks it as optional (`String?`). The SQL schema is stricter.
+
+  (c) Foreign key mismatch: The Prisma model defines a `categoryId` field with a `Category` relation (`@map("category_id")`), but neither the SQL schema nor the Knex migration defines a `category_id` foreign key column on the `products` table. The relation exists only in Prisma.
+
+  (d) Type mismatch: The SQL schema defines `unit_price DECIMAL(10,2)` (exact precision) and `weight_kg NUMERIC(8,3)` (also exact precision), but the Prisma model maps both to `Float`, which is an IEEE 754 floating-point type and loses the decimal precision guarantees. For a price field, this can cause rounding errors.
+traps: |
+  - The Prisma model's `@map()` annotations make field names look aligned with SQL column names, but the `sku` field is simply absent.
+  - The `image_url` column is present in both migration and Prisma but NOT in the SQL schema; this is easy to miss when scanning columns.
+  - The NOT NULL difference on `description` requires comparing three artifacts at the column level.
+  - The DECIMAL vs Float distinction requires understanding that Prisma's Float maps to float8 (double precision), not numeric/decimal.
+treatment_prefix: |
+  Before reviewing, invoke /meta:coherence and systematically check each artifact against every other artifact using the coherence protocol's 10 categories.

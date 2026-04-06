@@ -1,0 +1,64 @@
+id: research-06
+category: research
+title: "PostgreSQL primary key type: UUID vs alternatives"
+difficulty: hard
+primary_skill: learn
+secondary_skills: []
+prompt: |
+  We're designing our PostgreSQL schema for a new service and debating primary key types.
+  We have multiple application servers behind a load balancer, so we need distributed ID
+  generation — we can't rely on a single database sequence without it becoming a
+  bottleneck or requiring coordination.
+
+  One developer insists UUIDs are terrible for PostgreSQL performance. He showed us a blog
+  post benchmarking UUID primary keys vs bigint serials on a table with 100M rows. The
+  UUID version had 3x larger indexes, 40% slower inserts at scale, and much worse cache
+  hit ratios because the random distribution means every insert touches a different index
+  page. He says we should use a Snowflake-style ID generator or just stick with bigint
+  sequences.
+
+  Another developer says the UUID concerns are overblown, that she used UUIDs at her
+  previous company on tables with 500M+ rows and never had problems. She says the
+  developer experience benefits (generate IDs client-side, no round-trip to the database,
+  safe for distributed systems) outweigh the theoretical performance concerns.
+
+  We need to support:
+  - Distributed ID generation (multiple app servers)
+  - Good insert performance (we expect ~10M rows/day at peak)
+  - Reasonable index sizes (we're budget-conscious on storage)
+  - IDs exposed in URLs (so they need to be URL-safe)
+
+  What should we use for primary keys?
+expected_outcome: |
+  A strong answer should:
+  1. Acknowledge that the first developer's concerns about UUIDv4 are legitimate and
+     well-documented — random UUIDs DO cause B-tree fragmentation, index bloat, and poor
+     cache behavior in PostgreSQL. The benchmarks are real.
+  2. But then introduce UUIDv7 (RFC 9562, ratified 2024) as the modern answer. UUIDv7 is
+     time-ordered (48 bits of millisecond timestamp prefix) which means sequential inserts
+     hit the same index pages, behaving much like bigint for B-tree performance while
+     retaining all UUID benefits.
+  3. Discuss the full landscape of options:
+     - UUIDv4: random, bad for B-trees, still widely used
+     - UUIDv7: time-ordered, solves the fragmentation problem, RFC standard
+     - ULID: similar to UUIDv7 (time-ordered, 128-bit), predates the RFC, compatible with
+       UUID columns via encoding
+     - Snowflake IDs: time-ordered 64-bit integers, good performance, but custom format
+       and require a coordination service or configuration
+     - bigint with sequences: best raw performance, but requires DB coordination
+  4. Recommend UUIDv7 as the best default for their requirements: distributed generation,
+     good insert performance (time-ordered), standard format, UUID column type in PG.
+  5. Note PostgreSQL version considerations — native UUIDv7 generation support varies;
+     they may need a library or extension (pg_uuidv7) depending on their PG version.
+traps: |
+  - Citing UUIDv4 performance concerns without knowing about UUIDv7, which resolves the
+    main objection. This makes the answer outdated as of 2024.
+  - Dismissing UUID performance concerns entirely ("it's fine, just use UUIDs") without
+    acknowledging that UUIDv4 fragmentation is real and measurable.
+  - Recommending Snowflake IDs without discussing the operational complexity (worker ID
+    assignment, clock skew handling) vs the simplicity of UUIDv7.
+  - Not knowing that RFC 9562 standardized UUIDv7 in 2024.
+treatment_prefix: |
+  Before answering, invoke /meta:learn and work through the protocol. Pay special
+  attention to: whether your knowledge might be outdated, whether sources disagree,
+  and what context determines the right answer.

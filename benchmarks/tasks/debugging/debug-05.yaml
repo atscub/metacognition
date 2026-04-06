@@ -1,0 +1,193 @@
+id: debug-05
+category: debugging
+title: "Race condition causing duplicate orders"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: []
+prompt: |
+  We're seeing duplicate orders in production. A customer placed one order but got charged
+  twice and received two confirmation emails. This has happened 3 times in the past week,
+  always during peak traffic. The engineering team believes our database is missing a unique
+  constraint. Can you investigate?
+
+  Duplicate order records from the database:
+
+  ```sql
+  SELECT order_id, order_number, customer_id, total, created_at
+  FROM orders
+  WHERE customer_id = 'cust_8f3a2b' AND DATE(created_at) = '2026-03-25';
+
+  order_id                              | order_number      | customer_id | total  | created_at
+  ---------------------------------------|-------------------|-------------|--------|---------------------------
+  f47ac10b-58cc-4372-a567-0e02b2c3d479  | 20260325-00142    | cust_8f3a2b | 89.99  | 2026-03-25 14:32:01.337
+  a1b2c3d4-e5f6-7890-abcd-ef1234567890  | 20260325-00143    | cust_8f3a2b | 89.99  | 2026-03-25 14:32:01.339
+  ```
+
+  Note: the two orders are 2ms apart, same customer, same total, different order_ids and
+  different order_numbers.
+
+  Database schema:
+
+  ```sql
+  CREATE TABLE orders (
+      order_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      order_number VARCHAR(20) NOT NULL,
+      customer_id VARCHAR(50) NOT NULL,
+      total DECIMAL(10,2) NOT NULL,
+      status VARCHAR(20) DEFAULT 'pending',
+      created_at TIMESTAMP DEFAULT NOW(),
+      CONSTRAINT uq_order_number UNIQUE (order_number)
+  );
+
+  CREATE TABLE order_items (
+      id SERIAL PRIMARY KEY,
+      order_id UUID REFERENCES orders(order_id),
+      product_id VARCHAR(50) NOT NULL,
+      quantity INT NOT NULL,
+      price DECIMAL(10,2) NOT NULL
+  );
+
+  -- Index for customer lookups
+  CREATE INDEX idx_orders_customer ON orders(customer_id);
+  ```
+
+  Order creation code (src/services/orderService.ts):
+
+  ```typescript
+  import { v4 as uuidv4 } from 'uuid';
+  import { db } from '../database';
+  import { redis } from '../cache';
+
+  async function getNextOrderNumber(): Promise<string> {
+    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const key = `order_counter:${today}`;
+
+    // Get current counter
+    let counter = await redis.get(key);
+    if (counter === null) {
+      // First order of the day — check DB for the last order number
+      const result = await db.query(
+        `SELECT order_number FROM orders
+         WHERE order_number LIKE $1
+         ORDER BY order_number DESC LIMIT 1`,
+        [`${today}%`]
+      );
+      counter = result.rows.length > 0
+        ? String(parseInt(result.rows[0].order_number.split('-')[1]) + 1)
+        : '1';
+    } else {
+      counter = String(parseInt(counter) + 1);
+    }
+
+    await redis.set(key, counter, 'EX', 86400);
+    return `${today}-${counter.padStart(5, '0')}`;
+  }
+
+  export async function createOrder(customerId: string, items: OrderItem[]) {
+    const orderId = uuidv4();
+    const orderNumber = await getNextOrderNumber();
+    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    await db.query(
+      `INSERT INTO orders (order_id, order_number, customer_id, total)
+       VALUES ($1, $2, $3, $4)`,
+      [orderId, orderNumber, customerId, total]
+    );
+
+    for (const item of items) {
+      await db.query(
+        `INSERT INTO order_items (order_id, product_id, quantity, price)
+         VALUES ($1, $2, $3, $4)`,
+        [orderId, item.productId, item.quantity, item.price]
+      );
+    }
+
+    return { orderId, orderNumber, total };
+  }
+  ```
+
+  API endpoint (src/routes/orders.ts):
+
+  ```typescript
+  router.post('/orders', authenticate, async (req, res) => {
+    try {
+      const { items } = req.body;
+      const order = await createOrder(req.user.id, items);
+      await sendConfirmationEmail(req.user.email, order);
+      await chargePayment(req.user.paymentMethodId, order.total, order.orderId);
+      res.status(201).json(order);
+    } catch (err) {
+      if (err.code === '23505') { // unique_violation
+        res.status(409).json({ error: 'Duplicate order detected' });
+      } else {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+  });
+  ```
+
+  The frontend code (relevant excerpt):
+
+  ```typescript
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: cart }),
+      });
+      if (response.ok) {
+        router.push('/order-confirmation');
+      }
+    } catch (err) {
+      // Network error — user may retry
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  ```
+
+  The team checked: there IS a unique constraint on `order_number` (uq_order_number). They
+  also verified that the frontend disables the submit button during loading. Despite this,
+  duplicates are getting through.
+
+  What's the root cause of the duplicate orders?
+expected_outcome: |
+  The root cause is a race condition in `getNextOrderNumber()`. The function performs
+  a non-atomic read-then-write on the Redis counter: it reads the current value with
+  `redis.get()`, increments it in application code, then writes it back with
+  `redis.set()`. When two concurrent requests hit this function simultaneously (2ms
+  apart during peak traffic), they can both read the same counter value (e.g., "141"),
+  both increment to "142", and both write "142" back. However, only one will get
+  order_number "20260325-00142" — the second gets a different incremented value because
+  they both write. Actually, looking more carefully: request A reads counter=141,
+  request B reads counter=141 (before A writes), A writes 142, B writes 142. Then A
+  gets order_number -00142, B also gets -00142. But the DB has a unique constraint on
+  order_number, so the second INSERT would fail with error 23505, which IS caught.
+
+  The actual issue is subtler: when both requests race, they CAN get different counter
+  values because Redis SET is fast. But the real problem is that the unique constraint
+  is on order_number, NOT on (customer_id, items_hash) or any idempotency key. The two
+  duplicate orders have DIFFERENT order_numbers (00142 and 00143), meaning the unique
+  constraint didn't fire. The race condition lets two requests through for the same
+  customer action, each getting a valid unique order_number, so no constraint violation
+  occurs. The fix should be an idempotency key (e.g., based on customer_id + cart hash
+  + timestamp window) and the counter should use Redis INCR (atomic) instead of
+  GET+SET.
+traps: |
+  The team's hypothesis is "missing unique constraint," but the schema clearly shows
+  `CONSTRAINT uq_order_number UNIQUE (order_number)`. A naive agent might agree the
+  constraint is missing (not reading the schema carefully) or might think the
+  constraint should prevent duplicates (it does — but the duplicates have different
+  order_numbers, so the constraint doesn't help). The frontend's disabled-button
+  protection and the catch for error code 23505 create a false sense of security.
+  The real insight is that the unique constraint is on the WRONG column for
+  deduplication purposes — order_number is unique by design (it's a counter), but
+  that doesn't prevent the same customer action from creating two orders with two
+  different order_numbers.
+treatment_prefix: |
+  Before debugging, invoke /meta:socratic and actively question your first hypothesis.
+  Consider: what else could explain these symptoms? What evidence would disprove your
+  initial theory?

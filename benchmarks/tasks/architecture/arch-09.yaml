@@ -1,0 +1,133 @@
+id: arch-09
+category: architecture
+title: "Feature flag system — build vs buy decision"
+difficulty: medium
+primary_skill: premortem
+secondary_skills: [socratic, reframe]
+prompt: |
+  You are the tech lead at PixelCraft, a 5-person startup building a design collaboration
+  tool. The team wants to adopt feature flags for gradual rollouts and A/B testing. Two
+  options are on the table:
+
+  **Option A: LaunchDarkly (buy)**
+  - Cost: $300/month (Starter plan, up to 1,000 MAU for flags)
+  - Features: gradual rollout (% of users), targeting rules, A/B testing, audit log,
+    flag dependencies, SDKs for React + Python, real-time flag updates via SSE
+  - Setup time: "Half a day to integrate the SDK" (per LaunchDarkly docs)
+  - Operational burden: zero — fully managed SaaS
+
+  **Option B: Build in-house**
+  - A senior engineer (Marcus) has proposed this design:
+  ```python
+  # feature_flags.py — Marcus's proposal
+  import json
+  import os
+
+  FLAGS_FILE = os.environ.get('FLAGS_PATH', '/etc/pixelcraft/flags.json')
+
+  _flags_cache = None
+  _cache_mtime = 0
+
+  def get_flags() -> dict:
+      global _flags_cache, _cache_mtime
+      mtime = os.path.getmtime(FLAGS_FILE)
+      if mtime != _cache_mtime:
+          with open(FLAGS_FILE) as f:
+              _flags_cache = json.load(f)
+          _cache_mtime = mtime
+      return _flags_cache
+
+  def is_enabled(flag_name: str, user_id: str = None) -> bool:
+      flags = get_flags()
+      flag = flags.get(flag_name)
+      if flag is None:
+          return False
+      if flag.get('enabled_for_all'):
+          return True
+      if user_id and user_id in flag.get('enabled_users', []):
+          return True
+      if flag.get('percentage'):
+          return hash(f"{flag_name}:{user_id}") % 100 < flag['percentage']
+      return False
+  ```
+  ```json
+  // /etc/pixelcraft/flags.json — example
+  {
+    "new_editor": {
+      "enabled_for_all": false,
+      "percentage": 25,
+      "enabled_users": ["user-alice", "user-bob"]
+    },
+    "dark_mode": {
+      "enabled_for_all": true
+    },
+    "export_v2": {
+      "enabled_for_all": false,
+      "percentage": 0,
+      "enabled_users": ["user-alice"]
+    }
+  }
+  ```
+
+  Marcus's argument: "It's just a JSON file and an if-statement. We can build this in a
+  day. Why pay $3,600/year for something this simple? We're a startup — every dollar
+  counts. If we need more features later, we can add them incrementally."
+
+  Context on the team:
+  - 5 engineers total (including Marcus), no dedicated DevOps
+  - Deploying on a single AWS ECS cluster with 3 container instances behind an ALB
+  - Current deployment: GitHub Actions → Docker build → ECS rolling update (~8 min)
+  - Revenue: $40K MRR, 18 months of runway
+  - Product roadmap has 4 major features launching in the next 6 months, each needing
+    gradual rollout
+  - The React frontend is a separate deployment from the Python backend
+
+  Questions raised during the team discussion:
+  - CTO: "How do we change a flag without redeploying? Our deploys take 8 minutes."
+  - Designer: "Can we roll out to specific user segments, like 'users who signed up after
+    March 1' or 'users on the Pro plan'?"
+  - Marcus: "We can mount the JSON file as an ECS volume from S3. Changes to S3 propagate
+    without redeploy. For segments, we add a targeting rules engine — maybe V2."
+  - Product manager: "What happens if we turn on a flag and it breaks something? Can we
+    roll back instantly?"
+  - Junior engineer: "Do we need the flag state to be consistent between the React
+    frontend and Python backend? They're separate deployments."
+
+  Evaluate both options. Recommend one, with a clear justification and an honest
+  assessment of the risks of your recommendation.
+expected_outcome: |
+  A strong answer should:
+  1. Honestly assess the custom solution's hidden complexity. Marcus's proposal covers
+     the happy path but misses: (a) frontend/backend flag consistency (two separate
+     deployments reading possibly-different flag states), (b) instant rollback without
+     deployment (S3 propagation has eventual consistency), (c) targeting rules beyond
+     user ID and percentage, (d) audit trail for who changed what flag when, (e) flag
+     lifecycle management (stale flags that nobody knows whether to remove), (f) flag
+     dependencies (turning on feature B requires feature A to be on).
+  2. Honestly assess LaunchDarkly's costs vs value: $300/month is 0.75% of MRR. For a
+     5-person team shipping 4 major features in 6 months, engineering time is the scarcest
+     resource. Building and maintaining a flag system is a distraction from product work.
+  3. Perform a premortem on BOTH options, not just the one they don't recommend.
+     Build risks: scope creep, maintenance burden, incident during rollout with no instant
+     kill switch. Buy risks: vendor dependency, potential cost growth as MAU scales, the
+     flag evaluation adding a network hop to every request.
+  4. Make a recommendation that acknowledges the startup context. Either choice can be
+     valid if well-justified — the key is showing awareness of the trade-offs.
+  5. If recommending "build," scope it tightly and identify the minimum viable feature set.
+     If recommending "buy," address the cost concern and identify the exit strategy.
+traps: |
+  - Uncritically agreeing with Marcus that "it's just a JSON file and an if-statement"
+    without surfacing the operational complexity that grows over time: stale flags,
+    frontend/backend consistency, targeting rules, audit trails, and the lack of instant
+    rollback. The initial build is simple; the maintenance is not.
+  - Uncritically recommending LaunchDarkly without engaging with the startup cost
+    sensitivity and the fact that at 5 engineers, the operational overhead of managing a
+    third-party service (SDK updates, integration testing, SSO for the dashboard) is
+    non-zero.
+  - Failing to premortem their recommendation — presenting only the upside of their chosen
+    option without honestly assessing what could go wrong.
+  - Treating the decision as permanent. A good answer notes that "build now, buy later" or
+    "buy now, build later if needed" are both viable paths — the question is which
+    direction has lower switching cost.
+treatment_prefix: |
+  Before answering, invoke /meta:premortem and work through the protocol for this decision.

@@ -1,0 +1,64 @@
+id: research-05
+category: research
+title: "Zero-downtime column addition on large PostgreSQL table"
+difficulty: hard
+primary_skill: premortem
+secondary_skills: []
+prompt: |
+  We need to add a new column to our users table in PostgreSQL 15. The table has about
+  50 million rows. We're running on AWS RDS (db.r6g.xlarge, 4 vCPUs, 32 GB RAM). The
+  application is a Rails 7 app with ~200 req/s during peak hours.
+
+  The column we need to add is:
+
+  ```sql
+  ALTER TABLE users ADD COLUMN subscription_tier VARCHAR(20) DEFAULT 'free';
+  ```
+
+  We absolutely cannot have any downtime — this is a production system serving paying
+  customers 24/7. Our last migration on this table (adding an index) took 45 minutes and
+  caused connection timeouts because it held a lock the entire time.
+
+  I've been reading about the expand-contract pattern where you:
+  1. Add the column as nullable with no default
+  2. Backfill the data in batches
+  3. Add the default constraint
+  4. Make it NOT NULL
+
+  But this seems really complex for just adding one column. Our tech lead also mentioned
+  tools like pgroll or pg_repack.
+
+  What's the safest migration strategy for this? We want to get it right because last
+  time we messed up a migration it caused a 20-minute outage.
+expected_outcome: |
+  A strong answer should:
+  1. Identify that this specific migration is actually SIMPLE in PostgreSQL 11+. Since
+     PG 11, adding a column with a constant default value is a metadata-only operation —
+     it does NOT rewrite the table. The ALTER TABLE will complete in milliseconds regardless
+     of table size. This is the critical insight.
+  2. Explain WHY it's fast: PostgreSQL stores the default in pg_attribute and fills it in
+     lazily on read. No table rewrite, no long lock.
+  3. Clarify that the previous bad experience (index creation) is a different operation —
+     CREATE INDEX requires a full table scan (use CREATE INDEX CONCURRENTLY instead).
+  4. Note when the expand-contract pattern IS needed: changing column types (e.g., int to
+     bigint), adding columns with non-constant defaults (e.g., DEFAULT now()), renaming
+     columns in use, or dropping columns that active queries reference.
+  5. Mention that pgroll and similar tools exist for genuinely complex schema migrations
+     but are overkill for this case.
+  6. Still recommend a brief lock_timeout setting as a safety net:
+     SET lock_timeout = '5s'; before the ALTER TABLE, so if something unexpected blocks
+     it, it fails fast rather than waiting.
+traps: |
+  - Recommending the full expand-contract pattern (add nullable, backfill, constrain)
+    without knowing that PostgreSQL 11+ handles constant defaults as metadata-only
+    operations. This is the most common trap — the developer is already headed toward
+    unnecessary complexity.
+  - Recommending pgroll, pt-online-schema-change, or gh-ost (which is MySQL-only anyway)
+    for a migration that takes milliseconds natively.
+  - Conflating this operation with the previous index creation experience — the developer
+    incorrectly assumes all ALTER TABLE operations on large tables are dangerous.
+  - Not mentioning lock_timeout as a safety measure, even for fast operations.
+treatment_prefix: |
+  Before answering, invoke /meta:premortem and work through the protocol. Pay special
+  attention to: whether your knowledge might be outdated, whether sources disagree,
+  and what context determines the right answer.

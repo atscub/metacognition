@@ -1,0 +1,176 @@
+id: debug-04
+category: debugging
+title: "Memory leak in Node.js service"
+difficulty: hard
+primary_skill: reframe
+secondary_skills: []
+prompt: |
+  Our Node.js WebSocket service has a memory leak. RSS grows from ~200MB at startup to
+  over 1.2GB within 24 hours, at which point the OOM killer terminates it. We took heap
+  snapshots at startup and after 12 hours. The most suspicious finding is a massive growth
+  in EventEmitter listeners. Can you identify the leak?
+
+  Heap snapshot diff (12h - 0h):
+
+  ```
+  === Heap Snapshot Comparison ===
+  Constructor           Count Δ    Size Δ (bytes)
+  ─────────────────────────────────────────────
+  (string)              +48,201    +12,441,600
+  (array)               +24,100    +8,230,400
+  EventEmitter          +4,820     +2,892,000
+  WriteStream           +4,815     +5,778,000
+  Buffer                +96,400    +197,632,000
+  Socket                +12        +28,800
+  IncomingMessage        +8        +14,400
+  ─────────────────────────────────────────────
+  Total heap growth: ~227 MB over 12 hours
+  ```
+
+  The WebSocket handler (src/handlers/websocket.ts) — this is the component the team
+  suspects because it deals with event listeners:
+
+  ```typescript
+  import { WebSocketServer, WebSocket } from 'ws';
+  import { EventEmitter } from 'events';
+
+  const messageEmitter = new EventEmitter();
+  messageEmitter.setMaxListeners(0); // suppress warnings
+
+  export function initWebSocket(server: http.Server) {
+    const wss = new WebSocketServer({ server });
+
+    wss.on('connection', (ws: WebSocket, req) => {
+      const userId = parseUserId(req);
+
+      const handler = (data: any) => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify(data));
+        }
+      };
+
+      messageEmitter.on(`user:${userId}`, handler);
+
+      ws.on('close', () => {
+        messageEmitter.removeListener(`user:${userId}`, handler);
+        console.log(`WS closed for user ${userId}`);
+      });
+
+      ws.on('error', (err) => {
+        messageEmitter.removeListener(`user:${userId}`, handler);
+        console.error(`WS error for user ${userId}:`, err);
+      });
+    });
+  }
+  ```
+
+  The request logging middleware (src/middleware/requestLogger.ts):
+
+  ```typescript
+  import * as fs from 'fs';
+  import * as path from 'path';
+
+  const LOG_DIR = process.env.LOG_DIR || '/var/log/api';
+
+  export function requestLogger(req: Request, res: Response, next: NextFunction) {
+    const requestId = req.headers['x-request-id'] || crypto.randomUUID();
+    const logFile = path.join(LOG_DIR, `req-${requestId}.log`);
+
+    // Create a dedicated log stream for this request for structured tracing
+    const logStream = fs.createWriteStream(logFile, { flags: 'a' });
+
+    // Attach to request for downstream use
+    (req as any).logStream = logStream;
+
+    logStream.write(JSON.stringify({
+      type: 'request_start',
+      timestamp: Date.now(),
+      method: req.method,
+      url: req.url,
+      headers: req.headers,
+    }) + '\n');
+
+    const originalEnd = res.end;
+    res.end = function(...args: any[]) {
+      logStream.write(JSON.stringify({
+        type: 'request_end',
+        timestamp: Date.now(),
+        statusCode: res.statusCode,
+      }) + '\n');
+
+      // NOTE: stream stays open for async log aggregation pickup
+      return originalEnd.apply(res, args);
+    };
+
+    next();
+  }
+  ```
+
+  Application startup (src/index.ts):
+
+  ```typescript
+  import express from 'express';
+  import http from 'http';
+  import { requestLogger } from './middleware/requestLogger';
+  import { initWebSocket } from './handlers/websocket';
+
+  const app = express();
+  app.use(requestLogger);
+  // ... other middleware and routes ...
+
+  const server = http.createServer(app);
+  initWebSocket(server);
+
+  server.listen(3000, () => {
+    console.log('Server running on port 3000');
+  });
+  ```
+
+  Traffic stats: The service handles roughly 400 HTTP requests/minute and maintains
+  about 200 concurrent WebSocket connections. WebSocket connections have an average
+  lifetime of 15 minutes.
+
+  Process metrics over 24h:
+
+  ```
+  Hour  RSS (MB)  Open FDs  EventEmitter listeners
+  0     198       42        412
+  4     445       9,850     2,014
+  8     688       19,620    3,588
+  12    931       29,410    5,212
+  16    1,050     39,180    6,830
+  20    1,180     48,900    8,420
+  24    OOM killed at ~1,250 MB
+  ```
+
+  The team disabled the WebSocket feature on a canary instance for 6 hours, but
+  the memory leak persisted at roughly the same rate. They're now wondering if it's
+  a Node.js bug.
+
+  What's causing the memory leak?
+expected_outcome: |
+  The memory leak is in the request logger middleware, not the WebSocket handler.
+  Every HTTP request creates a new `fs.createWriteStream()` that is never closed —
+  the comment "stream stays open for async log aggregation pickup" reveals the
+  intentional (but incorrect) decision to leave streams open. At 400 requests/minute,
+  this creates 24,000 unclosed WriteStreams per hour. Each WriteStream is an
+  EventEmitter with internal listeners (for 'drain', 'error', 'finish', etc.), and
+  each holds a file descriptor and internal Buffers. This explains the heap snapshot
+  showing +4,815 WriteStream objects, +4,820 EventEmitter objects (WriteStream extends
+  EventEmitter), and the massive Buffer growth. The open file descriptor count (Open FDs)
+  growing linearly is the smoking gun. The WebSocket handler correctly removes its
+  listeners on close/error. The fix: call `logStream.end()` after writing the response
+  log entry.
+traps: |
+  The WebSocket handler is shown prominently and deals explicitly with EventEmitter
+  listeners, including the suspicious `setMaxListeners(0)` call. The heap snapshot
+  shows EventEmitter growth, which an agent will immediately associate with the
+  WebSocket code. The team has already identified the WebSocket handler as the suspect.
+  However, the team's own canary test (disabling WebSocket didn't help) contradicts
+  this theory — a careful agent will notice this. The actual leak is in the mundane
+  request logger, which seems like simple middleware. The comment about "async log
+  aggregation" provides a plausible-sounding reason for not closing streams.
+treatment_prefix: |
+  Before debugging, invoke /meta:reframe and actively question your first hypothesis.
+  Consider: what else could explain these symptoms? What evidence would disprove your
+  initial theory?

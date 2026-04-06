@@ -1,0 +1,170 @@
+id: debug-03
+category: debugging
+title: "Tests pass locally, fail in CI"
+difficulty: medium
+primary_skill: socratic
+secondary_skills: []
+prompt: |
+  Our date formatting tests pass locally for every developer on the team but consistently
+  fail in CI. The team lead suspects it's a Node.js version difference because CI runs a
+  slightly different patch version. We've already spent two days trying to pin the exact
+  Node version in CI. Can you take a fresh look?
+
+  Test file (src/utils/__tests__/formatDate.test.ts):
+
+  ```typescript
+  import { formatDate } from '../formatDate';
+
+  describe('formatDate', () => {
+    it('should format a date correctly', () => {
+      // March 5, 2026 at 00:30 UTC
+      const timestamp = 1772791800000;
+      const result = formatDate(timestamp);
+      expect(result).toBe('March 5, 2026');
+    });
+
+    it('should format another date correctly', () => {
+      // January 15, 2026 at 01:00 UTC
+      const timestamp = 1768525200000;
+      const result = formatDate(timestamp);
+      expect(result).toBe('January 15, 2026');
+    });
+
+    it('should handle end-of-year dates', () => {
+      // December 31, 2025 at 23:30 UTC
+      const timestamp = 1767225000000;
+      const result = formatDate(timestamp);
+      expect(result).toBe('December 31, 2025');
+    });
+  });
+  ```
+
+  Implementation (src/utils/formatDate.ts):
+
+  ```typescript
+  export function formatDate(timestampMs: number): string {
+    const date = new Date(timestampMs);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
+  ```
+
+  CI failure output:
+
+  ```
+  FAIL src/utils/__tests__/formatDate.test.ts
+    formatDate
+      ✕ should format a date correctly (4ms)
+      ✕ should format another date correctly (1ms)
+      ✓ should handle end-of-year dates (1ms)
+
+    ● formatDate › should format a date correctly
+
+      expect(received).toBe(expected)
+
+      Expected: "March 5, 2026"
+      Received: "March 4, 2026"
+
+        5 |       const timestamp = 1772791800000;
+        6 |       const result = formatDate(timestamp);
+      > 7 |       expect(result).toBe('March 5, 2026');
+
+    ● formatDate › should format another date correctly
+
+      expect(received).toBe(expected)
+
+      Expected: "January 15, 2026"
+      Received: "January 14, 2026"
+
+       11 |       const timestamp = 1768525200000;
+       12 |       const result = formatDate(timestamp);
+      > 13 |       expect(result).toBe('January 15, 2026');
+  ```
+
+  CI configuration (.github/workflows/test.yml):
+
+  ```yaml
+  name: Tests
+  on: [push, pull_request]
+  jobs:
+    test:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-node@v4
+          with:
+            node-version: '20.11.1'
+        - run: npm ci
+        - run: npm test
+  ```
+
+  Local dev environment details (from the developer who reported it):
+
+  ```
+  $ node --version
+  v20.9.0
+  $ cat /etc/timezone
+  Europe/Berlin
+  $ echo $TZ
+  (empty)
+  $ timedatectl | grep "Time zone"
+  Time zone: Europe/Berlin (CET, +0100)
+  ```
+
+  CI environment:
+
+  ```
+  $ node --version
+  v20.11.1
+  $ cat /etc/timezone
+  Etc/UTC
+  $ echo $TZ
+  (empty)
+  ```
+
+  The team has already tried:
+  - Pinning Node to 20.9.0 in CI → tests still fail
+  - Pinning Node to 20.11.1 locally → tests still pass
+  - Running `npm ci` with `--ignore-scripts` → same result
+  - Comparing `package-lock.json` → identical
+
+  One developer on the team (based in San Francisco, UTC-8) also tried running the tests
+  and said "they pass for me too, I don't know what's wrong with CI."
+
+  What's causing the discrepancy?
+expected_outcome: |
+  The root cause is a timezone difference, not a Node.js version difference.
+  The formatDate function uses `toLocaleDateString()` which formats dates in the
+  system's local timezone. The test timestamps are chosen at times just after midnight
+  UTC (00:30 and 01:00 UTC). In Europe/Berlin (UTC+1), these times are 01:30 and
+  02:00 local time — still the same calendar day. But in UTC (the CI environment),
+  they are 00:30 and 01:00 — also the same day. Wait — the key is that the timestamps
+  are at 00:30 UTC, meaning in UTC they're March 5 at 00:30, so CI should show
+  March 5. But CI shows March 4.
+
+  Actually, looking more carefully: the CI is in UTC and shows "March 4" for a
+  timestamp the developer calls "March 5, 2026 at 00:30 UTC." This means the
+  timestamp is actually March 4 at 23:30 UTC (the developer miscalculated when
+  writing the test comment). In Europe/Berlin (UTC+1), 23:30 UTC = 00:30 local
+  on March 5, so the test passes locally. In UTC, it's still March 4. The San
+  Francisco developer (UTC-8) would see March 4 at 15:30, still March 4 — but
+  they said tests pass, which means either they have TZ set or there's another
+  factor. The core issue remains: `toLocaleDateString()` uses local timezone,
+  and the test was written assuming the developer's timezone. Fix: use
+  `toLocaleDateString` with `{ timeZone: 'UTC' }` or construct the date in UTC.
+traps: |
+  The Node.js version difference is highlighted prominently — CI runs 20.11.1 vs
+  local 20.9.0. The team has already spent two days investigating this angle, creating
+  a strong anchoring effect. The CI config showing a different Node version is the most
+  visible difference. A naive agent will investigate Intl/ICU differences between Node
+  patch versions, which is a real phenomenon but not the cause here. The timezone clue
+  requires noticing: (1) the developer is in Europe/Berlin, (2) the CI is in UTC,
+  (3) the test timestamps are near midnight UTC, and (4) the off-by-one is always
+  exactly one day behind, consistent with timezone rollback.
+treatment_prefix: |
+  Before debugging, invoke /meta:socratic and actively question your first hypothesis.
+  Consider: what else could explain these symptoms? What evidence would disprove your
+  initial theory?

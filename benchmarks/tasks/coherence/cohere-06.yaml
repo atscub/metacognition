@@ -1,0 +1,243 @@
+id: cohere-06
+category: coherence
+title: "CI/CD pipeline vs deployment docs vs deploy script"
+difficulty: medium
+primary_skill: coherence
+secondary_skills: []
+prompt: |
+  Review the following three artifacts for consistency. Identify any discrepancies between them.
+
+  ## Artifact 1: GitHub Actions Workflow (.github/workflows/deploy.yml)
+
+  ```yaml
+  name: Deploy to Production
+
+  on:
+    push:
+      branches: [main]
+
+  permissions:
+    contents: read
+    id-token: write
+
+  jobs:
+    test:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-node@v4
+          with:
+            node-version: "20"
+            cache: "npm"
+        - run: npm ci
+        - run: npm run lint
+        - run: npm test
+
+    build:
+      needs: test
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-node@v4
+          with:
+            node-version: "20"
+            cache: "npm"
+        - run: npm ci
+        - run: npm run build
+        - uses: actions/upload-artifact@v4
+          with:
+            name: build-output
+            path: dist/
+
+    deploy:
+      needs: build
+      runs-on: ubuntu-latest
+      environment: production
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/download-artifact@v4
+          with:
+            name: build-output
+            path: dist/
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            role-to-arn: ${{ secrets.AWS_ROLE_ARN }}
+            aws-region: us-east-1
+        - name: Deploy to S3 and invalidate CloudFront
+          run: |
+            aws s3 sync dist/ s3://${{ secrets.S3_BUCKET }}/ --delete
+            aws cloudfront create-invalidation \
+              --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} \
+              --paths "/*"
+        - name: Run database migrations
+          run: |
+            npm ci
+            DATABASE_URL=${{ secrets.DATABASE_URL }} npm run migrate
+
+    notify:
+      needs: deploy
+      runs-on: ubuntu-latest
+      if: always()
+      steps:
+        - name: Send Slack notification
+          uses: slackapi/slack-github-action@v1
+          with:
+            payload: |
+              {
+                "text": "Deploy ${{ needs.deploy.result }}: ${{ github.sha }}"
+              }
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  ```
+
+  ## Artifact 2: Deployment Runbook (docs/deployment-runbook.md)
+
+  ```markdown
+  # Production Deployment Runbook
+
+  ## Overview
+  Deployments are triggered automatically when code is merged to `main`.
+  The CI/CD pipeline handles testing, building, and deploying.
+
+  ## Pre-Deployment Checklist
+  - [ ] All PR checks passing
+  - [ ] Code reviewed and approved
+  - [ ] Database migration tested on staging
+  - [ ] Rollback plan documented
+
+  ## Deployment Steps
+
+  The automated pipeline follows this sequence:
+
+  ### Step 1: Run Tests
+  Automated tests run using Node.js 20 on Ubuntu.
+  - Linting (ESLint)
+  - Unit & integration tests
+
+  ### Step 2: Build
+  Production build is created and artifacts are uploaded.
+
+  ### Step 3: Run Database Migrations
+  Database migrations run against production using `npm run migrate`.
+  Migrations must complete successfully before deploying new code to
+  ensure the database schema is ready for the new application version.
+
+  ### Step 4: Deploy
+  Built artifacts are synced to S3 and CloudFront cache is invalidated.
+
+  ### Step 5: Notify
+  Slack notification is sent with deployment status.
+
+  ## Rollback Procedure
+
+  If issues are detected after deployment:
+
+  1. Revert the merge commit on `main`:
+     ```bash
+     git revert <commit-sha>
+     git push origin main
+     ```
+  2. This triggers a new deployment with the reverted code.
+  3. If database migrations need reverting, run:
+     ```bash
+     ./scripts/deploy.sh rollback
+     ```
+
+  ## Manual Deploy (Emergency Only)
+
+  If the CI pipeline is down, use the deploy script:
+  ```bash
+  export AWS_PROFILE=production
+  export DEPLOY_TOKEN=$(vault read -field=token secret/deploy)
+  ./scripts/deploy.sh production
+  ```
+  ```
+
+  ## Artifact 3: Deploy Script (scripts/deploy.sh)
+
+  ```bash
+  #!/usr/bin/env bash
+  set -euo pipefail
+
+  ENVIRONMENT="${1:-staging}"
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+  echo "=== Deploying to ${ENVIRONMENT} ==="
+
+  # Load environment variables
+  source "${PROJECT_ROOT}/.env.${ENVIRONMENT}"
+
+  # Ensure correct Node version
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  nvm use 18
+
+  # Install dependencies
+  cd "$PROJECT_ROOT"
+  npm ci
+
+  # Run tests
+  echo "Running tests..."
+  npm run lint
+  npm test
+
+  # Build
+  echo "Building..."
+  npm run build
+
+  # Deploy
+  echo "Deploying to S3..."
+  aws s3 sync dist/ "s3://${S3_BUCKET}/" --delete
+
+  echo "Invalidating CloudFront..."
+  aws cloudfront create-invalidation \
+    --distribution-id "${CF_DISTRIBUTION_ID}" \
+    --paths "/*"
+
+  # Post-deploy verification
+  echo "Verifying deployment..."
+  HEALTH_URL="${HEALTH_CHECK_URL:-https://${DOMAIN}/health}"
+  for i in {1..10}; do
+    if curl -sf "$HEALTH_URL" > /dev/null; then
+      echo "Health check passed!"
+      break
+    fi
+    echo "Waiting for health check (attempt $i/10)..."
+    sleep 10
+  done
+
+  # Run migrations
+  echo "Running database migrations..."
+  DATABASE_URL="${DATABASE_URL}" npm run migrate
+
+  # Notify
+  echo "Sending notification..."
+  curl -X POST "${SLACK_WEBHOOK_URL}" \
+    -H "Content-Type: application/json" \
+    -d "{\"text\": \"Deployed to ${ENVIRONMENT}: $(git rev-parse --short HEAD)\"}"
+
+  # Authenticate with deploy token
+  echo "Registering deployment..."
+  curl -X POST "https://deploy-registry.internal/api/deployments" \
+    -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
+    -H "Content-Type: application/json" \
+    -d "{\"env\": \"${ENVIRONMENT}\", \"sha\": \"$(git rev-parse HEAD)\"}"
+
+  echo "=== Deploy complete ==="
+  ```
+expected_outcome: |
+  The review should find these inconsistencies:
+
+  (a) Node.js version mismatch: The GitHub Actions workflow uses `node-version: "20"` across all jobs, but deploy.sh runs `nvm use 18`. If someone uses the manual deploy script, they will build and deploy with Node 18 instead of Node 20, potentially causing compatibility issues or different build output.
+
+  (b) Migration ordering mismatch: The deployment runbook (Step 3 and Step 4) explicitly states that database migrations must run BEFORE deploying new code ("Migrations must complete successfully before deploying new code to ensure the database schema is ready"). However, the GitHub Actions workflow runs migrations AFTER the deploy step (S3 sync and CloudFront invalidation happen first, then `npm run migrate`). The deploy.sh script also runs migrations after deployment. The runbook's documented order contradicts both implementations.
+
+  (c) Missing DEPLOY_TOKEN in CI: The deploy.sh script uses `${DEPLOY_TOKEN}` to authenticate with the deploy registry API. The runbook's manual deploy section shows setting this variable via vault. However, the GitHub Actions workflow never sets a `DEPLOY_TOKEN` secret or environment variable, so if the workflow ever invoked deploy.sh, the registration step would fail. More importantly, the workflow itself has no deploy registry step at all, meaning automated deployments are never registered.
+traps: |
+  - The Node version difference (20 vs 18) is a single number in two different file formats, easy to overlook.
+  - The migration ordering requires reading the workflow YAML step sequence carefully and comparing it to the numbered steps in the runbook.
+  - The DEPLOY_TOKEN issue requires noticing what the deploy script uses that the workflow doesn't provide, and understanding that the workflow and script are supposed to achieve the same outcome.
+treatment_prefix: |
+  Before reviewing, invoke /meta:coherence and systematically check each artifact against every other artifact using the coherence protocol's 10 categories.

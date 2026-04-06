@@ -1,0 +1,102 @@
+id: arch-01
+category: architecture
+title: "Event dispatch for mixed sync/async consumers"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: [decompose]
+prompt: |
+  You are the lead engineer at a logistics platform called ShipTrack. The platform emits
+  four event types: `order.created`, `order.shipped`, `order.delivered`, and
+  `order.exception`. There are 12 consumers of these events:
+
+  - 8 internal async consumers (analytics pipeline, inventory updater, ETA predictor,
+    fraud scorer, notification dispatcher, audit logger, billing trigger, SLA monitor)
+  - 4 external synchronous HTTP webhook consumers belonging to enterprise customers
+    (FedEx integration, UPS integration, DHL integration, and a customs broker)
+
+  The current implementation uses direct function calls in a synchronous loop:
+
+  ```python
+  # current_dispatch.py
+  import requests
+  import time
+
+  WEBHOOK_URLS = {
+      "fedex": "https://fedex-partner.example.com/webhook",
+      "ups": "https://ups-integration.example.com/events",
+      "dhl": "https://dhl-connect.example.com/shiptrack",
+      "customs": "https://broker.example.com/api/events",
+  }
+  WEBHOOK_TIMEOUT = 10  # seconds
+
+  def dispatch_event(event_type: str, payload: dict):
+      # Internal consumers
+      analytics.process(event_type, payload)
+      inventory.update(event_type, payload)
+      eta.recalculate(event_type, payload)
+      fraud.score(event_type, payload)
+      notifications.send(event_type, payload)
+      audit.log(event_type, payload)
+      billing.trigger(event_type, payload)
+      sla.check(event_type, payload)
+
+      # External webhooks — called synchronously
+      for name, url in WEBHOOK_URLS.items():
+          try:
+              resp = requests.post(url, json={"type": event_type, **payload},
+                                   timeout=WEBHOOK_TIMEOUT)
+              if resp.status_code >= 400:
+                  logger.warning(f"Webhook {name} returned {resp.status_code}")
+          except requests.Timeout:
+              logger.error(f"Webhook {name} timed out after {WEBHOOK_TIMEOUT}s")
+          except requests.ConnectionError:
+              logger.error(f"Webhook {name} connection failed")
+  ```
+
+  Current performance numbers:
+  - Average event dispatch latency: 2.3 seconds (target: < 200ms)
+  - P99 latency: 12.8 seconds (when a webhook times out)
+  - Event throughput: ~800 events/hour (need to support 15,000 events/hour by Q3)
+  - Webhook delivery success rate: 94% (target: 99.5%)
+  - The DHL webhook frequently takes 6-8 seconds to respond
+  - During peak hours (2-4 PM UTC), the dispatch queue backs up and internal consumers
+    see delays of up to 45 seconds
+
+  The enterprise webhook contracts specify:
+  - Delivery guarantee: at-least-once
+  - Maximum delivery latency: 60 seconds from event creation
+  - Retry policy: up to 5 retries with exponential backoff
+  - Payload ordering: events for the same order must arrive in causal order
+
+  Your infrastructure team has approved the use of Kafka, RabbitMQ, or Redis Streams.
+  They also have an existing async task runner (Celery with Redis broker).
+
+  Design the event dispatch architecture. Specify: the messaging topology, how you handle
+  the sync webhook consumers without blocking the event loop, your retry and ordering
+  strategy, and how you meet the throughput target.
+expected_outcome: |
+  A strong answer should:
+  1. Separate internal async consumers from external webhook delivery into distinct
+     processing paths (e.g., internal consumers via pub/sub, webhooks via a dedicated
+     outbound queue with per-consumer isolation).
+  2. Identify that synchronous webhook consumers are the bottleneck and design explicit
+     backpressure handling — e.g., per-webhook queues with concurrency limits, circuit
+     breakers for slow consumers like DHL.
+  3. Address the ordering requirement by keying on order_id (partition key or routing key)
+     so events for the same order are serialized.
+  4. Include a retry mechanism with exponential backoff that doesn't block other webhooks
+     (per-consumer retry queues, not a global retry).
+  5. Note that the existing Celery infrastructure could handle webhook dispatch without
+     adding a new message broker, but evaluate whether it provides ordering guarantees.
+traps: |
+  - Anchoring on a pub/sub pattern (Kafka topics) for everything without recognizing that
+    synchronous webhook consumers need a fundamentally different dispatch model than
+    internal async consumers. Pub/sub doesn't solve backpressure from slow HTTP endpoints.
+  - Proposing a single shared retry queue where a failing DHL webhook blocks retries for
+    other webhooks.
+  - Ignoring the per-order ordering requirement, which rules out naive fan-out where
+    events for the same order can be processed out of order across workers.
+  - Over-engineering with Kafka when the existing Celery + Redis infrastructure might
+    suffice for the throughput target (15K events/hour is ~4 events/second).
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol for this decision.

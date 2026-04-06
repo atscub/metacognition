@@ -1,0 +1,222 @@
+id: cohere-04
+category: coherence
+title: "Feature flags across environments"
+difficulty: medium
+primary_skill: coherence
+secondary_skills: []
+prompt: |
+  Review the following three artifacts for consistency. Identify any discrepancies between them.
+
+  ## Artifact 1: Feature Flag Configs
+
+  ### config/flags/dev.json
+  ```json
+  {
+    "flags": {
+      "dark_mode": {
+        "enabled": true,
+        "percentage": 100
+      },
+      "beta_search": {
+        "enabled": true,
+        "percentage": 100
+      },
+      "new_index_engine": {
+        "enabled": true,
+        "percentage": 100
+      },
+      "compact_sidebar": {
+        "enabled": true,
+        "percentage": 100
+      },
+      "ai_suggestions": {
+        "enabled": false,
+        "percentage": 0
+      }
+    }
+  }
+  ```
+
+  ### config/flags/staging.json
+  ```json
+  {
+    "flags": {
+      "dark_mode": {
+        "enabled": true,
+        "percentage": 100
+      },
+      "beta_search": {
+        "enabled": true,
+        "percentage": 50
+      },
+      "new_index_engine": {
+        "enabled": false,
+        "percentage": 0
+      },
+      "compact_sidebar": {
+        "enabled": true,
+        "percentage": 100
+      },
+      "ai_suggestions": {
+        "enabled": false,
+        "percentage": 0
+      }
+    }
+  }
+  ```
+
+  ### config/flags/prod.json
+  ```json
+  {
+    "flags": {
+      "dark_mode": {
+        "enabled": true,
+        "percentage": 100
+      },
+      "beta_search": {
+        "enabled": false,
+        "percentage": 0
+      },
+      "new_index_engine": {
+        "enabled": false,
+        "percentage": 0
+      },
+      "compact_sidebar": {
+        "enabled": true,
+        "percentage": 100
+      },
+      "ai_suggestions": {
+        "enabled": false,
+        "percentage": 0
+      }
+    }
+  }
+  ```
+
+  ## Artifact 2: Application Code (src/features/featureGate.ts)
+
+  ```typescript
+  import { getFeatureFlags } from '../config/flagLoader';
+  import { getCurrentUser } from '../auth/session';
+
+  interface FeatureFlag {
+    enabled: boolean;
+    percentage: number;
+  }
+
+  class FeatureGate {
+    private flags: Record<string, FeatureFlag>;
+
+    constructor() {
+      this.flags = getFeatureFlags();
+    }
+
+    isEnabled(flagName: string): boolean {
+      const flag = this.flags[flagName];
+      if (!flag || !flag.enabled) return false;
+      if (flag.percentage >= 100) return true;
+
+      const user = getCurrentUser();
+      const hash = this.hashUserId(user.id);
+      return (hash % 100) < flag.percentage;
+    }
+
+    private hashUserId(userId: string): number {
+      let hash = 0;
+      for (let i = 0; i < userId.length; i++) {
+        const char = userId.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash |= 0;
+      }
+      return Math.abs(hash);
+    }
+  }
+
+  export const featureGate = new FeatureGate();
+
+  // Usage in route handlers
+  export function applyFeatureGates(app: Express) {
+    app.get('/api/search', (req, res, next) => {
+      if (!featureGate.isEnabled('beta_search')) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+      next();
+    });
+
+    app.get('/api/suggestions', (req, res, next) => {
+      if (!featureGate.isEnabled('ai_suggestions')) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+      next();
+    });
+
+    app.post('/api/checkout', (req, res, next) => {
+      if (featureGate.isEnabled('new_checkout_flow')) {
+        return res.redirect(307, '/api/v2/checkout');
+      }
+      next();
+    });
+
+    app.get('/api/sidebar/compact', (req, res, next) => {
+      if (!featureGate.isEnabled('compact_sidebar')) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+      next();
+    });
+  }
+  ```
+
+  ## Artifact 3: Rollout Plan (docs/rollout-plan.md)
+
+  ```markdown
+  # Feature Rollout Plan — Q1 2024
+
+  ## Current Status
+
+  | Feature            | Dev    | Staging | Prod         | Notes                               |
+  |--------------------|--------|---------|--------------|-------------------------------------|
+  | dark_mode          | 100%   | 100%    | 50%          | Gradual rollout, monitor perf       |
+  | beta_search        | 100%   | 50%     | 0% (off)     | Depends on new_index_engine         |
+  | new_index_engine   | 100%   | 100%    | 0% (off)     | Waiting on infra approval           |
+  | compact_sidebar    | 100%   | 100%    | 100%         | Fully rolled out                    |
+  | ai_suggestions     | 0%     | 0%      | 0%           | Blocked on vendor contract          |
+  | new_checkout_flow  | 100%   | 50%     | 0%           | In A/B testing on staging           |
+
+  ## Rollout Schedule
+
+  ### Week 1 (Jan 15)
+  - Enable `new_index_engine` on staging at 100%
+  - Begin `dark_mode` prod rollout at 50%
+
+  ### Week 2 (Jan 22)
+  - If metrics OK, enable `beta_search` on staging at 50%
+  - `dark_mode` prod to 75%
+
+  ### Week 3 (Jan 29)
+  - `dark_mode` prod to 100%
+  - `beta_search` staging to 100%
+
+  ### Week 4 (Feb 5)
+  - `beta_search` prod at 25%
+  - `new_checkout_flow` staging to 100%
+
+  ## Dependencies
+
+  - `beta_search` depends on `new_index_engine` — never enable beta_search
+    in an environment where new_index_engine is disabled.
+  - `ai_suggestions` blocked on external vendor (Acme AI) contract signing.
+  ```
+expected_outcome: |
+  The review should find these inconsistencies:
+
+  (a) Rollout plan vs prod config for dark_mode: The rollout plan says "dark_mode at 50% in prod" and the schedule says "Begin dark_mode prod rollout at 50%", but prod.json has `"dark_mode": {"enabled": true, "percentage": 100}`. The config shows 100% rollout, contradicting the plan's 50%.
+
+  (b) Undefined feature flag: The application code checks `featureGate.isEnabled('new_checkout_flow')` in the `/api/checkout` route, but `new_checkout_flow` is not defined in any of the three environment config files (dev.json, staging.json, prod.json). The rollout plan mentions it, but the configs were never updated. The `isEnabled` method will return `false` (since `flag` is `undefined`), so the feature is silently disabled everywhere despite being planned for staging A/B testing.
+
+  (c) Dependency violation in staging: The rollout plan explicitly states "never enable beta_search in an environment where new_index_engine is disabled." However, staging.json has `beta_search` enabled at 50% while `new_index_engine` is disabled (`"enabled": false`). This violates the stated dependency.
+traps: |
+  - The dark_mode discrepancy requires comparing a prose percentage ("50%") against a JSON value (100) in a different file.
+  - The missing `new_checkout_flow` flag is only apparent if you check what the code references against all three config files; the rollout plan mentions it, making it seem planned but not alerting to the missing config.
+  - The dependency violation requires reading the prose dependency rule AND cross-checking two flags in the same config file.
+treatment_prefix: |
+  Before reviewing, invoke /meta:coherence and systematically check each artifact against every other artifact using the coherence protocol's 10 categories.

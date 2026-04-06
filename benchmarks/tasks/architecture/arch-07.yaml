@@ -1,0 +1,122 @@
+id: arch-07
+category: architecture
+title: "API versioning strategy for mobile and web clients"
+difficulty: medium
+primary_skill: socratic
+secondary_skills: [premortem]
+prompt: |
+  You are the API platform lead at HealthPulse, a telehealth company. HealthPulse has
+  four client applications consuming a shared REST API:
+
+  - **iOS app** (Swift, 800K installed base, ~40% on latest version)
+  - **Android app** (Kotlin, 1.2M installed base, ~35% on latest version)
+  - **React Native companion app** (for caregivers, 200K installed base)
+  - **Web SPA** (React, always latest version)
+
+  The API currently has no versioning. Breaking changes are coordinated by releasing
+  client updates simultaneously with backend deploys — a process that fails regularly
+  because mobile apps go through app store review (1-7 days for iOS, 1-3 days for
+  Android) and you cannot force users to update.
+
+  Last month's incident report:
+  ```
+  2026-03-15: Backend deployed breaking change to /api/appointments endpoint
+    - Renamed field: "doctor_id" → "provider_id"
+    - Web SPA: updated same day, no issues
+    - iOS: update submitted to App Store, approved after 4 days
+    - Android: update submitted, approved after 2 days
+    - React Native: update submitted to both stores
+    - Result: 60% of mobile users saw broken appointment booking for 2-4 days
+    - Revenue impact: estimated $180K in lost bookings
+    - Rollback attempted but backend migration was not reversible
+  ```
+
+  Current endpoint structure:
+  ```
+  GET    /api/appointments
+  POST   /api/appointments
+  GET    /api/appointments/:id
+  GET    /api/providers
+  GET    /api/patients/:id/records
+  POST   /api/prescriptions
+  GET    /api/billing/invoices
+  ```
+
+  Requirements:
+  - Must support at least 2 API versions simultaneously (current + previous)
+  - Deprecation window: minimum 90 days before removing an old version
+  - Mobile clients must work without forced updates for at least 6 months after a version
+    is deprecated
+  - Web SPA should always use the latest API version
+  - Must work with the existing infrastructure: AWS ALB, ECS containers, CloudFront CDN
+  - The React Native app uses an embedded WebView for some screens (payment flow,
+    document signing) that makes HTTP calls directly from the WebView context
+
+  The team has narrowed the choice to three approaches:
+
+  **A. URL path versioning**: `/v1/appointments`, `/v2/appointments`
+  ```
+  Pros: Simple, cacheable, visible in logs, easy to route at the ALB level
+  Cons: URL proliferation, all-or-nothing version bump, clients must update base URL
+  ```
+
+  **B. Custom header versioning**: `Accept-Version: 2`
+  ```
+  Pros: Clean URLs, per-endpoint versioning possible, "more RESTful"
+  Cons: Headers not visible in browser, harder to cache at CDN, requires all clients
+        to set custom headers on every request
+  ```
+
+  **C. Content negotiation**: `Accept: application/vnd.healthpulse.v2+json`
+  ```
+  Pros: Fully RESTful, per-resource versioning, follows HTTP semantics
+  Cons: Complex, harder to document, requires media type parsing on server
+  ```
+
+  Additional context:
+  - The iOS app uses URLSession, which supports custom headers
+  - The Android app uses Retrofit with OkHttp, which supports custom headers
+  - The React Native app uses fetch API, which supports custom headers
+  - The WebView-embedded payment flow uses a stripped-down HTTP client that sends
+    requests via `window.fetch()` in a restricted iframe context. The iframe's Content
+    Security Policy was set by the payment provider and cannot be modified. Custom
+    headers in cross-origin iframe requests trigger CORS preflight, which the payment
+    provider's server does not support.
+  - CloudFront CDN cache key currently includes: URL path, Host header, Authorization
+    header. Adding custom headers to the cache key requires a CloudFront Function.
+
+  Recommend a versioning strategy. Address the specific constraints of each client type
+  and provide an implementation plan including ALB routing rules.
+expected_outcome: |
+  A strong answer should:
+  1. Recommend URL path versioning (/v1/, /v2/) as the primary strategy, because:
+     - It works universally across all client types including the restricted WebView
+     - It's cacheable at CloudFront without additional configuration
+     - It's routable at the ALB level for canary deployments or version-specific scaling
+     - It's visible in logs and debugging tools
+  2. Explicitly flag the WebView constraint that rules out header-based approaches: the
+     embedded payment flow's iframe cannot set custom headers without triggering CORS
+     preflight, which the payment provider doesn't support. This is a hard blocker for
+     approaches B and C.
+  3. Address the "all-or-nothing version bump" concern with URL versioning by recommending
+     additive changes (new fields, new endpoints) within a version, reserving version
+     bumps for breaking changes only.
+  4. Include a practical migration plan: default to v1, add v2 alongside it, update
+     clients to target v2, deprecate v1 after 90 days, sunset after 6 months.
+  5. Address the CDN caching implications — URL path versioning works with CloudFront's
+     default cache key (which includes URL path).
+traps: |
+  - Recommending header-based versioning (option B) as the "elegant" or "more RESTful"
+    choice without verifying that all clients can actually set custom headers. The WebView
+    constraint buried in the additional context is a hard blocker for header-based
+    approaches.
+  - Recommending content negotiation (option C) which has the same CORS/header problem
+    as option B, plus additional complexity in media type parsing.
+  - Dismissing URL path versioning as "not RESTful enough" without weighting the practical
+    constraints (WebView, CDN caching, debugging visibility) that make it the only
+    universally compatible option.
+  - Failing to address the CDN cache key problem — header-based versioning requires
+    CloudFront to include the custom header in its cache key, which requires writing
+    and deploying a CloudFront Function.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol for this decision.

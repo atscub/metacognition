@@ -1,0 +1,294 @@
+id: cohere-09
+category: coherence
+title: "Internationalization — translation files vs UI vs validation"
+difficulty: hard
+primary_skill: coherence
+secondary_skills: []
+prompt: |
+  Review the following four artifacts for consistency. Identify any discrepancies between them.
+
+  ## Artifact 1: English Locale (locales/en.json)
+
+  ```json
+  {
+    "common.save": "Save",
+    "common.cancel": "Cancel",
+    "common.delete": "Delete",
+    "common.edit": "Edit",
+    "common.loading": "Loading...",
+    "common.confirm": "Confirm",
+    "common.back": "Back",
+    "common.next": "Next",
+    "common.submit": "Submit",
+    "common.search": "Search",
+
+    "nav.home": "Home",
+    "nav.profile": "Profile",
+    "nav.settings": "Settings",
+    "nav.logout": "Log out",
+    "nav.help": "Help",
+
+    "auth.login_title": "Sign In",
+    "auth.email_label": "Email Address",
+    "auth.password_label": "Password",
+    "auth.login_button": "Sign In",
+    "auth.forgot_password": "Forgot your password?",
+    "auth.register_link": "Create an account",
+
+    "dashboard.title": "Dashboard",
+    "dashboard.welcome": "Welcome, {{name}}",
+    "dashboard.welcome_back": "Welcome back, {{name}}!",
+    "dashboard.recent_activity": "Recent Activity",
+    "dashboard.stats_label": "Your Statistics",
+
+    "profile.title": "Your Profile",
+    "profile.name_label": "Full Name",
+    "profile.email_label": "Email",
+    "profile.bio_label": "Bio",
+    "profile.avatar_label": "Profile Photo",
+    "profile.save_success": "Profile updated successfully",
+    "profile.save_error": "Failed to update profile",
+
+    "settings.title": "Settings",
+    "settings.notifications": "Notifications",
+    "settings.language": "Language",
+    "settings.theme": "Theme",
+    "settings.danger_zone": "Danger Zone",
+    "settings.delete_account": "Delete Account",
+    "settings.delete_confirm": "Are you sure? This cannot be undone.",
+
+    "errors.generic": "Something went wrong",
+    "errors.not_found": "Page not found",
+    "errors.unauthorized": "Please sign in to continue",
+    "errors.forbidden": "You don't have permission to do that",
+    "errors.network": "Network error. Please check your connection.",
+    "errors.rate_limited": "Too many requests. Please wait a moment.",
+    "errors.validation": "Please fix the errors below"
+  }
+  ```
+
+  ## Artifact 2: Spanish Locale (locales/es.json)
+
+  ```json
+  {
+    "common.save": "Guardar",
+    "common.cancel": "Cancelar",
+    "common.delete": "Eliminar",
+    "common.edit": "Editar",
+    "common.loading": "Cargando...",
+    "common.confirm": "Confirmar",
+    "common.back": "Atr\u00e1s",
+    "common.next": "Siguiente",
+    "common.submit": "Enviar",
+    "common.search": "Buscar",
+
+    "nav.home": "Inicio",
+    "nav.profile": "Perfil",
+    "nav.settings": "Configuraci\u00f3n",
+    "nav.logout": "Cerrar sesi\u00f3n",
+    "nav.help": "Ayuda",
+
+    "auth.login_title": "Iniciar Sesi\u00f3n",
+    "auth.email_label": "Correo Electr\u00f3nico",
+    "auth.password_label": "Contrase\u00f1a",
+    "auth.login_button": "Iniciar Sesi\u00f3n",
+    "auth.forgot_password": "\u00bfOlvidaste tu contrase\u00f1a?",
+    "auth.register_link": "Crear una cuenta",
+
+    "dashboard.title": "Panel",
+    "dashboard.welcome": "Bienvenido, {{name}}",
+    "dashboard.recent_activity": "Actividad Reciente",
+    "dashboard.stats_label": "Tus Estad\u00edsticas",
+
+    "profile.title": "Tu Perfil",
+    "profile.name_label": "Nombre Completo",
+    "profile.email_label": "Correo",
+    "profile.bio_label": "Biograf\u00eda",
+    "profile.avatar_label": "Foto de Perfil",
+    "profile.save_success": "Perfil actualizado correctamente",
+    "profile.save_error": "Error al actualizar el perfil",
+
+    "settings.title": "Configuraci\u00f3n",
+    "settings.notifications": "Notificaciones",
+    "settings.language": "Idioma",
+    "settings.theme": "Tema",
+    "settings.delete_account": "Eliminar Cuenta",
+    "settings.delete_confirm": "\u00bfEst\u00e1s seguro? Esto no se puede deshacer.",
+
+    "errors.generic": "Algo sali\u00f3 mal",
+    "errors.not_found": "P\u00e1gina no encontrada",
+    "errors.unauthorized": "Inicia sesi\u00f3n para continuar",
+    "errors.forbidden": "No tienes permiso para hacer eso",
+    "errors.network": "Error de red. Verifica tu conexi\u00f3n.",
+    "errors.validation": "Corrige los errores a continuaci\u00f3n"
+  }
+  ```
+
+  ## Artifact 3: React Form Component (src/components/ProfileForm.tsx)
+
+  ```tsx
+  import React, { useState } from 'react';
+  import { useTranslation } from 'react-i18next';
+  import { useAuth } from '../hooks/useAuth';
+  import { profileSchema } from '../validation/profileSchema';
+  import { Avatar } from './Avatar';
+  import { toast } from '../utils/toast';
+
+  export function ProfileForm() {
+    const { t } = useTranslation();
+    const { user, updateProfile } = useAuth();
+    const [formData, setFormData] = useState({
+      name: user?.name || '',
+      email: user?.email || '',
+      bio: user?.bio || '',
+    });
+    const [errors, setErrors] = useState<Record<string, string>>({});
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({ ...prev, [name]: value }));
+      // Clear field error on change
+      if (errors[name]) {
+        setErrors((prev) => {
+          const next = { ...prev };
+          delete next[name];
+          return next;
+        });
+      }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setErrors({});
+
+      const result = profileSchema.safeParse(formData);
+      if (!result.success) {
+        const fieldErrors: Record<string, string> = {};
+        result.error.issues.forEach((issue) => {
+          const field = issue.path[0] as string;
+          fieldErrors[field] = issue.message;
+        });
+        setErrors(fieldErrors);
+        return;
+      }
+
+      try {
+        await updateProfile(result.data);
+        toast.success(t('profile.save_success'));
+      } catch {
+        toast.error(t('profile.save_error'));
+      }
+    };
+
+    return (
+      <form onSubmit={handleSubmit} className="profile-form">
+        <h2>{t('profile.title')}</h2>
+
+        <div className="form-group">
+          <label htmlFor="name">{t('profile.name_label')}</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          {errors.name && <span className="error">{errors.name}</span>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="email">{t('profile.email_label')}</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          {errors.email && <span className="error">{errors.email}</span>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="bio">{t('profile.bio_label')}</label>
+          <textarea
+            id="bio"
+            name="bio"
+            value={formData.bio}
+            onChange={handleChange}
+            placeholder={t('profile.bio_placeholder')}
+            rows={4}
+          />
+          {errors.bio && <span className="error">{errors.bio}</span>}
+        </div>
+
+        <div className="form-actions">
+          <button type="submit" className="btn-primary">
+            {t('common.save')}
+          </button>
+          <button type="button" className="btn-secondary">
+            {t('common.cancel')}
+          </button>
+        </div>
+      </form>
+    );
+  }
+  ```
+
+  ## Artifact 4: Zod Validation Schema (src/validation/profileSchema.ts)
+
+  ```typescript
+  import { z } from 'zod';
+
+  export const profileSchema = z.object({
+    name: z
+      .string()
+      .min(1, 'Name is required')
+      .max(100, 'Name must be 100 characters or less')
+      .regex(/^[a-zA-Z\s'-]+$/, 'Name contains invalid characters'),
+
+    email: z
+      .string()
+      .min(1, 'Email is required')
+      .email('Please enter a valid email address'),
+
+    bio: z
+      .string()
+      .max(500, 'Bio must be 500 characters or less')
+      .optional()
+      .transform((val) => val?.trim() || ''),
+  });
+
+  export type ProfileFormData = z.infer<typeof profileSchema>;
+
+  // Re-export for use in API routes
+  export const updateProfileBodySchema = z.object({
+    name: z
+      .string()
+      .min(1, 'Name is required')
+      .max(100, 'Name must be 100 characters or less'),
+
+    email: z
+      .string()
+      .min(1, 'Email is required')
+      .email('Invalid email format'),
+
+    bio: z
+      .string()
+      .max(500, 'Bio too long')
+      .optional(),
+  });
+  ```
+expected_outcome: |
+  The review should find these inconsistencies:
+
+  (a) Missing translation keys in Spanish locale: The English locale (en.json) has 45 keys, but the Spanish locale (es.json) has only 42. The missing keys are: `dashboard.welcome_back`, `settings.danger_zone`, and `errors.rate_limited`. When a Spanish-speaking user encounters these strings, they will either see the English fallback or the raw key, depending on i18n configuration.
+
+  (b) Undefined translation key in code: The React component uses `t('profile.bio_placeholder')` as the placeholder for the bio textarea, but `profile.bio_placeholder` does not exist in either the English or Spanish locale file. This will render the raw key string "profile.bio_placeholder" (or an empty string depending on i18n config) as the placeholder text.
+
+  (c) Hardcoded English strings in validation: The Zod validation schema uses hardcoded English error messages like "Name is required", "Email is required", "Please enter a valid email address", etc. These strings bypass the i18n system entirely. When validation fails, Spanish-speaking users will see English error messages. The validation should use i18n keys (e.g., `t('errors.name_required')`) instead of literal strings.
+traps: |
+  - Counting keys across two large JSON files to find 3 missing ones requires careful comparison, not just a quick scan.
+  - The `bio_placeholder` key looks like it should exist (other profile keys do exist), so it's easy to assume it's there without checking.
+  - Hardcoded strings in Zod are the standard pattern in most tutorials, so they look "normal" unless you're specifically checking for i18n consistency.
+treatment_prefix: |
+  Before reviewing, invoke /meta:coherence and systematically check each artifact against every other artifact using the coherence protocol's 10 categories.

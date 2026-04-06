@@ -1,0 +1,190 @@
+id: cohere-03
+category: coherence
+title: "Docker Compose vs app config vs README"
+difficulty: medium
+primary_skill: coherence
+secondary_skills: []
+prompt: |
+  Review the following four artifacts for consistency. Identify any discrepancies between them.
+
+  ## Artifact 1: docker-compose.yml
+
+  ```yaml
+  version: "3.8"
+
+  services:
+    postgres:
+      image: postgres:16-alpine
+      environment:
+        POSTGRES_DB: myapp
+        POSTGRES_USER: myapp_user
+        POSTGRES_PASSWORD: secret
+      ports:
+        - "5432:5432"
+      volumes:
+        - pgdata:/var/lib/postgresql/data
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U myapp_user"]
+        interval: 5s
+        timeout: 3s
+        retries: 5
+
+    redis:
+      image: redis:7-alpine
+      ports:
+        - "6379:6379"
+      command: redis-server --requirepass redispass123
+
+    app:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - "8080:3000"
+      environment:
+        NODE_ENV: production
+        DATABASE_URL: postgres://myapp_user:secret@postgres:5432/myapp
+        REDIS_URL: redis://:redispass123@redis:6379
+        PORT: 3000
+        SESSION_SECRET: ${SESSION_SECRET}
+      depends_on:
+        postgres:
+          condition: service_healthy
+        redis:
+          condition: service_started
+
+  volumes:
+    pgdata:
+  ```
+
+  ## Artifact 2: .env.example
+
+  ```dotenv
+  # Database
+  DB_HOST=localhost
+  DB_PORT=5432
+  DB_NAME=myapp
+  DB_USER=myapp_user
+  DB_PASSWORD=postgres
+
+  # Redis
+  REDIS_HOST=localhost
+  REDIS_PORT=6379
+  REDIS_PASSWORD=redispass123
+
+  # App
+  PORT=3000
+  NODE_ENV=development
+  SESSION_SECRET=change-me-in-production
+
+  # Logging
+  LOG_LEVEL=debug
+  ```
+
+  ## Artifact 3: Application Config (config/default.json)
+
+  ```json
+  {
+    "server": {
+      "port": 3000,
+      "host": "0.0.0.0"
+    },
+    "database": {
+      "host": "localhost",
+      "port": 5432,
+      "name": "myapp",
+      "user": "myapp_user",
+      "password": "postgres",
+      "pool": {
+        "min": 2,
+        "max": 10
+      }
+    },
+    "redis": {
+      "url": "redis://cache:6379",
+      "password": "redispass123",
+      "keyPrefix": "myapp:"
+    },
+    "session": {
+      "secret": "default-session-secret",
+      "maxAge": 86400000
+    },
+    "logging": {
+      "level": "info"
+    }
+  }
+  ```
+
+  ## Artifact 4: README.md (Quickstart Section)
+
+  ```markdown
+  # MyApp
+
+  ## Quick Start
+
+  ### Prerequisites
+  - Docker & Docker Compose
+  - Node.js 20+
+
+  ### Setup
+
+  1. Clone the repository:
+     ```bash
+     git clone https://github.com/example/myapp.git
+     cd myapp
+     ```
+
+  2. Copy the example environment file:
+     ```bash
+     cp .env.example .env
+     ```
+
+  3. Start the services:
+     ```bash
+     docker-compose up -d
+     ```
+
+  4. Wait for services to be healthy:
+     ```bash
+     docker-compose ps
+     ```
+
+  5. Visit the application at **http://localhost:3000**
+
+  ### Default Credentials
+
+  - **Database:** `myapp_user` / `postgres`
+  - **Redis:** password is `redispass123`
+
+  ### Useful Commands
+
+  ```bash
+  # View logs
+  docker-compose logs -f app
+
+  # Run migrations
+  docker-compose exec app npm run migrate
+
+  # Run tests
+  docker-compose exec app npm test
+  ```
+
+  ### Troubleshooting
+
+  If the app fails to connect to the database, verify that `.env` has the
+  correct `DB_PASSWORD`. The default is `postgres`.
+  ```
+expected_outcome: |
+  The review should find these inconsistencies:
+
+  (a) Port mapping mismatch: The README tells users to "Visit the application at http://localhost:3000", but docker-compose.yml maps port `8080:3000` (host port 8080 to container port 3000). Users following the README will get a connection refused on port 3000; the correct URL from the host is http://localhost:8080.
+
+  (b) Database password mismatch: The .env.example file sets `DB_PASSWORD=postgres`, the README's default credentials section says the password is `postgres`, and config/default.json also has `"password": "postgres"`. However, docker-compose.yml sets `POSTGRES_PASSWORD: secret` and uses `secret` in the DATABASE_URL. If a developer copies .env.example and tries to connect outside of Docker, they will use `postgres` as the password, but the actual PostgreSQL container requires `secret`.
+
+  (c) Redis hostname mismatch: config/default.json references `"url": "redis://cache:6379"` with the hostname `cache`, but docker-compose.yml names the Redis service `redis` (not `cache`). Inside the Docker network, the service is reachable at hostname `redis`, so the config's URL will fail DNS resolution.
+traps: |
+  - The port mismatch requires understanding Docker port mapping syntax (host:container), not just seeing "3000" in multiple places.
+  - The password discrepancy is split across four files, and three of the four agree on "postgres", making the docker-compose `secret` value look like the odd one out rather than a clear bug.
+  - The Redis hostname issue is buried in a JSON URL string that also has the correct port, making it look right at a glance.
+treatment_prefix: |
+  Before reviewing, invoke /meta:coherence and systematically check each artifact against every other artifact using the coherence protocol's 10 categories.

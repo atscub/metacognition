@@ -1,0 +1,124 @@
+id: arch-04
+category: architecture
+title: "Cache invalidation strategy for financial dashboard"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: [decompose]
+prompt: |
+  You are the backend architect for FinView, a real-time financial dashboard used by
+  portfolio managers at investment firms. The system displays portfolio values, transaction
+  history, and reconciliation reports.
+
+  Current caching architecture:
+
+  ```
+  Client (Browser)                CDN (CloudFront)           App Server           Redis Cache          PostgreSQL
+       │                               │                        │                    │                    │
+       │── GET /api/portfolio ────────>│                        │                    │                    │
+       │                               │── Cache-Control: ─────>│                    │                    │
+       │                               │   max-age=60           │── GET portfolio ──>│                    │
+       │                               │                        │   TTL: 5 min       │                    │
+       │                               │                        │                    │── SELECT ... ─────>│
+       │                               │                        │<── cached data ────│                    │
+       │<── cached response ───────────│                        │                    │                    │
+  ```
+
+  Current cache configuration:
+  ```python
+  # cache_config.py
+  CACHE_SETTINGS = {
+      "portfolio_summary": {
+          "redis_ttl": 300,         # 5 minutes
+          "cdn_max_age": 60,        # 1 minute
+          "browser_max_age": 30,    # 30 seconds
+          "stale_while_revalidate": 120,
+      },
+      "transaction_history": {
+          "redis_ttl": 300,         # 5 minutes
+          "cdn_max_age": 120,       # 2 minutes
+          "browser_max_age": 60,    # 1 minute
+          "stale_while_revalidate": 300,
+      },
+      "reconciliation_report": {
+          "redis_ttl": 300,         # 5 minutes
+          "cdn_max_age": 120,       # 2 minutes
+          "browser_max_age": 60,    # 1 minute
+          "stale_while_revalidate": 300,
+      },
+      "market_data": {
+          "redis_ttl": 15,          # 15 seconds
+          "cdn_max_age": 10,        # 10 seconds
+          "browser_max_age": 5,     # 5 seconds
+          "stale_while_revalidate": 30,
+      },
+  }
+  ```
+
+  Data flow for transactions:
+  ```python
+  # transaction_processor.py
+  def process_transaction(txn: Transaction):
+      db.insert(txn)
+      # Update portfolio balance
+      portfolio = db.get_portfolio(txn.portfolio_id)
+      portfolio.balance += txn.amount
+      db.update(portfolio)
+      # No cache invalidation — relies on TTL expiry
+      logger.info(f"Transaction {txn.id} processed")
+  ```
+
+  System requirements (from product spec v2.3):
+  - Portfolio summaries: "near real-time, within 1-2 minutes of transaction processing"
+  - Transaction history: "updated within 5 minutes of new transactions"
+  - Market data overlay: "real-time, sub-second latency from data provider"
+  - Reconciliation reports: "Operations team uses these to verify end-of-day positions.
+    Reports must reflect all transactions processed within the last 30 seconds to support
+    intraday reconciliation workflows. Discrepancies trigger automated alerts."
+  - Dashboard load time: < 2 seconds for the full dashboard
+  - Availability: 99.9% uptime during market hours (9:30 AM - 4:00 PM ET)
+
+  Current pain points:
+  - Portfolio managers sometimes see stale balances after large trades (up to 5 min delay)
+  - The operations team has reported "phantom discrepancies" in reconciliation reports
+    that resolve themselves after a few minutes — they suspect caching
+  - During market open (9:30 AM), cache stampede causes DB load to spike 10x
+  - Redis memory usage is growing; currently at 12 GB of a 16 GB instance
+
+  The engineering team is debating two approaches:
+  1. **Reduce all TTLs** to 30 seconds across the board
+  2. **Add event-driven cache invalidation** using a pub/sub system triggered on writes
+
+  Evaluate both approaches and recommend a cache invalidation strategy. Address each of
+  the pain points and requirements listed above.
+expected_outcome: |
+  A strong answer should:
+  1. Catch the critical mismatch: reconciliation reports have a 30-second freshness
+     requirement but are cached with a 5-minute Redis TTL and 2-minute CDN TTL. This is
+     the root cause of "phantom discrepancies" and is a correctness bug, not just a
+     performance issue.
+  2. Reject the "reduce all TTLs" approach — it would cause cache stampede at scale and
+     doesn't solve the problem (30-second TTLs still mean up to 30 seconds of staleness
+     from Redis + 30 seconds from CDN = 60 seconds worst case, before browser cache).
+  3. Recommend different invalidation strategies for different data types: event-driven
+     invalidation for reconciliation and portfolio (correctness-critical), TTL-based for
+     transaction history (acceptable delay), and very short TTL or direct pass-through for
+     market data.
+  4. Address the cache stampede with specific mitigations (request coalescing, probabilistic
+     early expiration, or staggered TTLs).
+  5. Address the Redis memory growth (likely need eviction policies or selective caching).
+  6. Note that CDN caching of reconciliation reports should be disabled or use
+     Cache-Control: no-cache with ETag validation.
+traps: |
+  - Defaulting to uniform TTL-based invalidation without catching that the 30-second
+    reconciliation requirement is fundamentally incompatible with the 5-minute Redis TTL.
+    The product spec buries this requirement in a paragraph about operations workflows.
+  - Proposing event-driven invalidation for everything without considering the cost: cache
+    invalidation on every transaction during market hours could mean thousands of
+    invalidations per second, potentially worse than TTL-based expiry.
+  - Ignoring the three-layer cache problem (browser -> CDN -> Redis). Even with perfect
+    Redis invalidation, CDN and browser caches can still serve stale reconciliation data.
+  - Treating all four data types the same when they have fundamentally different freshness
+    requirements (sub-second for market data, 30 seconds for reconciliation, minutes for
+    portfolio and history).
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol for this decision.

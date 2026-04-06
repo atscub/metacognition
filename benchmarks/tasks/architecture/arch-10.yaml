@@ -1,0 +1,167 @@
+id: arch-10
+category: architecture
+title: "Message queue selection for e-commerce order processing"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: [premortem, decompose]
+prompt: |
+  You are the principal engineer at CartNova, an e-commerce platform processing 50,000
+  orders per day (~35 orders/minute average, ~120 orders/minute during flash sales).
+  You need to design the message queue architecture for order processing.
+
+  Order structure:
+  ```json
+  {
+    "order_id": "ord-88291",
+    "customer_id": "cust-4421",
+    "items": [
+      {"sku": "SKU-001", "qty": 2, "warehouse": "us-east"},
+      {"sku": "SKU-042", "qty": 1, "warehouse": "us-west"},
+      {"sku": "SKU-107", "qty": 3, "warehouse": "us-east"}
+    ],
+    "payment": {"method": "card", "status": "authorized"},
+    "shipping": {"method": "standard", "address": {...}}
+  }
+  ```
+
+  Order processing pipeline:
+  ```
+  Order Placed → Payment Capture → Inventory Reserve → Fulfillment → Shipping
+       │               │                 │                 │            │
+       │               │                 │                 │            │
+       ▼               ▼                 ▼                 ▼            ▼
+   Fraud Check    Update Ledger    Per-warehouse    Pack & Label    Carrier
+                                   allocation                      Integration
+  ```
+
+  Each order goes through 5 sequential stages. Within a stage, there may be parallel
+  sub-tasks (e.g., inventory reservation happens per-warehouse in parallel, then results
+  are aggregated before moving to fulfillment).
+
+  Hard requirements:
+  - **At-least-once delivery**: No order can be silently dropped. Lost orders = lost
+    revenue and customer trust.
+  - **Per-order ordering**: Events for the same order must be processed in sequence.
+    You cannot ship before payment is captured. You cannot reserve inventory before fraud
+    check passes.
+  - **High throughput**: Must handle flash sale peaks of 120 orders/minute without
+    backpressure causing the web tier to reject orders.
+  - **Visibility**: Operations team needs to see: orders in each stage, stuck orders,
+    processing latency per stage, dead-letter queue depth.
+  - **Retry with backoff**: Failed stages should retry with exponential backoff, with
+    a dead-letter queue after 5 attempts.
+
+  Current system (synchronous, failing under load):
+  ```python
+  # order_processor.py — current synchronous implementation
+  def process_order(order: Order):
+      try:
+          fraud_result = fraud_service.check(order)         # 200ms avg
+          if fraud_result.flagged:
+              return handle_flagged_order(order)
+
+          payment = payment_service.capture(order)           # 500ms avg
+          ledger_service.record(order, payment)              # 100ms avg
+
+          # Reserve inventory per warehouse
+          reservations = []
+          for item in order.items:
+              r = inventory_service.reserve(item)            # 300ms avg
+              reservations.append(r)
+
+          fulfillment = fulfillment_service.create(          # 400ms avg
+              order, reservations
+          )
+          shipping = shipping_service.book(order, fulfillment)  # 600ms avg
+
+          return OrderResult(status="completed", tracking=shipping.tracking_id)
+      except Exception as e:
+          # Retry? Compensate? Currently just logs and hopes for the best
+          logger.error(f"Order {order.id} failed at unknown stage: {e}")
+          return OrderResult(status="failed", error=str(e))
+  ```
+
+  Total synchronous processing time: ~2.1 seconds per order (sum of avg latencies).
+  During flash sales, the web tier thread pool (50 threads) is exhausted after 24
+  concurrent orders, causing HTTP 503 errors.
+
+  The team is evaluating three message queue options:
+
+  **A. Apache Kafka**
+  ```
+  - Throughput: 100K+ messages/second
+  - Ordering: guaranteed within a partition
+  - Durability: replicated commit log
+  - Consumer groups for parallel processing
+  - Concern: "Complex to operate; we don't have a Kafka team"
+  - Current infra: no existing Kafka cluster
+  ```
+
+  **B. RabbitMQ**
+  ```
+  - Throughput: ~30K messages/second
+  - Ordering: guaranteed within a single queue
+  - Routing: flexible exchange/queue binding with routing keys
+  - Priority queues available
+  - Existing: already used for email notifications (small cluster)
+  - Concern: "Can it handle flash sale volumes?"
+  ```
+
+  **C. Redis Streams**
+  ```
+  - Throughput: ~100K messages/second
+  - Ordering: guaranteed within a stream
+  - Consumer groups with pending entry list (PEL) for at-least-once delivery
+  - Built-in: already have Redis for caching (6-node cluster)
+  - Concern: "Is Redis reliable enough for orders? What about persistence?"
+  ```
+
+  Additional context:
+  - Infrastructure: AWS, running on ECS. RDS PostgreSQL for primary database.
+  - Team: 8 backend engineers, 2 DevOps. Nobody has deep Kafka experience.
+  - Budget: approved for managed services (Amazon MSK for Kafka, Amazon MQ for RabbitMQ,
+    or ElastiCache for Redis Streams).
+  - The inventory service is the bottleneck — reservation calls take 300ms each, and
+    orders average 3 items from 1.5 different warehouses.
+
+  Recommend a message queue architecture. Specify: the queue topology (topics/queues per
+  stage? single queue?), the partition/routing strategy for ordering, how you handle the
+  per-warehouse parallel inventory reservation, retry/DLQ strategy, and how you meet the
+  throughput target during flash sales.
+expected_outcome: |
+  A strong answer should:
+  1. Recognize that 120 orders/minute (~2 orders/second) is trivially low throughput for
+     any of the three options. The choice should not be driven by throughput benchmarks.
+  2. Address the per-order ordering requirement carefully. With Kafka, ordering is only
+     guaranteed within a partition. Using order_id as partition key guarantees per-order
+     ordering but limits parallelism (all events for one order go to the same partition
+     and thus the same consumer). This is actually fine at 2 orders/second.
+  3. Design a multi-stage pipeline: one queue/topic per processing stage, with the order
+     moving from stage to stage. This gives per-stage visibility and retry isolation.
+  4. Handle the per-warehouse inventory reservation pattern: the inventory stage fans out
+     to per-warehouse sub-tasks, then aggregates results before moving to fulfillment.
+     This is a scatter-gather pattern that doesn't map cleanly to simple queue-based
+     pipelines.
+  5. Given the team has no Kafka experience and already runs RabbitMQ, recommend RabbitMQ
+     or Redis Streams over Kafka. The operational complexity of Kafka is not justified at
+     this throughput.
+  6. If recommending Kafka, honestly address the operational cost and the team's lack of
+     experience. If recommending RabbitMQ, address the throughput concern (30K msg/s is
+     15,000x their peak need). If recommending Redis Streams, address persistence concerns
+     (AOF/RDB, replication).
+traps: |
+  - Selecting Kafka because "it's the industry standard for event streaming" and "it has
+    the highest throughput" without recognizing that 2 orders/second is trivially low for
+    any option, and the team has no Kafka experience.
+  - Claiming Kafka guarantees message ordering without qualifying that ordering is only
+    within a partition. If orders are distributed across partitions by a key other than
+    order_id, or if multi-item orders spawn messages on different partitions, ordering
+    guarantees are lost.
+  - Ignoring the scatter-gather pattern in inventory reservation. A simple linear pipeline
+    doesn't handle the "fan out to warehouses, then aggregate" step. This requires either
+    a saga/orchestrator pattern or a separate mechanism for the inventory stage.
+  - Over-engineering for throughput that will never be needed. 50K orders/day is not a
+    "big data" problem. Kafka's operational complexity is a real cost for a team that
+    doesn't have Kafka expertise.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol for this decision.

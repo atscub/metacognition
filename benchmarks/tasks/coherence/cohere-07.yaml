@@ -1,0 +1,286 @@
+id: cohere-07
+category: coherence
+title: "Event schema — producer vs consumer vs schema registry"
+difficulty: hard
+primary_skill: coherence
+secondary_skills: []
+prompt: |
+  Review the following three artifacts for consistency. Identify any discrepancies between them.
+
+  ## Artifact 1: Event Producer (services/order_service/events.py)
+
+  ```python
+  import json
+  import time
+  from dataclasses import dataclass, asdict
+  from typing import Optional
+  from confluent_kafka import Producer
+
+  kafka_config = {
+      "bootstrap.servers": "kafka:9092",
+      "client.id": "order-service",
+  }
+  producer = Producer(kafka_config)
+
+  TOPIC = "order.events"
+
+
+  @dataclass
+  class EventMetadata:
+      event_type: str
+      timestamp: float
+      source: str
+      correlation_id: str
+      version: str = "1.0"
+
+
+  @dataclass
+  class OrderEvent:
+      order_id: str
+      user_id: Optional[str]
+      status: str
+      total_amount: float
+      currency: str
+      items: list
+      metadata: EventMetadata
+
+
+  def publish_order_created(order, correlation_id: str):
+      metadata = EventMetadata(
+          event_type="order.created",
+          timestamp=time.time(),
+          source="api",
+          correlation_id=correlation_id,
+      )
+
+      event = OrderEvent(
+          order_id=order.id,
+          user_id=order.user.id if order.user else None,
+          status="created",
+          total_amount=float(order.total),
+          currency=order.currency,
+          items=[
+              {
+                  "product_id": item.product_id,
+                  "quantity": item.quantity,
+                  "unit_price": float(item.price),
+              }
+              for item in order.items
+          ],
+          metadata=metadata,
+      )
+
+      payload = asdict(event)
+      producer.produce(
+          topic=TOPIC,
+          key=order.id.encode("utf-8"),
+          value=json.dumps(payload).encode("utf-8"),
+      )
+      producer.flush()
+
+
+  def publish_order_system_update(order_id: str, new_status: str, correlation_id: str):
+      """Publish status updates from background jobs (no user context)."""
+      metadata = EventMetadata(
+          event_type="order.status_changed",
+          timestamp=time.time(),
+          source="system",
+          correlation_id=correlation_id,
+      )
+
+      event = OrderEvent(
+          order_id=order_id,
+          user_id=None,  # system-generated, no user
+          status=new_status,
+          total_amount=0.0,
+          currency="USD",
+          items=[],
+          metadata=metadata,
+      )
+
+      payload = asdict(event)
+      producer.produce(
+          topic=TOPIC,
+          key=order_id.encode("utf-8"),
+          value=json.dumps(payload).encode("utf-8"),
+      )
+      producer.flush()
+  ```
+
+  ## Artifact 2: Event Consumer (services/analytics/orderConsumer.js)
+
+  ```javascript
+  const { Kafka } = require('kafkajs');
+
+  const kafka = new Kafka({
+    clientId: 'analytics-service',
+    brokers: ['kafka:9092'],
+  });
+
+  const consumer = kafka.consumer({ groupId: 'analytics-group' });
+
+  async function processOrderEvent(message) {
+    const event = JSON.parse(message.value.toString());
+
+    // Extract metadata
+    const eventType = event.metadata.event_type;
+    const processedAt = event.metadata.processed_at;
+    const source = event.metadata.source;
+    const correlationId = event.metadata.correlation_id;
+
+    console.log(`Processing ${eventType} [${correlationId}] processed at ${processedAt}`);
+
+    // Validate required fields
+    if (!event.user_id) {
+      console.warn(`Event ${correlationId} missing user_id, skipping analytics`);
+      return;
+    }
+
+    if (!event.order_id || !event.status) {
+      throw new Error(`Malformed event: missing order_id or status`);
+    }
+
+    // Store analytics data
+    await storeAnalytics({
+      orderId: event.order_id,
+      userId: event.user_id,
+      status: event.status,
+      totalAmount: event.total_amount,
+      currency: event.currency,
+      itemCount: event.items.length,
+      eventType,
+      source,
+      processedAt: new Date(processedAt),
+      receivedAt: new Date(),
+    });
+
+    // Update real-time dashboard
+    if (eventType === 'order.created') {
+      await updateDashboard({
+        metric: 'orders_created',
+        userId: event.user_id,
+        amount: event.total_amount,
+        currency: event.currency,
+      });
+    }
+  }
+
+  async function storeAnalytics(data) {
+    // Insert into analytics database
+    const { pool } = require('../db');
+    await pool.query(
+      `INSERT INTO order_analytics
+        (order_id, user_id, status, total_amount, currency, item_count,
+         event_type, source, processed_at, received_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      [
+        data.orderId, data.userId, data.status, data.totalAmount,
+        data.currency, data.itemCount, data.eventType, data.source,
+        data.processedAt, data.receivedAt,
+      ]
+    );
+  }
+
+  async function updateDashboard(data) {
+    const { redis } = require('../cache');
+    await redis.hincrby(`dashboard:${data.currency}`, 'order_count', 1);
+    await redis.hincrbyfloat(`dashboard:${data.currency}`, 'total_revenue', data.amount);
+  }
+
+  async function start() {
+    await consumer.connect();
+    await consumer.subscribe({ topic: 'order.events', fromBeginning: false });
+    await consumer.run({
+      eachMessage: async ({ message }) => {
+        try {
+          await processOrderEvent(message);
+        } catch (err) {
+          console.error('Failed to process order event:', err);
+        }
+      },
+    });
+  }
+
+  module.exports = { start };
+  ```
+
+  ## Artifact 3: Avro Schema (schemas/order-event.avsc)
+
+  ```json
+  {
+    "type": "record",
+    "name": "OrderEvent",
+    "namespace": "com.example.orders",
+    "doc": "Event emitted when an order is created or updated",
+    "fields": [
+      {
+        "name": "order_id",
+        "type": "string",
+        "doc": "Unique identifier for the order"
+      },
+      {
+        "name": "user_id",
+        "type": "string",
+        "doc": "ID of the user who placed the order"
+      },
+      {
+        "name": "status",
+        "type": {
+          "type": "enum",
+          "name": "OrderStatus",
+          "symbols": ["created", "confirmed", "shipped", "delivered", "cancelled"]
+        }
+      },
+      {
+        "name": "total_amount",
+        "type": "double"
+      },
+      {
+        "name": "currency",
+        "type": "string"
+      },
+      {
+        "name": "items",
+        "type": {
+          "type": "array",
+          "items": {
+            "type": "record",
+            "name": "OrderItem",
+            "fields": [
+              { "name": "product_id", "type": "string" },
+              { "name": "quantity", "type": "int" },
+              { "name": "unit_price", "type": "double" }
+            ]
+          }
+        }
+      },
+      {
+        "name": "metadata",
+        "type": {
+          "type": "record",
+          "name": "EventMetadata",
+          "fields": [
+            { "name": "event_type", "type": "string" },
+            { "name": "timestamp", "type": "double" },
+            { "name": "correlation_id", "type": "string" },
+            { "name": "version", "type": "string", "default": "1.0" }
+          ]
+        }
+      }
+    ]
+  }
+  ```
+expected_outcome: |
+  The review should find these inconsistencies:
+
+  (a) Producer emits a field not in schema: The Python producer's `EventMetadata` dataclass includes a `source` field (set to "api" or "system"), and the consumer reads `event.metadata.source`. However, the Avro schema's `EventMetadata` record does not include a `source` field. If the Avro schema is enforced by a schema registry, serialization will fail. If not enforced, the field may be silently dropped during serialization or pass through as unvalidated JSON.
+
+  (b) Consumer reads a field the producer never sets: The consumer accesses `event.metadata.processed_at` and uses it for logging (`processed at ${processedAt}`) and stores it in the analytics database (`processedAt: new Date(processedAt)`). However, the producer never sets a `processed_at` field on the metadata. The `EventMetadata` dataclass has `timestamp` but no `processed_at`. This means `processedAt` will always be `undefined`, and `new Date(undefined)` produces `Invalid Date`.
+
+  (c) Schema marks user_id as required but producer conditionally omits it: The Avro schema defines `user_id` as `"type": "string"` (required, non-nullable). However, the Python producer's `publish_order_system_update` method sets `user_id=None` for system-generated events. When serialized with `asdict()`, this produces `"user_id": null` in the JSON, which violates the Avro schema's required string type. To allow null, the Avro schema would need `"type": ["null", "string"]`.
+traps: |
+  - The `source` field appears in both producer and consumer code, making it seem consistent — only checking the Avro schema reveals it's not declared there.
+  - `processed_at` vs `timestamp` is a subtle naming difference that's easy to gloss over; both sound like they could refer to the same concept.
+  - The user_id nullability issue requires understanding Avro union types and noticing the conditional None assignment in a separate function from the main publish function.
+treatment_prefix: |
+  Before reviewing, invoke /meta:coherence and systematically check each artifact against every other artifact using the coherence protocol's 10 categories.

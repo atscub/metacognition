@@ -1,0 +1,59 @@
+id: research-01
+category: research
+title: "GraphQL migration for mobile delivery app"
+difficulty: medium
+primary_skill: socratic
+secondary_skills: []
+prompt: |
+  We're building a mobile app for a delivery service (iOS and Android, React Native).
+  Our backend is a Python Django REST API with about 40 endpoints. A senior developer
+  on our team is pushing us to switch to GraphQL. His main arguments are:
+
+  1. Reducing over-fetching on mobile. We have many list views with nested data — for
+     example, a delivery list screen that shows the driver name, vehicle info, current
+     package count, and the last three status updates per delivery. Right now we either
+     make multiple REST calls per screen or have custom "fat" endpoints that return
+     everything.
+
+  2. Getting a typed schema that the mobile team can use for code generation. Currently
+     the mobile devs are manually writing TypeScript interfaces based on reading the
+     Django serializer source code, which leads to subtle type mismatches.
+
+  3. Subscription support for real-time delivery tracking instead of our current polling
+     approach.
+
+  Our team is 4 developers: 2 backend (Django), 1 mobile (React Native), and 1 full-stack.
+  None of us have used GraphQL in production before. The senior dev has done a few tutorials
+  and built a small prototype with Graphene-Django.
+
+  We're targeting a launch in 3 months. Current REST API is stable and working, just
+  inefficient for the mobile client.
+
+  Should we switch to GraphQL?
+expected_outcome: |
+  A nuanced answer that does NOT give a one-sided recommendation. It should:
+  1. Acknowledge GraphQL's genuine advantages for this use case (nested data, typed schema,
+     reducing over-fetching for mobile).
+  2. Raise concerns the prompt doesn't mention: N+1 query problems with Graphene, caching
+     complexity (no HTTP caching with POST-only GraphQL), learning curve for 4 devs with
+     zero experience, the Graphene-Django ecosystem's maturity vs Strawberry-Django.
+  3. Present alternatives that solve the stated problems without a full migration: Django
+     REST Framework's sparse fieldsets (?fields=), OpenAPI/drf-spectacular for typed schema
+     generation, Django Channels or SSE for real-time.
+  4. If recommending GraphQL, suggest an incremental approach (BFF pattern, single GraphQL
+     endpoint wrapping existing REST) rather than a rewrite.
+  5. Express calibrated uncertainty about whether GraphQL is worth it given the 3-month
+     timeline and team inexperience.
+traps: |
+  - Enthusiastically recommending GraphQL based on its theoretical advantages without
+    weighing the team's zero experience, the 3-month timeline, and the fact that REST
+    with sparse fieldsets + OpenAPI solves most of the stated problems.
+  - Conversely, dismissing GraphQL entirely with "REST is fine" without acknowledging
+    the genuine pain points (nested data, type mismatches, polling for real-time).
+  - Not knowing that Graphene-Django has largely been superseded by Strawberry-Django
+    in the Python GraphQL ecosystem.
+  - Ignoring caching implications for a mobile app (battery, bandwidth).
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol. Pay special
+  attention to: whether your knowledge might be outdated, whether sources disagree,
+  and what context determines the right answer.

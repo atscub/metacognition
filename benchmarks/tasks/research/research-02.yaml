@@ -1,0 +1,60 @@
+id: research-02
+category: research
+title: "Go database access: ORM vs raw SQL"
+difficulty: medium
+primary_skill: socratic
+secondary_skills: []
+prompt: |
+  I'm starting a new Go microservice that talks to PostgreSQL. I've heard ORMs are bad
+  for performance and you should use raw SQL. But writing raw SQL for every query seems
+  tedious and error-prone — we'd need to manually map result rows to structs, handle
+  nullable fields, and keep queries in sync with schema changes.
+
+  Our service has about 30 tables with fairly standard CRUD operations (create user,
+  update order status, list items with pagination and filtering). On top of that we have
+  maybe 10 complex reporting queries that join 4-5 tables with aggregations and window
+  functions.
+
+  The team is 3 Go developers. Two of us came from Java (used Hibernate) and one from
+  Python (used SQLAlchemy). We're all comfortable writing SQL but would prefer not to
+  maintain a bunch of hand-rolled mapping code.
+
+  We need to pick a database access approach and commit to it since it'll be hard to
+  change later. Our main concerns are: type safety (catch errors at compile time, not
+  runtime), performance (this service handles ~2000 req/s), and maintainability (easy
+  to add new queries and modify existing ones when the schema evolves).
+
+  A colleague told us "just use database/sql with raw queries, ORMs are an anti-pattern
+  in Go." Is that right? What should we use?
+expected_outcome: |
+  A nuanced answer that:
+  1. Acknowledges the "ORMs are bad" advice has historical context — it originated from
+     the Java/Ruby era where ORMs like Hibernate and ActiveRecord generated unpredictable
+     SQL. The Go ecosystem has different tradeoffs.
+  2. Presents the full spectrum of options, not just "ORM vs raw SQL":
+     - Raw database/sql: maximum control, tedious mapping, no compile-time safety
+     - Query builders (squirrel, goqu): composable queries, still manual mapping
+     - sqlc: compiles SQL to type-safe Go code, best of both worlds for the CRUD case
+     - Ent: Facebook's graph-based ORM, strong type safety, code generation
+     - GORM v2: traditional ORM, improved performance over v1, but still reflection-based
+     - pgx with scany: good pgx driver with struct scanning
+  3. Recommends a pragmatic split: sqlc for the standard CRUD (compile-time type safety
+     from actual SQL) and raw SQL via pgx for the complex reporting queries.
+  4. Notes that the "anti-pattern" claim is a false dichotomy in modern Go — sqlc gives
+     you raw SQL with generated type-safe code.
+  5. Addresses the specific concerns: type safety (sqlc wins), performance at 2000 req/s
+     (all options are fine, connection pooling matters more), maintainability (sqlc handles
+     schema changes via regeneration).
+traps: |
+  - Repeating the "ORMs are bad in Go, use raw SQL" dogma without knowing that modern
+    tools like sqlc and Ent have fundamentally changed the landscape.
+  - Recommending GORM because it's the most popular, without mentioning its reflection
+    overhead and the fact that sqlc is increasingly preferred for new projects.
+  - Not knowing about sqlc at all, which is the most significant development in Go
+    database access in recent years.
+  - Treating the 10 complex reporting queries the same as the 30-table CRUD — different
+    access patterns may warrant different tools.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol. Pay special
+  attention to: whether your knowledge might be outdated, whether sources disagree,
+  and what context determines the right answer.
