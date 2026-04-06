@@ -15,6 +15,7 @@ The routine practices experienced engineers follow without thinking — formaliz
 | `/ops:pr-monitor` | While waiting on review | Checks open PRs for review progress, CI results, staleness, and blockers. |
 | `/ops:pr-feedback` | When review comments come in | Reads all comments first, categorizes them (must-fix, suggestion, question, nit), understands the reviewer's intent before making changes, and responds to each one. |
 | `/ops:orchestrate` | For multi-step operations | Coordinates workflows that span multiple systems or stages — dependency ordering, checkpoints, verification at each step, and rollback plans. |
+| `/ops:playbook` | After debugging a recurring issue, after /meta:reflect identifies a pattern | Extract a reusable problem-solution pair and save it as a playbook entry. Creates and maintains a playbook/ directory in the project with an index for discoverability. |
 
 ## Design principles
 

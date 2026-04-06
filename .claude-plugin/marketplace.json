@@ -8,14 +8,14 @@
     {
       "name": "metacognition",
       "source": "./plugins/metacognition",
-      "description": "Critical thinking skills: /meta:socratic, /meta:learn, /meta:reflect, /meta:premortem, /meta:reframe, /meta:steelman, /meta:decompose, /meta:coherence.",
-      "version": "0.2.0"
+      "description": "Critical thinking skills: /meta:socratic, /meta:learn, /meta:reflect, /meta:premortem, /meta:reframe, /meta:decompose, /meta:coherence.",
+      "version": "0.3.0"
     },
     {
       "name": "operations",
       "source": "./plugins/operations",
-      "description": "Engineering operations skills: /ops:wrapup, /ops:handoff, /ops:changelog, /ops:pr-open, /ops:pr-monitor, /ops:pr-feedback, /ops:orchestrate.",
-      "version": "0.1.0"
+      "description": "Engineering operations skills: /ops:wrapup, /ops:handoff, /ops:changelog, /ops:pr-open, /ops:pr-monitor, /ops:pr-feedback, /ops:orchestrate, /ops:playbook.",
+      "version": "0.2.0"
     }
   ]
 }

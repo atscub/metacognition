@@ -1,9 +1,9 @@
 {
   "name": "operations",
-  "version": "0.1.0",
-  "description": "Day-to-day engineering operations skills for AI agents. PR workflows, code review, handoffs, changelogs, and process orchestration.",
+  "version": "0.2.0",
+  "description": "Day-to-day engineering operations skills for AI agents. PR workflows, code review, handoffs, changelogs, playbook authoring, and process orchestration.",
   "author": {
     "name": "Abraham"
   },
-  "keywords": ["engineering", "operations", "PR", "review", "handoff", "changelog", "orchestration", "workflow"]
+  "keywords": ["engineering", "operations", "PR", "review", "handoff", "changelog", "orchestration", "workflow", "playbook"]
 }

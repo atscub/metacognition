@@ -1,7 +1,7 @@
 {
   "name": "metacognition",
-  "version": "0.2.0",
-  "description": "Metacognitive skills for epistemically humble, self-aware AI agents. Includes Socratic reasoning, structured learning, post-task reflection, premortem risk analysis, problem reframing, steelmanning, first-principles decomposition, and coherence auditing.",
+  "version": "0.3.0",
+  "description": "Metacognitive skills for epistemically humble, self-aware AI agents. Includes Socratic reasoning (with integrated steelmanning and falsification protocols), structured learning, post-task reflection, premortem risk analysis, problem reframing, first-principles decomposition, and coherence auditing.",
   "author": {
     "name": "Abraham"
   },

@@ -18,8 +18,8 @@ KYL includes two independent plugins — install either or both. See each plugin
 
 | Plugin | What it does | Skills |
 |--------|-------------|--------|
-| [**Metacognition**](plugins/metacognition/README.md) | Thinking about thinking — bias awareness, research, reflection, risk assessment, first-principles reasoning, coherence auditing. | 8 skills |
-| [**Operations**](plugins/operations/README.md) | Routine engineering practices — PR lifecycle, sanity checks, handoffs, changelogs, workflow coordination. | 7 skills |
+| [**Metacognition**](plugins/metacognition/README.md) | Thinking about thinking — bias awareness, research, reflection, risk assessment, first-principles reasoning, coherence auditing. | 7 skills |
+| [**Operations**](plugins/operations/README.md) | Routine engineering practices — PR lifecycle, sanity checks, handoffs, changelogs, workflow coordination. | 8 skills |
 
 ## Installation
 
