@@ -1,6 +1,6 @@
 ---
 name: meta:premortem
-description: "Anticipate failure before committing to a plan or implementation. Use before starting a risky implementation, making an architectural decision, deploying, or any high-stakes action. Trigger on: /meta:premortem, 'what could go wrong', 'risk check', 'before we do this', or when about to commit to an approach with significant consequences."
+description: "Anticipate failure before committing to a plan or implementation. Use before starting a risky implementation, making an architectural decision, deploying, or any high-stakes action. Trigger on: /meta:premortem, 'what could go wrong', 'risk check', 'before we do this', or when about to commit to an approach with significant consequences. Only for high-stakes implementations where failure is costly or hard to reverse. Skip for low-risk, easily reversible actions."
 ---
 
 # Premortem — Anticipate Failure Before It Happens

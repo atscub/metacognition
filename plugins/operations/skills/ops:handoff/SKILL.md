@@ -1,6 +1,6 @@
 ---
 name: ops:handoff
-description: "Prepare context for another person or a future session to continue work seamlessly. Use when stopping mid-task, handing off to a teammate, or when the next session will need to pick up where this one left off. Trigger on: /ops:handoff, 'hand this off', 'someone else will continue', 'pick this up later', 'context for next session'."
+description: "Prepare context for another person or a future session to continue work seamlessly. Use when stopping mid-task, handing off to a teammate, or when the next session will need to pick up where this one left off. Trigger on: /ops:handoff, 'hand this off', 'someone else will continue', 'pick this up later', 'context for next session'. Only when context is complex enough that git log alone won't suffice."
 ---
 
 # Handoff — Context for Continuity

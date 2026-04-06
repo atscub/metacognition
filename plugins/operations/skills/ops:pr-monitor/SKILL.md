@@ -1,6 +1,6 @@
 ---
 name: ops:pr-monitor
-description: "Monitor open pull requests for status, review progress, CI results, and staleness. Trigger on: /ops:pr-monitor, 'check my PRs', 'PR status', 'what's blocking my PR', 'any reviews yet', or when the user wants an overview of their open pull requests."
+description: "Monitor open pull requests for status, review progress, CI results, and staleness. Trigger on: /ops:pr-monitor, 'check my PRs', 'PR status', 'what's blocking my PR', 'any reviews yet', or when the user wants an overview of their open pull requests. Only when waiting on reviews that are blocking progress."
 ---
 
 # PR Monitor — Keep Pull Requests Moving

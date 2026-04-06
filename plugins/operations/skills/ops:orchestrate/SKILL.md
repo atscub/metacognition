@@ -1,6 +1,6 @@
 ---
 name: ops:orchestrate
-description: "Coordinate multi-step delivery workflows that span multiple tools, systems, or stages. Use when a task involves a sequence of dependent steps across different systems (build, test, deploy, notify) and getting the order or dependencies wrong would cause problems. Trigger on: /ops:orchestrate, 'deploy this', 'release process', 'walk me through the steps', 'what's the process for', or when a task clearly requires coordinating multiple systems."
+description: "Coordinate multi-step delivery workflows that span multiple tools, systems, or stages. Use when a task involves a sequence of dependent steps across different systems (build, test, deploy, notify) and getting the order or dependencies wrong would cause problems. Trigger on: /ops:orchestrate, 'deploy this', 'release process', 'walk me through the steps', 'what's the process for', or when a task clearly requires coordinating multiple systems. Only for multi-step operations where misordering creates real problems."
 disable-model-invocation: true
 ---
 

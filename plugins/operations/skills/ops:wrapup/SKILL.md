@@ -1,6 +1,6 @@
 ---
 name: ops:wrapup
-description: "Pre-delivery sanity checks before walking away from a task. Verifies nothing is left broken, uncommitted, or forgotten. Trigger on: /ops:wrapup, 'wrap up', 'are we done', 'let me finish up', 'ship it', or when the user signals they want to stop working on the current task."
+description: "Pre-delivery sanity checks before walking away from a task. Verifies nothing is left broken, uncommitted, or forgotten. Trigger on: /ops:wrapup, 'wrap up', 'are we done', 'let me finish up', 'ship it', or when the user signals they want to stop working on the current task. Only when the session involved meaningful changes. Skip for read-only exploration."
 disable-model-invocation: true
 ---
 

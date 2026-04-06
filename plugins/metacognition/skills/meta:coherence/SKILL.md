@@ -1,6 +1,6 @@
 ---
 name: meta:coherence
-description: "Audit whether the parts of a system agree with each other and with reality. Use after building or modifying something with multiple components — documentation, code architecture, APIs, product messaging — where the parts must tell a consistent story. Trigger on: /meta:coherence, 'does this all make sense together', 'check for consistency', 'audit this', 'is this coherent', or when you've made changes across multiple files and need to verify they agree."
+description: "Audit whether the parts of a system agree with each other and with reality. Use after building or modifying something with multiple components — documentation, code architecture, APIs, product messaging — where the parts must tell a consistent story. Trigger on: /meta:coherence, 'does this all make sense together', 'check for consistency', 'audit this', 'is this coherent', or when you've made changes across multiple files and need to verify they agree. Only for multi-component work where inconsistencies create compounding confusion. Skip for single-file changes."
 ---
 
 # Coherence — Do the Parts Agree?

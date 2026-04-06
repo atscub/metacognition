@@ -1,6 +1,6 @@
 ---
 name: ops:pr-feedback
-description: "Systematically address PR review feedback — read, understand, respond, and fix. Use when a PR has review comments that need to be addressed. Trigger on: /ops:pr-feedback, 'address PR comments', 'fix review feedback', 'PR review', or when the user shares a PR URL with unresolved comments."
+description: "Systematically address PR review feedback — read, understand, respond, and fix. Use when a PR has review comments that need to be addressed. Trigger on: /ops:pr-feedback, 'address PR comments', 'fix review feedback', 'PR review', or when the user shares a PR URL with unresolved comments. Only for review comments that require thoughtful response."
 disable-model-invocation: true
 ---
 

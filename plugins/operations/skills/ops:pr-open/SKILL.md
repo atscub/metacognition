@@ -1,6 +1,6 @@
 ---
 name: ops:pr-open
-description: "Open a pull request with a well-structured description, correct base branch, and appropriate reviewers. Trigger on: /ops:pr-open, 'open a PR', 'create a PR', 'submit for review', or when the user wants to turn their current branch into a pull request."
+description: "Open a pull request with a well-structured description, correct base branch, and appropriate reviewers. Trigger on: /ops:pr-open, 'open a PR', 'create a PR', 'submit for review', or when the user wants to turn their current branch into a pull request. Only when the code is genuinely ready for review."
 disable-model-invocation: true
 ---
 

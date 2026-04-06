@@ -1,6 +1,6 @@
 ---
 name: ops:changelog
-description: "Generate a structured summary of what changed and why, beyond what git log provides. Use after completing a feature, before a release, or when the user wants a human-readable summary of recent work. Trigger on: /ops:changelog, 'what changed', 'summarize changes', 'release notes', 'what did we do'."
+description: "Generate a structured summary of what changed and why, beyond what git log provides. Use after completing a feature, before a release, or when the user wants a human-readable summary of recent work. Trigger on: /ops:changelog, 'what changed', 'summarize changes', 'release notes', 'what did we do'. Only for changes significant enough to warrant communication beyond commit messages."
 ---
 
 # Changelog — Structured Change Summary
