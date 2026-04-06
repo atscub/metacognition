@@ -1,6 +1,6 @@
 ---
 name: meta:reframe
-description: "Look at a problem from multiple perspectives before committing to an approach. Use when stuck on a problem, when the first solution feels too obvious, when debugging hits a wall, or when making a design decision with trade-offs. Trigger on: /meta:reframe, 'think about this differently', 'other approaches', 'what am I missing', 'step back', or when you notice yourself going in circles."
+description: "Try different angles when the current approach is not working. Use when stuck, when the first solution feels wrong, when debugging hits a wall, or when you need to shift perspective on a design decision. Trigger on: /meta:reframe, 'think about this differently', 'other approaches', 'what am I missing', 'step back'. Only for significant decisions where a wrong framing costs real rework."
 ---
 
 # Reframe — Multiple Perspectives Before Commitment
@@ -28,6 +28,8 @@ Instead of "how do I make X work?", ask "what would guarantee X fails?" Then avo
 #### The Simplicity Lens
 What if this is simpler than you think? What if the "obvious" solution is actually correct? Strip away complexity: what's the minimal version of this problem? Sometimes we over-engineer because we pattern-match to harder problems.
 
+If stripping to fundamentals reveals the problem is genuinely novel and pattern-matching is the core failure, consider handing off to `/meta:decompose` for a full first-principles breakdown.
+
 #### The Zoom Out Lens
 You're looking at a component. Zoom out to the system. Is this really the right place to solve this? Maybe the problem should be solved upstream, downstream, or at a completely different layer.
 
@@ -42,6 +44,8 @@ What does this look like in 6 months? Will this solution still make sense? What 
 
 #### The Novice Lens
 Explain the problem to someone who doesn't know the codebase. When you have to explain from first principles, you often spot assumptions you've been taking for granted.
+
+If explaining from first principles reveals that you don't actually understand the fundamentals, hand off to `/meta:decompose`.
 
 #### The Adversarial Lens
 If someone was trying to break this solution, how would they? What edge cases, race conditions, or unexpected inputs would cause problems?

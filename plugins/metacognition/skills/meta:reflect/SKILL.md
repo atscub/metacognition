@@ -1,6 +1,6 @@
 ---
 name: meta:reflect
-description: "Post-task reflection and knowledge refinement. Use after completing a significant task, debugging session, implementation, or when something went unexpectedly wrong or right. Trigger on: /meta:reflect, 'what did we learn', 'what went wrong', 'retrospective', 'post-mortem', or when the user asks to review how a task went."
+description: "Analyze what went wrong and extract reusable lessons after recovering from a significant problem. Use when the agent hit a real obstacle, worked through it, and reached a solution — the goal is understanding the failure and preventing recurrence. Trigger on: /meta:reflect, 'what went wrong', 'what did we learn from that', 'retrospective', or after recovering from significant debugging or implementation struggles. Not for routine successes — only when something actually broke and was fixed. Only for significant work where the lessons have reuse value."
 ---
 
 # Reflect — Post-Task Retrospective
@@ -43,7 +43,7 @@ Classify each problem:
 
 | Category | Example | Fix |
 |----------|---------|-----|
-| **Knowledge gap** | Didn't know the API had changed | Save updated info to skill/memory |
+| **Knowledge gap** | Didn't know the API had changed | Save updated info to skill/memory. If the gap is significant, hand off to /meta:learn for structured research. |
 | **Process failure** | Jumped to coding before understanding the problem | Update workflow skill |
 | **Tool misuse** | Used the wrong tool for the job | Note the better tool for next time |
 | **Bias/instinct error** | Anchored on first hypothesis during debugging | Reinforce socrates skill |
@@ -77,6 +77,9 @@ Route each lesson to the right place:
 | Reusable technique learned | Skill (new or update existing) | "How to debug memory leaks in this Node.js setup" |
 | Tool/API knowledge | Skill reference or memory | "The v3 API requires a different auth header format" |
 | Process improvement | Update relevant skill | "Add a verification step before deploying" |
+| Reusable pattern (problem → solution pair) | `/ops:playbook` | "When X happens, do Y — discovered during debugging session" |
+
+For pattern-type lessons — recurring problem-solution pairs that would help future sessions — use `/ops:playbook` to capture them as formal playbook entries.
 
 ### Step 7: Summary Report
 
