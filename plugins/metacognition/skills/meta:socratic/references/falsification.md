@@ -22,7 +22,7 @@ Design a check that could prove you wrong — not one that confirms what you alr
 | "This file/function exists" | `Glob` or `Read` — check if it's actually there |
 | "This function handles X" | `Read` the function — look for where it does NOT handle X |
 | "This API returns Y" | `Grep` for the response shape, or `Bash` a test call |
-| "This is the standard approach" | `WebSearch` for alternatives and criticisms |
+| "This is the standard approach" | `WebSearch` for alternatives and criticisms — but only treat results as disconfirming if sources are credible (see Source Quality below) |
 | "The config supports this option" | `Read` the config schema or source, look for where it's NOT supported |
 | "This pattern is used elsewhere in the codebase" | `Grep` for the pattern — if zero results, your claim is wrong |
 
@@ -32,6 +32,28 @@ Design a check that could prove you wrong — not one that confirms what you alr
 - **Falsification** (stronger): Using a tool that *could disprove*. "Let me check what framework is actually used" → search for ALL framework imports → find Vue, not React → disproved.
 
 The difference: grounding looks for what you expect to find. Falsification looks for what's actually there, which might not be what you expect.
+
+### Source Quality and Claim Type
+
+Not all disconfirming evidence is equal. Finding that *someone* disagrees is not falsification. The test is: does *credible* evidence contradict?
+
+**Evaluate source credibility before updating your confidence:**
+
+| Source type | Weight |
+|---|---|
+| Primary source (actual code, official docs, spec, reproducible test) | High — trust it |
+| Peer-reviewed literature, expert consensus | High — trust it |
+| Well-regarded practitioner writing with methodology | Medium — consider it |
+| Anonymous, undated, or agenda-driven content | Low — note it, don't update on it |
+| Fringe or contrarian content without evidence | Ignore — existence of disagreement is not disconfirmation |
+
+**Distinguish claim type before choosing your tool:**
+
+- **Settled facts** (well-established science, documented behavior, code you can read): WebSearch is a weak tool here because fringe content always exists. Use primary sources — read the code, read the spec, run the test. If you can verify directly, do that instead of searching.
+- **Technical/codebase claims**: WebSearch is almost always wrong. Use `Grep`, `Read`, `Glob` on the actual files.
+- **Genuinely contested claims** (active debates in the field, evolving best practices, context-dependent trade-offs): WebSearch is appropriate. Weigh sources by credibility and look for where expert consensus actually sits, not just whether dissent exists.
+
+**The flat earth test**: If your search returns fringe disconfirming content alongside overwhelming credible confirming evidence, the claim is not reopened. Note that you searched, found only low-credibility dissent, and confidence holds. The asymmetry is intentional — one credible falsifying result can disprove a claim, but no amount of fringe disagreement can.
 
 ## Worked Examples
 
