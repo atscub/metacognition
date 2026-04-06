@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "server",
+  "dolt_database": "metacognition",
+  "project_id": "3a8f78a1-f31d-40fc-acdc-1d849c51a9ad"
+}
