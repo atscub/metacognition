@@ -23,7 +23,7 @@ Early versions of KYL's socratic skill simply instructed the model to "check for
 
 The current design names each bias and pairs it with a concrete mitigation question. "Check for sycophancy" becomes "Am I agreeing because the user is right, or because they pushed back?" "Check for anchoring" becomes "If I had seen the second approach first, would I still prefer my current answer?" Specificity is the mechanism. The difference between generic and specific advice is the difference between "be careful" and "check whether the ladder feet are on firm ground before climbing."
 
-This insight predates LLMs — it matches what the metacognitive prompting literature finds across many cognitive tasks. LLMs contain bias-awareness information encoded during pretraining. They have read Kahneman, they have encountered discussions of anchoring and availability heuristics. The problem is activation: that knowledge does not surface without a prompt that specifically elicits it. Named biases with named mitigations are the elicitation mechanism.
+This insight predates LLMs — it matches what the metacognitive prompting literature finds across many cognitive tasks. LLMs contain bias-awareness information encoded during pretraining. They have read Kahneman, they have encountered discussions of anchoring and availability heuristics. The problem is activation: that knowledge surfaces only when a prompt specifically elicits it. Named biases with named mitigations are the elicitation mechanism.
 
 - Wang & Zhao, "Metacognitive Prompting Improves Understanding in LLMs" (NAACL 2024). https://arxiv.org/abs/2308.05342
 - "Could You Be Wrong: Metacognitive Prompts for LLMs" (MDPI 2026) — LLMs contain bias-awareness information but need prompting to surface it. https://www.mdpi.com/2673-2688/7/1/33
@@ -46,9 +46,9 @@ This is internal design analysis. No external reference is required; the merge i
 
 Self-correction without external feedback does not reliably improve output quality. This is one of the more counterintuitive findings in recent LLM research, and it has direct implications for how metacognitive skills must be designed.
 
-Huang et al. (2024) demonstrated that when an LLM is asked to review and improve its own reasoning without any external signal, performance does not improve and sometimes degrades. The model has no new information — it is iterating on its own beliefs. The CRITIC paper provides the complement: when self-correction is grounded in tool calls that retrieve external evidence, performance improves. The mechanism is external falsifiability, not introspection.
+Huang et al. (2024) demonstrated that when an LLM is asked to review and improve its own reasoning without any external signal, performance does not improve and sometimes degrades. The model has no new information — it is iterating on its own beliefs. The CRITIC paper provides the complement: when self-correction is grounded in tool calls that retrieve external evidence, performance improves. The mechanism is external falsifiability.
 
-KYL therefore mandates tool-grounded verification in three specific skills: socratic (which can make factual claims about the domain), coherence (which checks whether components agree with each other and with external specifications), and premortem (which predicts failure modes that may already be documented). Two skills — reframe and decompose — perform analytical operations on problem framing. They are not making factual claims about the world; they are restructuring how a problem is represented. External grounding is not applicable to restructuring operations. The mandate is scoped to skills that assert facts.
+KYL therefore mandates tool-grounded verification in three specific skills: socratic (which can make factual claims about the domain), coherence (which checks whether components agree with each other and with external specifications), and premortem (which predicts failure modes that may already be documented). Two skills — reframe and decompose — perform analytical operations on problem framing. They are not making factual claims about the world; they are restructuring how a problem is represented. The mandate is scoped to skills that assert facts.
 
 - Gou et al., "CRITIC: LLMs Can Self-Correct with Tool-Interactive Critiquing" (ICLR 2024). https://arxiv.org/abs/2305.11738
 - Huang et al., "Large Language Models Cannot Self-Correct Reasoning Yet" (ICLR 2024). https://arxiv.org/abs/2310.01798
@@ -100,7 +100,7 @@ The answer is that each skill performs a distinct cognitive operation at a disti
 
 A single "think harder" skill would produce one of two failure modes: it either becomes so generic that it provides no grip (see Section 2), or it tries to do all seven operations every time, which violates the cost-of-error principle (see Section 5). Distinct skills allow selective invocation. The user or the orchestrating agent can choose the right cognitive operation for the current situation rather than triggering all of them or none of them.
 
-The overlap that does exist — premortem and reflect both analyze failure; socratic and decompose both challenge assumptions — is not a problem. They share a subject matter (risk, uncertainty, assumptions) but apply different operations (prospective vs. retrospective; bias-checking vs. first-principles reconstruction). The operations are not interchangeable.
+The overlap that does exist — premortem and reflect both analyze failure; socratic and decompose both challenge assumptions — is at the subject-matter level. They share concerns (risk, uncertainty, assumptions) but apply different operations (prospective vs. retrospective; bias-checking vs. first-principles reconstruction).
 
 ---
 
@@ -121,7 +121,7 @@ The premortem operationalizes this directly: "It is six months from now. This pr
 
 Several KYL skills — particularly socratic and coherence — include an explicit falsification mandate: make a tool call that could disprove your current belief. This is stronger than the CRITIC-style "verify your output." It demands active disconfirmation.
 
-The psychological baseline is Wason's selection task (1960): when asked to test a rule, people overwhelmingly select evidence that would confirm the rule rather than evidence that would refute it. Confirmation bias is not a character flaw; it is the default operating mode of human cognition. The same bias appears in LLM outputs — when asked to support a position, the model generates supporting evidence; the disconfirming evidence does not surface unless specifically solicited.
+The psychological baseline is Wason's selection task (1960): when asked to test a rule, people overwhelmingly select evidence that would confirm the rule rather than evidence that would refute it. Confirmation bias is the default operating mode of human cognition. The same bias appears in LLM outputs — when asked to support a position, the model generates supporting evidence; disconfirming evidence surfaces only when specifically solicited.
 
 Popper's falsification criterion provides the normative standard: a belief is well-grounded only if you have made a genuine attempt to disprove it and failed. Seeking confirmation is cheap — you will almost always find some evidence that supports any view. Seeking disconfirmation and not finding it is meaningful. KYL's falsification mandate operationalizes this at the agent level: before committing to a factual claim, make a tool call specifically designed to find evidence against it. The CRITIC paper's tool-checking is necessary but not sufficient — CRITIC checks whether the output is consistent with retrieved information. The falsification protocol is stronger: it requires actively searching for the evidence that would make the current belief wrong.
 
