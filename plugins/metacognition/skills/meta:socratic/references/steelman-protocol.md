@@ -1,8 +1,3 @@
----
-name: meta:steelman
-description: "Construct the strongest possible version of an idea, argument, or approach before evaluating it. Use when tempted to dismiss an alternative, when the user proposes something that seems wrong, when comparing competing approaches, or when you need to stress-test your own recommendation. Trigger on: /meta:steelman, 'best case for', 'strongest argument', 'play devil''s advocate', 'what if they''re right', or when you notice yourself dismissing an option too quickly."
----
-
 # Steelman — Strengthen Before You Strike
 
 ## Purpose
