@@ -23,7 +23,7 @@ Early versions of KYL's socratic skill simply instructed the model to "check for
 
 The current design names each bias and pairs it with a concrete mitigation question. "Check for sycophancy" becomes "Am I agreeing because the user is right, or because they pushed back?" "Check for anchoring" becomes "If I had seen the second approach first, would I still prefer my current answer?" Specificity is the mechanism. The difference between generic and specific advice is the difference between "be careful" and "check whether the ladder feet are on firm ground before climbing."
 
-This is not a novel insight about LLMs specifically — it matches what the metacognitive prompting literature finds across many cognitive tasks. LLMs contain bias-awareness information encoded during pretraining. They have read Kahneman, they have encountered discussions of anchoring and availability heuristics. The problem is activation: that knowledge does not surface without a prompt that specifically elicits it. Named biases with named mitigations are the elicitation mechanism.
+This insight predates LLMs — it matches what the metacognitive prompting literature finds across many cognitive tasks. LLMs contain bias-awareness information encoded during pretraining. They have read Kahneman, they have encountered discussions of anchoring and availability heuristics. The problem is activation: that knowledge does not surface without a prompt that specifically elicits it. Named biases with named mitigations are the elicitation mechanism.
 
 - Wang & Zhao, "Metacognitive Prompting Improves Understanding in LLMs" (NAACL 2024). https://arxiv.org/abs/2308.05342
 - "Could You Be Wrong: Metacognitive Prompts for LLMs" (MDPI 2026) — LLMs contain bias-awareness information but need prompting to surface it. https://www.mdpi.com/2673-2688/7/1/33
@@ -57,7 +57,7 @@ KYL therefore mandates tool-grounded verification in three specific skills: socr
 
 ## 5. Why Selective Triggering (Cost-of-Error Test)
 
-KYL skills are not invoked on every response. Each skill's frontmatter declares when NOT to use it. This is not a convenience feature — it is a correctness requirement.
+KYL skills are not invoked on every response. Each skill's frontmatter declares when NOT to use it — a correctness requirement.
 
 The Reflexion paper established that verbal reinforcement is most useful after failure, not after every output. Wrapping every response in a reflection loop adds latency and cognitive overhead; more importantly, it can hurt performance on tasks where the initial answer was already correct. A model asked to reconsider a correct answer may produce a worse one. Metacognitive overhead is only justified when the error cost exceeds the analysis cost.
 
@@ -73,7 +73,7 @@ The SOFAI-LM work extends this: in a system that explicitly separates fast intui
 
 KYL includes a playbook mechanism: after a reflect session, successful reasoning patterns can be extracted and saved to a reusable playbook file. Future sessions can retrieve these patterns when facing similar problems.
 
-The research basis is Metacognitive Reuse (Didolkar et al., 2025). The key finding: when an LLM is prompted to extract reusable reasoning strategies from solved problems and apply those strategies to new problems, performance improves significantly — 46% token reduction and 10% accuracy gain compared to solving from scratch. The mechanism is not memorization of solutions; it is abstraction of problem-solving approach. The agent learns "how to think about this class of problem" rather than "what the answer to this specific problem was."
+The research basis is Metacognitive Reuse (Didolkar et al., 2025). The key finding: when an LLM is prompted to extract reusable reasoning strategies from solved problems and apply those strategies to new problems, performance improves significantly — 46% token reduction and 10% accuracy gain compared to solving from scratch. The mechanism is abstraction of problem-solving approach. The agent learns "how to think about this class of problem" rather than "what the answer to this specific problem was."
 
 The playbook operationalizes this without requiring retraining. Rather than embedding patterns in model weights (which requires fine-tuning), the playbook makes patterns explicit and retrievable as text. This is the agent equivalent of what Gary Klein calls Recognition-Primed Decision Making: expert practitioners do not laboriously compare all options when facing a familiar problem type. They recognize the pattern and apply a known solution template, adjusting for the specifics of the current case. The playbook gives the agent a similar capability — not through training, but through explicit, human-editable pattern storage.
 
