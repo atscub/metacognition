@@ -29,14 +29,24 @@ def find_all_tasks() -> list[Path]:
     return sorted(TASKS_DIR.rglob("*.yaml"))
 
 
-def build_command(mode: str, model: str) -> list[str]:
-    """Build the claude CLI command for the given mode."""
-    cmd = ["claude", "-p", "--model", model, "--output-format", "json"]
-    if mode == "baseline":
-        cmd.append("--bare")
-    elif mode == "kyl":
+def build_command(mode: str, model: str, prompt: str) -> list[str]:
+    """Build the claude CLI command for the given mode.
+
+    The prompt is passed as a positional argument to ``claude -p``.
+    """
+    cmd = [
+        "claude", "-p",
+        "--model", model,
+        "--output-format", "json",
+        "--no-session-persistence",
+        "--disable-slash-commands",
+    ]
+    if mode == "kyl":
         plugin_dir = PROJECT_ROOT / "plugins" / "metacognition"
         cmd.extend(["--plugin-dir", str(plugin_dir)])
+        # Remove --disable-slash-commands so KYL skills can be invoked
+        cmd.remove("--disable-slash-commands")
+    cmd.append(prompt)
     return cmd
 
 
@@ -59,14 +69,13 @@ def run_single_task(
     task = load_task(task_path)
     task_id = task["id"]
     prompt = build_prompt(task, mode)
-    cmd = build_command(mode, model)
+    cmd = build_command(mode, model, prompt)
 
     output_path = RUNS_DIR / mode / f"{task_id}.json"
 
     if dry_run:
         print(f"[DRY RUN] {task_id}")
-        print(f"  Command: {' '.join(cmd)}")
-        print(f"  Prompt length: {len(prompt)} chars")
+        print(f"  Command: claude -p --model {model} ... [{len(prompt)} chars]")
         print(f"  Output: {output_path}")
         print()
         return None
@@ -76,7 +85,6 @@ def run_single_task(
     try:
         result = subprocess.run(
             cmd,
-            input=prompt,
             capture_output=True,
             text=True,
             timeout=timeout,
