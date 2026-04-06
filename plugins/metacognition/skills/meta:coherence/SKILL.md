@@ -25,6 +25,8 @@ Does every claim correspond to something real and current?
 
 **How it breaks**: A feature gets added or removed, but the documentation, changelog, or API surface isn't updated to match.
 
+**How to check**: Use tool calls to verify — `Read` or `Glob` to confirm files/functions exist, `Grep` to verify counts and references, read actual code to confirm described behavior. Do not rely on memory or assumption for factual accuracy claims. If a document says "the project has 8 skills," count them. If it says "the function handles errors," read the function.
+
 ### 2. Representational Completeness
 
 Does every component get fair representation?

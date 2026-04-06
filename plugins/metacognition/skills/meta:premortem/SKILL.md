@@ -63,6 +63,8 @@ For each significant risk, propose one of:
 - **Recover**: Ensure you can roll back or fix quickly
 - **Accept**: Explicitly decide to proceed despite the risk (and document why)
 
+**Verify what you can**: When the mitigation for a risk is "Detect" or "Prevent" and the underlying risk is an unverified assumption — verify the assumption now rather than listing it as a risk to monitor. If you can check whether a file exists, an API behaves as expected, or a dependency is compatible, check it now with a tool call. A risk you could have eliminated with a quick verification is not a risk to manage — it's a question to answer.
+
 ### Step 5: Decision
 
 Present to the user:
