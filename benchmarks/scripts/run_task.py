@@ -119,8 +119,20 @@ def run_single_task(
     with open(output_path, "w") as f:
         json.dump(output, f, indent=2)
 
+    # Write a readable .md file with just the response text
+    md_path = output_path.with_suffix(".md")
+    result_text = ""
+    if output["response"]:
+        try:
+            resp_json = json.loads(output["response"])
+            result_text = resp_json.get("result", "")
+        except (json.JSONDecodeError, TypeError):
+            result_text = output["response"]
+    with open(md_path, "w") as f:
+        f.write(result_text)
+
     status = "OK" if output["returncode"] == 0 else f"ERR({output['returncode']})"
-    print(f"  {status} in {output['duration_seconds']}s -> {output_path}")
+    print(f"  {status} in {output['duration_seconds']}s -> {md_path}")
     return output
 
 
@@ -162,8 +174,8 @@ def main() -> None:
     parser.add_argument(
         "--timeout",
         type=int,
-        default=300,
-        help="Seconds per session (default: 300)",
+        default=600,
+        help="Seconds per session (default: 600)",
     )
     args = parser.parse_args()
 

@@ -1,0 +1,21 @@
+task_id,response,ungrounded_claims,assumption_ack,alternatives,error_detection,rework,confidence_cal,correctness,notes
+arch-01,A,2,1,1,2,3,2,2,Catches sync/async separation but doesn't seriously evaluate Celery; dismisses alternatives quickly
+arch-01,B,3,3,3,3,2,3,3,Steelmans Celery; flags Kafka as overkill at 4.2/sec; surfaces assumptions with confidence levels
+arch-02,A,2,2,2,3,3,2,3,Catches compliance signal and performance/isolation separation; confident tone but correct
+arch-02,B,3,3,3,3,2,3,3,Explicitly flags compliance assumption as low-confidence critical risk; asks to verify before committing
+arch-03,A,2,2,2,3,3,2,3,Correctly picks Notifications; identifies pricing_rules and session store traps; clean reasoning
+arch-03,B,3,3,3,3,2,2,3,Full premortem on all three options; catches pricing_rules data coupling; flags demonstrable value concern
+arch-04,A,2,1,2,3,3,2,3,Catches 30s reconciliation mismatch early; CDN bypass and stampede fixes are correct and thorough
+arch-04,B,3,3,3,3,2,3,3,Catches same mismatch; adds outbox pattern for atomicity; explicit confidence levels per recommendation
+arch-05,A,3,2,3,3,3,3,3,Decomposes per client type from first principles; questions each inherited assumption; thorough
+arch-05,B,2,1,2,3,3,2,3,Same correct decomposition; less explicit about assumptions; X-Client-Type header is questionable
+arch-06,A,2,1,2,2,3,2,3,Eliminates InfluxDB correctly; recommends TimescaleDB; doesn't deeply question its own choice
+arch-06,B,3,2,3,3,2,3,3,Multiple reframing lenses; steelmans plain PG seriously; adversarial failure analysis per option
+arch-07,A,2,1,2,3,3,2,3,Catches WebView CORS constraint as hard blocker; clean implementation plan; less assumption surfacing
+arch-07,B,3,3,3,3,2,3,3,Deeply examines WebView constraint; steelmans header option with fallback; states what would change mind
+arch-08,A,3,2,2,3,3,3,3,Clean decomposition of traffic classes; Lua script fix; explicit about what was structurally wrong
+arch-08,B,2,1,2,3,3,2,3,Catches race condition bug; same dual-bucket solution; less explicit assumption surfacing
+arch-09,A,2,2,2,3,3,2,3,Catches hash() bug and hidden complexity; good cost analysis; less structured risk assessment
+arch-09,B,3,3,3,3,2,3,3,Full premortem on both options; catches same bugs; vivid failure scenarios; honest risk table
+arch-10,A,2,2,2,3,3,2,3,Correctly identifies throughput as red herring; Redis Streams with PG source of truth; solid design
+arch-10,B,3,3,3,3,2,3,3,Steelmans all three options; recommends RabbitMQ (already running); explicit uncertainty section

@@ -1,0 +1,81 @@
+task_id,response,ungrounded_claims,assumption_ack,alternatives,error_detection,rework,confidence_cal,correctness,notes
+arch-01,A,2,1,1,2,3,2,2,Catches sync/async separation but doesn't seriously evaluate Celery; dismisses alternatives quickly
+arch-01,B,3,3,3,3,2,3,3,Steelmans Celery; flags Kafka as overkill at 4.2/sec; surfaces assumptions with confidence levels
+arch-02,A,2,2,2,3,3,2,3,Catches compliance signal and performance/isolation separation; confident tone but correct
+arch-02,B,3,3,3,3,2,3,3,Explicitly flags compliance assumption as low-confidence critical risk; asks to verify before committing
+arch-03,A,2,2,2,3,3,2,3,Correctly picks Notifications; identifies pricing_rules and session store traps; clean reasoning
+arch-03,B,3,3,3,3,2,2,3,Full premortem on all three options; catches pricing_rules data coupling; flags demonstrable value concern
+arch-04,A,2,1,2,3,3,2,3,Catches 30s reconciliation mismatch early; CDN bypass and stampede fixes are correct and thorough
+arch-04,B,3,3,3,3,2,3,3,Catches same mismatch; adds outbox pattern for atomicity; explicit confidence levels per recommendation
+arch-05,A,3,2,3,3,3,3,3,Decomposes per client type from first principles; questions each inherited assumption; thorough
+arch-05,B,2,1,2,3,3,2,3,Same correct decomposition; less explicit about assumptions; X-Client-Type header is questionable
+arch-06,A,2,1,2,2,3,2,3,Eliminates InfluxDB correctly; recommends TimescaleDB; doesn't deeply question its own choice
+arch-06,B,3,2,3,3,2,3,3,Multiple reframing lenses; steelmans plain PG seriously; adversarial failure analysis per option
+arch-07,A,2,1,2,3,3,2,3,Catches WebView CORS constraint as hard blocker; clean implementation plan; less assumption surfacing
+arch-07,B,3,3,3,3,2,3,3,Deeply examines WebView constraint; steelmans header option with fallback; states what would change mind
+arch-08,A,3,2,2,3,3,3,3,Clean decomposition of traffic classes; Lua script fix; explicit about what was structurally wrong
+arch-08,B,2,1,2,3,3,2,3,Catches race condition bug; same dual-bucket solution; less explicit assumption surfacing
+arch-09,A,2,2,2,3,3,2,3,Catches hash() bug and hidden complexity; good cost analysis; less structured risk assessment
+arch-09,B,3,3,3,3,2,3,3,Full premortem on both options; catches same bugs; vivid failure scenarios; honest risk table
+arch-10,A,2,2,2,3,3,2,3,Correctly identifies throughput as red herring; Redis Streams with PG source of truth; solid design
+arch-10,B,3,3,3,3,2,3,3,Steelmans all three options; recommends RabbitMQ (already running); explicit uncertainty section
+debug-01,A,3,2,2,3,3,2,3,Correctly identifies cache flush as root cause; clean reasoning path; dismisses deploy correlation with evidence; minor: doesn't explicitly state confidence level
+debug-01,B,2,3,3,2,2,2,2,Explicitly questions assumptions and surfaces authority bias; however incorrectly maps Mar 20/27 to Fridays (they are Thu) and speculates deploy also flushes cache without evidence; the day-of-week error weakens correctness
+debug-02,A,3,3,3,3,3,3,3,Excellent multi-lens analysis; explicitly identifies IP mismatch; explains ECONNREFUSED semantics; connects OOMKill events to the exact failure pattern; all claims grounded
+debug-02,B,3,2,2,3,3,3,3,Correct root cause with clear evidence chain; slightly less explicit about assumption-surfacing and alternatives; equally correct on the diagnosis
+debug-03,A,3,3,3,3,3,3,3,Systematically rules out Node version hypothesis; correctly identifies timezone as root cause; flags SF developer inconsistency; clean reasoning with no false starts
+debug-03,B,3,2,2,3,3,3,3,Correct root cause; good explanation of timestamp mechanics; provides multiple fix options; slightly less explicit about assumptions
+debug-04,A,3,3,3,3,3,3,3,Explicitly falsifies WebSocket hypothesis using canary data; connects WriteStream counts to EventEmitter growth; identifies the comment as the smoking gun; notes latent WebSocket issue separately
+debug-04,B,3,2,2,3,3,3,3,Correct root cause with good evidence chain; connects heap snapshot data well; slightly less structured in assumption-surfacing
+debug-05,A,2,2,3,3,2,2,3,Correctly identifies non-atomic counter + missing idempotency as root cause; explains why unique constraint fails; identifies frontend retry and operation ordering issues; minor ungrounded claim about LB retry vs 2ms gap
+debug-05,B,3,3,3,3,3,3,3,Explicitly falsifies team hypothesis with data; clearly distinguishes infrastructure retry from user retry; well-structured prioritized fixes; appropriately hedged throughout
+debug-06,A,3,3,3,3,3,3,3,Thorough layer-by-layer decomposition; correctly traces the bug through build pipeline to Safari cascade behavior; explains why all team fixes failed; multiple well-reasoned fix options
+debug-06,B,3,2,2,3,3,3,3,Correct root cause and fix; concise and accurate; minor inaccuracy claiming !important doesn't help due to property name precedence (it's actually last-declaration-wins); less alternative exploration
+debug-07,A,3,3,3,3,3,3,3,Explicitly steelmans then disproves clock skew with NTP data; correctly identifies batch delivery as root cause; cites Stripe docs; evaluates all team proposals; lists verification steps
+debug-07,B,3,2,2,3,3,3,3,Correct root cause; good implementation detail for retry mechanism and sequence guard; slightly less explicit about assumption-surfacing
+debug-08,A,3,2,2,3,3,3,3,Immediately spots the typo; provides immediate remediation command; adds validation step to prevent recurrence; clean and direct
+debug-08,B,3,3,3,3,3,3,3,Spots the typo AND notices the $ALIAS variable is defined but unused (deeper code analysis); raises secondary issue about silent deletion; explicit reframe methodology
+debug-09,A,3,3,3,3,3,3,3,Explicitly disconfirms bcrypt hypothesis with provided evidence; identifies VARCHAR(59) truncation; compares hash values side-by-side; offers both immediate fix and systemic remediation
+debug-09,B,2,1,1,3,1,2,3,Correct root cause but visible rework/confusion about how other users have 60-char hashes in VARCHAR(59); less assumption-surfacing; thinking-out-loud style shows uncertainty without structured resolution
+debug-10,A,3,2,2,3,3,3,3,Correctly identifies CSS selector collision; explains the 10% rate mechanism; notes that adding waits makes failure more likely; provides scoped query fix and deeper fix
+debug-10,B,3,3,3,3,3,3,3,Structured decomposition catches the bug; explicitly traces where value 1 comes from; questions each team assumption in a table; explains why every attempted fix failed
+research-01,A,3,3,3,2,3,3,3,Steelmans GraphQL then presents REST alternatives (drf-spectacular/sparse fieldsets). Avoids trap of one-sided recommendation. Mentions N+1 and subscription complexity. Does not mention Strawberry-Django as Graphene alternative — minor gap.
+research-01,B,3,2,2,2,3,2,3,Correctly identifies REST fixes (drf-spectacular/targeted endpoints) and warns about Graphene pitfalls. Less explicit about steelmanning GraphQL benefits. Does not mention Strawberry-Django. Slightly more confident/less hedged than warranted.
+research-02,A,3,2,3,3,3,2,3,Correctly identifies sqlc+pgx as the modern answer. Full spectrum table of options. Addresses dynamic filter edge case with squirrel. Avoids the ORM-bad trap. Slightly assertive tone but accurate.
+research-02,B,3,3,3,3,3,3,3,Same correct sqlc+pgx recommendation but with explicit epistemic checks and uncertainty flags. Mentions ent and bun as alternatives worth evaluating. Flags medium-confidence claims. Slightly better calibration.
+research-03,A,2,1,2,3,3,1,2,Correctly recommends 422 with 400 for parse errors. Knows RFC 9110 moved 422 to core HTTP. But presents 422 as clearly correct answer rather than acknowledging the genuine community split. Says 400 is imprecise — that overstates the case. Trap partially avoided.
+research-03,B,3,2,2,3,3,2,2,Cites RFC 9110 accurately. Shows API ecosystem table (GitHub vs Stripe). Acknowledges 400 is a valid pragmatic choice. Still leans toward 422 as the right answer rather than fully acknowledging the split is legitimate. Better calibrated than A but still somewhat one-sided.
+research-04,A,2,3,3,3,3,2,3,Correctly identifies false binary. Recognizes both forcing functions (PCI compliance and chat ceiling). Recommends extracting two services while keeping monolith. Confidently prescribes Elixir/Phoenix without questioning whether Django Channels can scale horizontally first — slight overreach.
+research-04,B,3,3,3,3,3,3,3,Same structural recommendation but explicitly questions whether 500-connection ceiling is real or tunable. Flags Django Channels horizontal scaling as something to test before committing to Elixir rewrite. Better calibrated uncertainty. Asks about ops experience on team.
+research-05,A,3,2,2,3,3,3,3,Nails the key insight: PG11+ constant defaults are metadata-only. Correctly identifies lock_timeout as the real safety measure. Explains pg_repack and pgroll are wrong tools. Connects previous 45-min outage to CREATE INDEX without CONCURRENTLY. Thorough and accurate.
+research-05,B,3,2,2,3,3,3,3,Same core insight about PG11+ metadata-only operation. Adds strong_migrations gem recommendation (Rails-specific and practical). Includes NOT NULL check constraint trick for future use. Both responses are excellent and avoid the overengineering trap.
+research-06,A,3,2,3,3,3,2,3,Correctly identifies UUIDv7 as the answer. Detailed B-tree fragmentation explanation. RFC 9562 cited. Notes PG18 native uuidv7(). Covers Snowflake coordination problems. Addresses both developers' positions. Comprehensive and accurate.
+research-06,B,2,1,2,3,3,2,3,Also recommends UUIDv7 correctly. Shorter but hits the key points. Incorrectly suggests uuidv7() in PG17+ (it is PG18). Less thorough on Snowflake tradeoffs. Does not address the second developer's experience as carefully. Slightly less nuanced but correct core answer.
+research-07,A,3,1,2,3,3,2,3,Correctly shows all three approaches composing together. Unwrap() chain explained. pkg/errors correctly identified as unnecessary for Go 1.13+. Clean code examples. Does not mention errors.Join (Go 1.20+) which is relevant at Go 1.21 minimum. Minor gap.
+research-07,B,3,2,3,3,3,3,3,Same correct composite pattern. Adds nil-interface pitfall warning. Mentions pkg/errors maintenance mode since 2020. Cites primary sources. Flags era-specific conflicting advice. Does not mention errors.Join either but overall better calibrated and more thorough.
+research-08,A,3,2,3,3,3,2,3,Correctly identifies runtime CSS-in-JS performance issue. Presents Tailwind+CVA and vanilla-extract as alternatives. Practical migration guidance with shadcn/ui mention. Does not mention Panda CSS or StyleX. Recommends switching — appropriate for the context.
+research-08,B,3,3,3,2,3,3,2,Broader options landscape including Linaria. Better assumption auditing (questions whether performance concern applies to this specific app). But recommendation to stay with styled-components is questionable for an 8hr/day app with data tables. Underweights the performance reckoning. React 19 compatibility flag is good but used to defer rather than address.
+research-09,A,3,3,3,3,3,3,3,Correctly identifies consultant as outdated. Acknowledges Googlebot renders JS but notes two-wave indexing delay and CWV issues. Presents 5 graduated alternatives including JobPosting structured data (highest leverage for job board). React Router v7/Remix as lighter SSR path. Explicit knowledge cutoff caveat. Excellent.
+research-09,B,2,2,2,3,3,2,2,Also correctly pushes back on the consultant. Mentions CWV and crawl budget. But misses JobPosting structured data as a specific high-leverage action (mentions it but later). References React 18 streaming SSR rather than React Router v7. Less systematic in presenting alternatives. Rendertron mention is slightly dated.
+research-10,A,3,2,2,3,3,2,3,Correctly challenges testing pyramid for this context. Identifies invoice bug as integration-boundary failure. Practical budget allocation (60/25/15). Monitoring recommendation (Sentry) is a great addition. Does not mention testing trophy by name but applies the principle.
+research-10,B,3,3,3,3,3,3,3,Explicit bias audit before recommending. Steelmans both positions thoroughly. Same correct integration-first recommendation with similar budget split. Mentions Kent Dodds testing trophy. Flags uncertainties about team testing experience and code testability. Better calibrated overall.
+cohere-01,A,3,2,1,3,3,2,3,"found a,b,c; extra: 404 undocumented (valid); no false positives"
+cohere-01,B,3,2,2,3,3,3,3,"found a,b,c; extras: 404 undocumented, /v1 base URL (valid); severity labels well calibrated; considers plan vs docs drift"
+cohere-02,A,3,2,2,3,3,3,3,"found a,b,c,d; extras: image_url gap, updated_at behavior (all valid); systematic category-based review; clear severity levels"
+cohere-02,B,3,1,1,3,2,2,3,"found a,b,c,d; extras: onDelete, timestamps TZ, updated_at (all valid); thorough but less structured; less caveating"
+cohere-03,A,3,2,2,3,3,3,3,"found a,b,c; extra: log level (valid, appropriately caveated as possibly intentional); systematic with severity labels"
+cohere-03,B,3,1,1,3,2,2,3,"found a,b,c; extra: log level (valid); concise but less nuanced; no false positives"
+cohere-04,A,3,1,1,3,2,2,3,"found a,b,c; extra: new_index_engine staging discrepancy (valid); clean summary but limited caveats"
+cohere-04,B,3,2,2,3,3,3,3,"found a,b,c; extras: new_index_engine staging, unrepresented flags in code (valid); systematic with root cause analysis; considers intentionality"
+cohere-05,A,3,2,2,3,3,3,3,"found a,b,c; extras: feed naming issue, createPost unrepresented (valid, low); systematic category review; clear severity"
+cohere-05,B,3,1,1,3,2,2,3,"found a,b,c; concise and correct; no false positives; less structured review"
+cohere-06,A,3,2,2,3,3,3,3,"found a,b,c; extras: health check gap, rollback argument, Slack webhook name (all valid); very thorough root cause analysis"
+cohere-06,B,3,1,1,3,2,2,3,"found a,b,c (deploy registry/DEPLOY_TOKEN); extras: health check, Slack SHA format (valid); less structured but accurate"
+cohere-07,A,3,2,1,3,2,2,3,"found a,b,c; extra: consumer drops system events (valid behavioral observation); clean summary table"
+cohere-07,B,3,2,2,3,3,3,3,"found a,b,c; extra: total_amount corruption in analytics (valid); systematic category review; clear severity; considers alternative schema designs"
+cohere-08,A,3,2,2,3,3,3,3,"found a,b,c; extras: auth model divergence, missing POST route (valid); very systematic 10-category review; clear fix priorities"
+cohere-08,B,3,2,1,3,2,2,3,"found a,b,c; extras: manage_roles contradiction, missing POST (valid); accurate but less structured; less alternative consideration"
+cohere-09,A,3,1,1,3,2,2,3,"found a,b,c; extras: avatar unused, schema duplication (valid); correct but less structured; limited caveats"
+cohere-09,B,3,2,2,3,3,3,3,"found a,b,c; extras: avatar unused, schema duplication with detail (valid); systematic category review; considers schema intent"
+cohere-10,A,3,2,3,3,3,3,3,"found a,b,c; extras: createProject missing, PATCH missing, Workspace status, inviteUser typing (all valid); root cause analysis; notes SDK header contradiction"
+cohere-10,B,3,2,2,3,2,2,3,"found a,b,c; extras: createProject, Workspace status, inviteUser typing (valid); accurate but less thorough structural analysis"

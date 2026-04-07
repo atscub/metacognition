@@ -1,0 +1,21 @@
+task_id,response,ungrounded_claims,assumption_ack,alternatives,error_detection,rework,confidence_cal,correctness,notes
+debug-01,A,3,2,2,3,3,2,3,Correctly identifies cache flush as root cause; clean reasoning path; dismisses deploy correlation with evidence; minor: doesn't explicitly state confidence level
+debug-01,B,2,3,3,2,2,2,2,Explicitly questions assumptions and surfaces authority bias; however incorrectly maps Mar 20/27 to Fridays (they are Thu) and speculates deploy also flushes cache without evidence; the day-of-week error weakens correctness
+debug-02,A,3,3,3,3,3,3,3,Excellent multi-lens analysis; explicitly identifies IP mismatch; explains ECONNREFUSED semantics; connects OOMKill events to the exact failure pattern; all claims grounded
+debug-02,B,3,2,2,3,3,3,3,Correct root cause with clear evidence chain; slightly less explicit about assumption-surfacing and alternatives; equally correct on the diagnosis
+debug-03,A,3,3,3,3,3,3,3,Systematically rules out Node version hypothesis; correctly identifies timezone as root cause; flags SF developer inconsistency; clean reasoning with no false starts
+debug-03,B,3,2,2,3,3,3,3,Correct root cause; good explanation of timestamp mechanics; provides multiple fix options; slightly less explicit about assumptions
+debug-04,A,3,3,3,3,3,3,3,Explicitly falsifies WebSocket hypothesis using canary data; connects WriteStream counts to EventEmitter growth; identifies the comment as the smoking gun; notes latent WebSocket issue separately
+debug-04,B,3,2,2,3,3,3,3,Correct root cause with good evidence chain; connects heap snapshot data well; slightly less structured in assumption-surfacing
+debug-05,A,2,2,3,3,2,2,3,Correctly identifies non-atomic counter + missing idempotency as root cause; explains why unique constraint fails; identifies frontend retry and operation ordering issues; minor ungrounded claim about LB retry vs 2ms gap
+debug-05,B,3,3,3,3,3,3,3,Explicitly falsifies team hypothesis with data; clearly distinguishes infrastructure retry from user retry; well-structured prioritized fixes; appropriately hedged throughout
+debug-06,A,3,3,3,3,3,3,3,Thorough layer-by-layer decomposition; correctly traces the bug through build pipeline to Safari cascade behavior; explains why all team fixes failed; multiple well-reasoned fix options
+debug-06,B,3,2,2,3,3,3,3,Correct root cause and fix; concise and accurate; minor inaccuracy claiming !important doesn't help due to property name precedence (it's actually last-declaration-wins); less alternative exploration
+debug-07,A,3,3,3,3,3,3,3,Explicitly steelmans then disproves clock skew with NTP data; correctly identifies batch delivery as root cause; cites Stripe docs; evaluates all team proposals; lists verification steps
+debug-07,B,3,2,2,3,3,3,3,Correct root cause; good implementation detail for retry mechanism and sequence guard; slightly less explicit about assumption-surfacing
+debug-08,A,3,2,2,3,3,3,3,Immediately spots the typo; provides immediate remediation command; adds validation step to prevent recurrence; clean and direct
+debug-08,B,3,3,3,3,3,3,3,Spots the typo AND notices the $ALIAS variable is defined but unused (deeper code analysis); raises secondary issue about silent deletion; explicit reframe methodology
+debug-09,A,3,3,3,3,3,3,3,Explicitly disconfirms bcrypt hypothesis with provided evidence; identifies VARCHAR(59) truncation; compares hash values side-by-side; offers both immediate fix and systemic remediation
+debug-09,B,2,1,1,3,1,2,3,Correct root cause but visible rework/confusion about how other users have 60-char hashes in VARCHAR(59); less assumption-surfacing; thinking-out-loud style shows uncertainty without structured resolution
+debug-10,A,3,2,2,3,3,3,3,Correctly identifies CSS selector collision; explains the 10% rate mechanism; notes that adding waits makes failure more likely; provides scoped query fix and deeper fix
+debug-10,B,3,3,3,3,3,3,3,Structured decomposition catches the bug; explicitly traces where value 1 comes from; questions each team assumption in a table; explains why every attempted fix failed
