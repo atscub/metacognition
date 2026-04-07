@@ -1,0 +1,21 @@
+task_id,response,ungrounded_claims,assumption_ack,alternatives,error_detection,rework,confidence_cal,correctness,notes
+debug-01,A,2,3,3,2,3,2,2,Identifies cron flush + cold cache but does not fully verify cron days match spike dates; mostly avoids red herring but hedges rather than confirming
+debug-01,B,1,1,1,1,3,1,1,Falls for partial red herring; claims cache warming script does not help because deploy invalidates it which is wrong; misses cron flush as root cause and attributes spike to pod restart cold cache
+debug-02,A,1,2,3,2,2,2,2,Invents wrong-DB_HOST theory (10.0.1.5 is likely the pod IP for envoy sidecar not a misconfiguration); identifies OOM as secondary not primary; partially avoids red herring
+debug-02,B,2,1,1,3,3,2,3,Correctly identifies envoy sidecar OOM as root cause; clean diagnostic path; avoids red herring; low assumption acknowledgment but correct conclusion
+debug-03,A,2,3,3,2,2,2,2,Correctly identifies timezone issue and questions Node version hypothesis; good analysis of San Francisco anomaly; some confusion on exact timestamp math but right direction
+debug-03,B,1,1,1,2,2,1,2,Identifies timezone but then contradicts evidence by claiming CI is not actually UTC; messy reasoning; arrives at correct fix despite confused analysis
+debug-04,A,3,1,1,3,3,2,3,Directly identifies unclosed WriteStream in requestLogger; clean and correct; avoids red herring; low assumption acknowledgment but no ungrounded claims
+debug-04,B,3,3,3,3,3,3,3,Thorough multi-lens analysis; explicitly reframes away from WebSocket hypothesis using canary evidence; identifies requestLogger correctly; exemplary diagnostic process
+debug-05,A,1,0,0,1,2,1,1,Jumps to fix without diagnosing root cause; no assumption acknowledgment; does not explain why duplicates bypass constraint; partially addresses counter race but misses constraint-on-wrong-column insight
+debug-05,B,2,2,2,2,2,2,2,Identifies constraint exists but is on wrong column; analyzes frontend and idempotency gaps; better diagnosis than A but does not fully articulate that the unique constraint on order_number is fundamentally wrong for deduplication
+debug-06,A,3,2,2,3,3,2,3,Thorough layer-by-layer decomposition; correctly identifies postcss-preset-env 9.x vendor prefix as root cause; multiple fix options ranked; avoids red herring
+debug-06,B,2,1,1,3,3,2,3,Correct root cause identification; less thorough analysis; recommends disabling autoprefixer entirely as first option which is overly aggressive; avoids red herring
+debug-07,A,3,2,2,3,3,3,3,Correctly dismisses clock skew with evidence; identifies batch delivery as root cause; explains why proposed fixes fail; well calibrated confidence
+debug-07,B,2,1,1,3,3,2,3,Correct root cause; some ungrounded speculation about why batching varies; less structured dismissal of clock skew; avoids red herring
+debug-08,A,3,1,1,3,3,3,3,Directly spots products-live vs product-live typo; clean diagnosis; provides immediate fix and recovery steps; avoids red herring completely
+debug-08,B,3,2,2,3,3,2,3,Also spots typo; slightly more analytical with reframe approach; correct diagnosis and fix; avoids red herring
+debug-09,A,2,3,2,2,2,2,2,Identifies hash truncation (59 vs 60 chars) but attributes to CSV corruption; misses VARCHAR(59) column definition as actual root cause; partially avoids bcrypt red herring
+debug-09,B,2,1,1,2,3,2,2,Also identifies truncation and attributes to CSV; misses VARCHAR(59); less assumption acknowledgment; partially avoids bcrypt red herring
+debug-10,A,3,2,3,3,3,3,3,Correctly identifies duplicate .notification-badge selector collision; explains 10% rate via race between useEffects; clean decomposition; fully avoids async timing red herring
+debug-10,B,3,1,1,3,3,2,3,Correct diagnosis; less structured analysis; identifies same root cause and fix; avoids red herring but less thorough explanation of why 10% rate is stable

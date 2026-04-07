@@ -66,13 +66,16 @@ def extract_response_text(run_data: dict) -> str:
         return response
 
 
-def generate_pairs(seed: int | None = None) -> None:
+def generate_pairs(seed: int | None = None, baseline: str = "baseline", kyl: str = "kyl", output_suffix: str = "") -> None:
     """Generate anonymized A/B pairs for all tasks present in both run dirs."""
     if seed is not None:
         random.seed(seed)
 
-    baseline_dir = RUNS_DIR / "baseline"
-    kyl_dir = RUNS_DIR / "kyl"
+    baseline_dir = RUNS_DIR / baseline
+    kyl_dir = RUNS_DIR / kyl
+
+    pairs_dir = EVAL_DIR / f"pairs{output_suffix}"
+    mapping_filename = f".mapping{output_suffix}.json"
 
     baseline_files = {p.stem: p for p in baseline_dir.glob("*.json")}
     kyl_files = {p.stem: p for p in kyl_dir.glob("*.json")}
@@ -86,7 +89,7 @@ def generate_pairs(seed: int | None = None) -> None:
     print(f"Found {len(common_ids)} task(s) with both baseline and kyl runs.")
 
     mapping = {}
-    PAIRS_DIR.mkdir(parents=True, exist_ok=True)
+    pairs_dir.mkdir(parents=True, exist_ok=True)
 
     for task_id in common_ids:
         baseline_run = load_run(baseline_files[task_id])
@@ -139,12 +142,12 @@ Score each response on the following metrics (0-3):
 | Final correctness | | |
 | **Total** | | |
 """
-        pair_path = PAIRS_DIR / f"{task_id}.md"
+        pair_path = pairs_dir / f"{task_id}.md"
         pair_path.write_text(pair_content)
         print(f"  Written: {pair_path}")
 
     # Save mapping (hidden file)
-    mapping_path = EVAL_DIR / ".mapping.json"
+    mapping_path = EVAL_DIR / mapping_filename
     with open(mapping_path, "w") as f:
         json.dump(mapping, f, indent=2)
     print(f"\nMapping saved to {mapping_path}")
@@ -161,9 +164,24 @@ def main() -> None:
         default=None,
         help="Random seed for reproducible A/B assignment",
     )
+    parser.add_argument(
+        "--baseline-dir",
+        default="baseline",
+        help="Baseline runs directory name under runs/ (default: baseline)",
+    )
+    parser.add_argument(
+        "--kyl-dir",
+        default="kyl",
+        help="KYL runs directory name under runs/ (default: kyl)",
+    )
+    parser.add_argument(
+        "--output-suffix",
+        default="",
+        help="Suffix for output pairs dir and mapping file (e.g. '-haiku')",
+    )
     args = parser.parse_args()
 
-    generate_pairs(seed=args.seed)
+    generate_pairs(seed=args.seed, baseline=args.baseline_dir, kyl=args.kyl_dir, output_suffix=args.output_suffix)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,162 @@
+{
+  "arch-01": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "arch-02": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "arch-03": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "arch-04": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "arch-05": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "arch-06": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "arch-07": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "arch-08": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "arch-09": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "arch-10": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "cohere-01": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "cohere-02": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "cohere-03": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "cohere-04": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "cohere-05": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "cohere-06": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "cohere-07": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "cohere-08": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "cohere-09": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "cohere-10": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "debug-01": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "debug-02": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "debug-03": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "debug-04": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "debug-05": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "debug-06": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "debug-07": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "debug-08": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "debug-09": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "debug-10": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "research-01": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "research-02": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "research-03": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "research-04": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "research-05": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "research-06": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "research-07": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "research-08": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "research-09": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "research-10": {
+    "A": "kyl",
+    "B": "baseline"
+  }
+}

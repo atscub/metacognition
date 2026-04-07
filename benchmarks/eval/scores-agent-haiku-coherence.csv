@@ -1,0 +1,21 @@
+task_id,response,ungrounded_claims,assumption_ack,alternatives,error_detection,rework,confidence_cal,correctness,notes
+cohere-01,A,3,2,2,3,3,2,3,Found all 3: field name case mismatch; phantom DELETE; email required vs optional. Minor API version note not a false positive. Systematic 10-category approach.
+cohere-01,B,2,1,1,3,2,2,3,Found all 3 planted issues. Item 5 (created_at handling) is a mild stretch. Less systematic; no structured review method. Limited assumption acknowledgment.
+cohere-02,A,3,2,2,2,3,2,2,Found 3 of 4: phantom FK; NOT NULL mismatch; DECIMAL vs Float. Missed sku missing in Prisma. Also found image_url and indexes (real extras). Systematic approach.
+cohere-02,B,3,1,1,3,2,2,3,Found all 4: missing sku; NOT NULL; phantom FK; DECIMAL vs Float. Clean and concise. Limited assumption acknowledgment or alternative framing.
+cohere-03,A,2,1,2,2,3,2,2,Found 2 of 3: DB password mismatch; Redis hostname. Missed port 8080 vs 3000. Added NODE_ENV mismatch (real but not planted). Systematic 10-category structure.
+cohere-03,B,2,1,1,2,2,2,2,Found 2 of 3: DB password mismatch; Redis hostname. Missed port 8080 vs 3000. Added log level and session secret (real but not planted).
+cohere-04,A,3,1,1,3,2,2,3,Found all 3: dark_mode 50% vs 100%; undefined new_checkout_flow; dependency violation. Clean focused analysis. Limited assumption hedging.
+cohere-04,B,2,2,2,3,2,2,3,Found all 3 planted issues. Good context about stale plan date. Asked whether plan was superseded (good assumption ack). Added code coverage gap observation.
+cohere-05,A,3,1,2,3,2,2,3,Found all 3: avatar/profile_image mapping; role not in schema; null vs [] comments. Feed naming is design observation not false positive. Good severity levels.
+cohere-05,B,3,1,2,2,2,2,2,Found 2 of 3: role not in schema; null vs [] comments. Missed avatar/profile_image resolver gap. Feed semantics and pagination are valid design notes.
+cohere-06,A,2,1,2,3,3,2,3,Found all 3: node 20 vs 18; migration order; DEPLOY_TOKEN missing in CI. Also found rollback subcommand missing. Very thorough systematic audit.
+cohere-06,B,3,2,2,3,2,2,3,Found all 3 planted issues. Also found rollback subcommand. Good closing hypothesis about script vs workflow being out of sync.
+cohere-07,A,2,1,2,3,3,2,3,Found all 3: source not in Avro; processed_at never set; user_id nullable vs required. Systematic 10-category review. Minor stretch on tone calibration point.
+cohere-07,B,3,1,1,3,2,2,3,Found all 3 planted issues. Clean summary table. Concrete fix suggestions. Less systematic review structure.
+cohere-08,A,3,1,2,3,2,2,3,Found all 3: manage_billing vs billing_admin; editor Delete blocked; super_admin missing. Clean and concise with actionable fixes.
+cohere-08,B,2,1,2,3,3,2,3,Found all 3 planted issues. Added authorization model mismatch (hierarchy vs permission-based) which is insightful but borderline ungrounded as a defect.
+cohere-09,A,3,1,1,2,3,2,2,Found bio_placeholder missing; hardcoded Zod. Found only 2 of 3 missing Spanish keys (missed errors.rate_limited). Systematic 10-category approach.
+cohere-09,B,3,1,1,3,2,2,3,Found all 3: 3 missing Spanish keys (including rate_limited); bio_placeholder; hardcoded Zod. Also notes unused avatar_label. Complete detection.
+cohere-10,A,2,1,1,3,2,2,3,Found all 3: pagination offset vs cursor; deleted deleteWorkspace; cursor response mismatch. Also adds workspace naming and missing updateWorkspace. Some items overlap.
+cohere-10,B,3,2,2,3,2,2,3,Found all 3 planted issues. Good framing about auto-generated claim being false. Cleaner organization than A.

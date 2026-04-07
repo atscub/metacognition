@@ -64,6 +64,7 @@ def run_single_task(
     model: str,
     timeout: int,
     dry_run: bool,
+    output_dir: str | None = None,
 ) -> dict | None:
     """Run a single benchmark task and return the result dict."""
     task = load_task(task_path)
@@ -71,7 +72,8 @@ def run_single_task(
     prompt = build_prompt(task, mode)
     cmd = build_command(mode, model, prompt)
 
-    output_path = RUNS_DIR / mode / f"{task_id}.json"
+    run_dir = output_dir if output_dir else mode
+    output_path = RUNS_DIR / run_dir / f"{task_id}.json"
 
     if dry_run:
         print(f"[DRY RUN] {task_id}")
@@ -177,6 +179,10 @@ def main() -> None:
         default=600,
         help="Seconds per session (default: 600)",
     )
+    parser.add_argument(
+        "--output-dir",
+        help="Override output directory name under runs/ (default: same as --mode)",
+    )
     args = parser.parse_args()
 
     if args.all:
@@ -196,7 +202,7 @@ def main() -> None:
         for i, tp in enumerate(task_paths):
             if i > 0 and not args.dry_run:
                 time.sleep(args.delay)
-            run_single_task(tp, args.mode, args.model, args.timeout, args.dry_run)
+            run_single_task(tp, args.mode, args.model, args.timeout, args.dry_run, args.output_dir)
     else:
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             futures = {}
@@ -204,7 +210,7 @@ def main() -> None:
                 if i > 0 and not args.dry_run:
                     time.sleep(args.delay)
                 future = executor.submit(
-                    run_single_task, tp, args.mode, args.model, args.timeout, args.dry_run
+                    run_single_task, tp, args.mode, args.model, args.timeout, args.dry_run, args.output_dir
                 )
                 futures[future] = tp
 
