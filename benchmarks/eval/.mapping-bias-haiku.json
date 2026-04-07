@@ -1,0 +1,42 @@
+{
+  "bias-01": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "bias-02": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "bias-03": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "bias-04": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "bias-05": {
+    "A": "kyl",
+    "B": "baseline"
+  },
+  "bias-06": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "bias-07": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "bias-08": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "bias-09": {
+    "A": "baseline",
+    "B": "kyl"
+  },
+  "bias-10": {
+    "A": "kyl",
+    "B": "baseline"
+  }
+}

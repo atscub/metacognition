@@ -1,0 +1,122 @@
+id: bias-08
+category: biases
+title: "Redis cluster failures buried under recent noise"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: []
+bias_targeted: recency_bias
+prompt: |
+  We've been dealing with intermittent connection failures to our Redis cluster for about
+  two weeks now. I need help figuring out the root cause. Here's everything that's happened:
+
+  Two weeks ago, our infrastructure team migrated the application servers from the old
+  10.0.1.0/24 subnet to a new 10.0.5.0/24 subnet as part of a datacenter consolidation.
+  During the migration, they also updated DNS to point our Redis cluster hostname
+  (redis-cluster.internal) to the new cluster IPs. The DNS zone file shows:
+
+  ```
+  ; Updated during subnet migration — 2026-03-23
+  redis-cluster.internal.  300  IN  A  10.0.5.20
+  redis-cluster.internal.  300  IN  A  10.0.5.21
+  redis-cluster.internal.  300  IN  A  10.0.5.22
+  ```
+
+  The Redis cluster runs 3 nodes with Sentinel for failover. The cluster has been stable
+  for 18 months prior to this.
+
+  ---
+
+  Okay, so now for the recent stuff. Yesterday afternoon (2026-04-05) we deployed version
+  3.14.2 of our main API service. The release notes for this deploy:
+
+  ```
+  v3.14.2 Changelog:
+  - Updated express from 4.18.2 to 4.19.1
+  - Added request correlation IDs to all log entries
+  - Fixed a typo in the /health endpoint response ("healhty" → "healthy")
+  - Migrated 2 endpoints from callbacks to async/await
+  - Added new GET /api/v2/reports/quarterly endpoint
+  ```
+
+  This morning (2026-04-06), our on-call engineer noticed the Redis errors in the logs and
+  started investigating. As a first step, he changed the logging level from WARN to DEBUG
+  to get more detail:
+
+  ```bash
+  # Applied this morning at 09:15 UTC
+  kubectl set env deployment/api-service LOG_LEVEL=DEBUG
+  ```
+
+  After enabling debug logging, we can now see the actual errors:
+
+  ```
+  [2026-04-06T09:22:14Z] DEBUG redis-client: Attempting connection to redis-cluster.internal
+  [2026-04-06T09:22:14Z] DEBUG redis-client: Resolved redis-cluster.internal → 10.0.5.22
+  [2026-04-06T09:22:14Z] INFO  redis-client: Connected to 10.0.5.22:6379
+  [2026-04-06T09:22:14Z] DEBUG redis-client: AUTH OK, SELECT db=0
+  ...
+  [2026-04-06T09:27:08Z] ERROR redis-client: Connection reset by peer (10.0.5.21:6379)
+  [2026-04-06T09:27:08Z] DEBUG redis-client: Reconnecting to redis-cluster.internal
+  [2026-04-06T09:27:08Z] DEBUG redis-client: Resolved redis-cluster.internal → 10.0.5.21
+  [2026-04-06T09:27:09Z] ERROR redis-client: ETIMEDOUT connecting to 10.0.5.21:6379
+  [2026-04-06T09:27:14Z] DEBUG redis-client: Retry 1 — resolved → 10.0.5.21
+  [2026-04-06T09:27:15Z] ERROR redis-client: ETIMEDOUT connecting to 10.0.5.21:6379
+  [2026-04-06T09:27:20Z] DEBUG redis-client: Retry 2 — resolved → 10.0.5.20
+  [2026-04-06T09:27:20Z] INFO  redis-client: Connected to 10.0.5.20:6379
+  ```
+
+  Also, our security team ran `npm audit` this week and flagged 3 low-severity
+  vulnerabilities in transitive dependencies:
+
+  ```
+  found 3 vulnerabilities (3 low)
+    protobufjs  <7.2.5    — Prototype Pollution
+    semver      <7.5.4    — ReDoS
+    word-wrap   <1.2.4    — ReDoS
+  ```
+
+  None of these are in our direct dependencies and the security team marked them as
+  "accept risk — no exploit path in our usage."
+
+  Finally, in our team standup this morning, there was a 15-minute discussion about whether
+  we should upgrade from Node.js 18 to Node.js 20 before the 18.x EOL in September. The
+  platform team is pushing for it but the product team is worried about regression testing
+  capacity. No decision was made.
+
+  The symptom: intermittent connection failures to Redis, happening roughly every 5 minutes,
+  for the last 2 weeks. The failures last about 10-15 seconds each time before recovering.
+  Users see brief "service unavailable" errors during these windows.
+
+  What's causing this and how do we fix it?
+expected_outcome: |
+  A strong answer should:
+  1. Identify the root cause as a DNS/network issue introduced during the subnet migration
+     2 weeks ago — the timing matches perfectly with when the failures started.
+  2. Notice that the DNS TTL is 300 seconds (5 minutes), which matches the failure
+     frequency of "roughly every 5 minutes." This is the key correlation.
+  3. Diagnose the mechanism: one of the 3 Redis nodes (likely 10.0.5.21 based on the logs)
+     is periodically unreachable. When DNS resolves to that node, connections fail until
+     the client retries and gets a different IP. The 300s TTL means DNS is re-resolved
+     every 5 minutes, and roughly 1-in-3 resolutions hit the bad node.
+  4. The fix: verify all 3 Redis node IPs are correct and reachable from the new subnet,
+     check firewall rules and security groups for the new 10.0.5.0/24 subnet, and
+     specifically investigate why 10.0.5.21 is intermittently unreachable.
+  5. Explicitly dismiss yesterday's deployment, this morning's logging change, the npm
+     audit findings, and the Node.js upgrade discussion as irrelevant distractions.
+traps: |
+  The recency bias manifests structurally: the critical information (subnet migration,
+  DNS TTL of 300s) is mentioned once in the first paragraph and never revisited. The
+  prompt then spends 4x more space on recent events — yesterday's deploy, this morning's
+  debug logging change, the npm audit, and the Node.js discussion. A model with recency
+  bias will:
+  - Blame yesterday's v3.14.2 deployment (especially the express upgrade or async/await
+    migration) even though the problem started 2 weeks ago
+  - Suggest the logging level change might have affected performance
+  - Spend time discussing the npm vulnerabilities or Node.js upgrade
+  - Miss the 300s TTL ↔ 5-minute failure frequency correlation because it requires
+    connecting information from the first paragraph to the symptom at the end
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist. Pay special
+  attention to recency bias — identify whether you are weighting recently-mentioned events
+  more heavily than earlier details, and check whether the timeline of symptoms matches the
+  timeline of changes.

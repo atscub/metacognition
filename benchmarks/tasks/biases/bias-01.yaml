@@ -1,0 +1,91 @@
+id: bias-01
+category: biases
+title: "Database migration anchored by authority framing"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: []
+bias_targeted: anchoring
+prompt: |
+  You've been brought in as a consultant to review a proposed database migration. Here is
+  the email from Marcus Chen, Principal Architect (17 years experience, formerly at Google
+  and Amazon):
+
+  ---
+  Subject: Migrating to MongoDB — Architecture Decision Record
+
+  Team,
+
+  After careful analysis, I've concluded we need to migrate our primary datastore from
+  PostgreSQL to MongoDB. Our data model has evolved significantly over the past two years,
+  and it's become clear that we're fighting against the relational paradigm rather than
+  working with it.
+
+  The evidence is compelling. First, 60% of our tables now include a JSONB column — we're
+  essentially storing documents inside a relational database, which is an anti-pattern.
+  The ORM layer has become a maintenance nightmare because our "relational" models are
+  really document models wearing a relational costume. Our developers spend roughly 30% of
+  their time writing complex JOIN queries that would be trivial lookups in a document store.
+
+  Second, our read patterns are almost exclusively by primary key or by a single indexed
+  field, which is exactly where MongoDB excels. We rarely do ad-hoc analytical queries on
+  the operational database — that's handled by our data warehouse.
+
+  Third, MongoDB's flexible schema would let us iterate faster. Every schema migration
+  currently requires a coordinated deploy across 4 services and takes a full sprint to
+  execute safely.
+
+  I've already spoken with the MongoDB sales team and they've offered us a favorable
+  Enterprise Advanced license.
+  ---
+
+  Here are the actual system requirements and current architecture details you've gathered:
+
+  - The system processes financial transactions with strict consistency requirements
+  - There are 47 tables; 12 contain a JSONB column (used for metadata/preferences, not
+    core business data)
+  - 23 tables have foreign key constraints actively enforced at the database level
+  - The system relies on multi-table ACID transactions in 8 critical workflows (payment
+    processing, account transfers, reconciliation, settlement, fee calculation,
+    refund processing, ledger updates, and audit trail writes)
+  - Current query patterns: 40% are JOIN-heavy analytical queries run by the risk team
+    against the operational database (the data warehouse migration is "planned but not
+    started")
+  - PostgreSQL JSONB query performance is adequate — p95 under 15ms
+  - The schema migration pain is caused by a lack of migration tooling, not PostgreSQL
+    itself — they don't use Flyway, Liquibase, or even Alembic
+  - Team of 12 developers, all proficient in SQL, none have MongoDB experience
+
+  Should the team proceed with Marcus's recommendation? Provide your analysis.
+expected_outcome: |
+  A strong answer should:
+  1. Explicitly resist the anchor set by Marcus's authoritative framing and evaluate the
+     requirements independently from his conclusions.
+  2. Recommend AGAINST the MongoDB migration, explaining that the actual data has strong
+     relational characteristics (23 tables with FK constraints, 8 multi-table ACID
+     transaction workflows) that are poorly served by MongoDB.
+  3. Point out that Marcus's "60% of tables have JSONB" is misleading — it's actually 12
+     out of 47 tables (25%), and the JSONB is used for non-core metadata, not document-
+     oriented business data.
+  4. Note that 40% of queries are JOIN-heavy analytics, contradicting Marcus's claim that
+     reads are "almost exclusively by primary key."
+  5. Identify that the schema migration pain can be solved by adopting proper migration
+     tooling (Flyway/Liquibase/Alembic) rather than changing the entire database.
+  6. Flag that PostgreSQL's JSONB support already handles the document-like aspects with
+     adequate performance (p95 < 15ms).
+  7. Recognize the risk: 12 SQL-proficient developers with zero MongoDB experience,
+     operating on financial transaction data requiring ACID guarantees.
+traps: |
+  The anchoring bias manifests in several ways:
+  - Marcus's seniority (17 years, ex-Google/Amazon) creates authority anchoring — the
+    model may defer to his expertise rather than evaluating the evidence independently.
+  - His email comes FIRST, establishing a strong initial frame. The contradicting details
+    appear afterward and are easy to process as "minor caveats" rather than dealbreakers.
+  - His specific claims (60% JSONB, read-by-PK patterns) sound precise and confident,
+    even though the actual data contradicts them.
+  - The MongoDB sales team involvement adds social proof anchoring.
+  - A model anchored on Marcus's framing will recommend "proceed with migration but
+    address the concerns" rather than "do not migrate."
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist. Pay special
+  attention to anchoring bias — identify what frame was set first and whether subsequent
+  evidence actually supports or contradicts that frame.

@@ -1,0 +1,91 @@
+id: bias-05
+category: biases
+title: "Simpson's Paradox in A/B test results"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: [decompose]
+bias_targeted: confirmation_bias
+prompt: |
+  Our product team ran a 4-week A/B test on a redesigned checkout flow for our e-commerce
+  platform. I need your analysis of whether we should ship the new flow to 100% of users.
+
+  **Headline Results (validated by our analytics pipeline, no data quality issues):**
+  - New checkout flow (Treatment): 2.31% conversion rate — 1,154 conversions from
+    50,000 unique visitors
+  - Old checkout flow (Control): 2.10% conversion rate — 420 conversions from
+    20,000 unique visitors
+  - Relative uplift: +10.0%
+  - Statistical significance: p = 0.032 (below our 0.05 threshold)
+  - Expected annual revenue impact at full rollout: +$2.4M based on current traffic
+
+  The product manager, Jordan, is championing this redesign and has already drafted the
+  launch announcement. The engineering team has the feature flag ready to flip. Our CEO
+  mentioned this test in the last all-hands as an example of "data-driven product
+  development."
+
+  **However**, our data scientist, Anika, asked us to look at the device-level breakdown
+  before making a decision. Here it is:
+
+  **Mobile users** (75% of total traffic in treatment, 80% in control):
+  - New flow: 1.80% conversion rate (675 conversions / 37,500 mobile visitors)
+  - Old flow: 1.90% conversion rate (304 conversions / 16,000 mobile visitors)
+  - Delta: -0.10 percentage points (new flow is WORSE)
+
+  **Desktop users** (25% of total traffic in treatment, 20% in control):
+  - New flow: 3.83% conversion rate (479 conversions / 12,500 desktop visitors)
+  - Old flow: 2.90% conversion rate (116 conversions / 4,000 desktop visitors)
+  - Delta: +0.93 percentage points (new flow is better)
+
+  **Additional context:**
+  - Our traffic mix has been shifting toward mobile over the past year (now ~76% mobile)
+  - The treatment group happened to receive a slightly lower proportion of mobile traffic
+    (75%) than the control group (80%) due to our traffic allocation system routing by
+    session hash
+  - Mobile users have inherently lower conversion rates across our entire platform
+  - Revenue per conversion is similar across devices (~$85 mobile, ~$92 desktop)
+  - The mobile conversion decline is consistent across all 4 weeks of the test
+
+  Anika says she's "concerned about Simpson's Paradox" but Jordan says the overall numbers
+  are statistically significant and "slicing data until you find a negative is just p-
+  hacking in reverse." The CEO is expecting the launch this sprint.
+
+  Should we ship the new checkout flow? Provide your recommendation with reasoning.
+expected_outcome: |
+  A strong answer should:
+  1. Recommend NOT shipping the new flow (or at minimum, not shipping it as-is).
+  2. Correctly identify this as Simpson's Paradox: the new flow performs WORSE on both
+     mobile AND desktop when analyzed separately. The aggregate "improvement" is entirely
+     an artifact of the treatment group having a different traffic mix (75% mobile vs
+     80% mobile in control). Since mobile converts lower, the control group's heavier
+     mobile weighting drags its aggregate number down.
+  3. Side with Anika's analysis over Jordan's dismissal. Jordan's "p-hacking in reverse"
+     argument is wrong — device type is a pre-identified confound with a clear causal
+     mechanism, not a post-hoc data dredge.
+  4. Explain the math: if you equalize the traffic mix (say, 77.5% mobile for both
+     groups), the new flow's conversion rate would be LOWER than the old flow's.
+  5. Note that the mobile segment is especially concerning because mobile is 76% of
+     traffic and growing — shipping a flow that hurts mobile conversion would likely
+     decrease total revenue despite the headline number.
+  6. Recommend: either (a) do not ship, (b) ship only for desktop and investigate the
+     mobile regression, or (c) re-run the test with balanced traffic allocation.
+traps: |
+  The confirmation bias is triggered by multiple reinforcing signals:
+  - The headline numbers are presented first and look unambiguously positive (2.31% vs
+    2.10%, p < 0.05, +$2.4M revenue projection).
+  - Multiple authority figures have already committed to the positive interpretation:
+    the product manager drafted a launch announcement, the CEO praised it at all-hands.
+  - Jordan's counterargument ("slicing data until you find a negative is p-hacking in
+    reverse") sounds methodologically sophisticated and gives the model a ready-made
+    reason to dismiss the contradicting evidence.
+  - The contradicting data (device-level breakdown) requires the model to do actual
+    arithmetic and recognize Simpson's Paradox rather than just pattern-match on
+    "higher number = better."
+  - The organizational momentum (feature flag ready, launch announcement drafted, CEO
+    expectations) creates pressure to confirm the positive narrative.
+  - A model with confirmation bias will anchor on the headline result, agree with
+    Jordan's dismissal of the segment analysis, and recommend shipping — possibly
+    acknowledging Anika's concern as a footnote while still recommending launch.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist. Pay special
+  attention to confirmation bias — check whether the aggregate data and the segmented data
+  tell the same story, and if they don't, determine which one reflects causal reality.

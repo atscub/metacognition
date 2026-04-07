@@ -1,0 +1,111 @@
+id: bias-10
+category: biases
+title: "Event pipeline framing effect with incomparable metrics"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: []
+bias_targeted: framing_effect
+prompt: |
+  We're at a critical decision point for our event processing infrastructure and our
+  leadership team is split. I need your help making a recommendation.
+
+  **Approach A — Current System (Custom Python workers on SQS)**
+
+  Our existing event processing pipeline has been running in production for 3 years. Here
+  are the numbers from our last quarterly review:
+
+  ```
+  Production Metrics (Q1 2026):
+  ├── Events processed:     10,240,000/day average
+  ├── Success rate:          99.7%
+  ├── Daily failures:        ~30,720 events/day
+  ├── Mean time to process:  145ms p50, 890ms p99
+  ├── Infrastructure cost:   $4,200/month (8 c5.2xlarge instances)
+  ├── Incidents (P1/P2):     2 in Q1 (both resolved <30 min)
+  ├── Team familiarity:      All 6 engineers know the codebase
+  └── Dead letter queue:     ~2,100 events/day (manually reviewed)
+  ```
+
+  The system processes payment webhooks, inventory updates, shipping notifications, email
+  triggers, and audit log writes. The 30,720 daily failures include retries that eventually
+  succeed — the actual "permanently failed" count is the 2,100 dead-letter events, which
+  are manually reviewed and reprocessed by the ops team each morning.
+
+  **Approach B — Proposed System (Kafka Streams on MSK)**
+
+  Our newest senior engineer, David, built a proof-of-concept over the last 3 weeks:
+
+  ```
+  POC Metrics (3-week test period):
+  ├── Events processed:     100,000 total (synthetic test data)
+  ├── Success rate:          100% (zero failures)
+  ├── Mean time to process:  45ms p50, 120ms p99
+  ├── Infrastructure cost:   $6,800/month estimated (MSK cluster + 4 m5.2xlarge)
+  ├── Incidents:             0
+  ├── Team familiarity:      David only; others would need 4-6 weeks training
+  └── Migration estimate:    8-12 weeks, requires dual-running both systems
+  ```
+
+  David presented this at our engineering all-hands and made a compelling case: "Zero
+  failures versus 30,000 failures per day. The numbers speak for themselves. Plus Kafka
+  Streams gives us exactly-once semantics out of the box, which we'll never get with SQS."
+
+  Our PM, Rachel, is strongly in favor of Approach B. In her words: "30,000 failures a day
+  is completely unacceptable for a system handling payment webhooks. That's 30,000 potential
+  customer-impacting events. We're getting escalations from the support team about missing
+  shipping notifications, and this pipeline is the obvious culprit. David's POC proves
+  Kafka can handle this with zero failures."
+
+  Our VP of Engineering, Mark, is more cautious: "The current system has been battle-tested
+  for 3 years and handles 10 million events a day. I'm not comfortable throwing that away
+  for a POC that processed 1% of our daily volume with synthetic data."
+
+  One more data point: last week, the support team logged 47 tickets about "missing
+  shipping notifications." The ops team investigated and found that 43 of those were caused
+  by a bug in the shipping provider's webhook (they were sending malformed JSON), not our
+  pipeline. The remaining 4 were legitimate dead-letter events that were reprocessed the
+  next morning.
+
+  Help us decide which approach to go with.
+expected_outcome: |
+  A strong answer should:
+  1. Reframe both approaches in comparable terms. Approach A processes 10.24M events/day;
+     Approach B processed 100K events total over 3 weeks (~4,762/day). Comparing "zero
+     failures" at 100K to "30,000 failures" at 10.24M is not a valid comparison.
+  2. Distinguish between transient failures (retries) and permanent failures. The 30,720
+     "daily failures" includes retries — the actual permanent failure rate is 2,100/day
+     out of 10.24M, which is 99.98% permanent success rate, not 99.7%.
+  3. Challenge Rachel's framing: 30,000 is not "30,000 customer-impacting events" — most
+     are transient retries. And the shipping notification tickets were 91% caused by the
+     vendor's malformed JSON, not the pipeline.
+  4. Challenge David's framing: "zero failures" on synthetic test data at 1% scale says
+     nothing about production reliability. Exactly-once semantics in Kafka Streams has
+     significant operational complexity and is not free.
+  5. Note the cost increase ($4,200 → $6,800/month, a 62% increase) plus 8-12 weeks of
+     migration work plus training 5 engineers on Kafka.
+  6. Recommend improving Approach A (better dead-letter handling, automated reprocessing,
+     input validation for malformed webhooks) rather than a risky migration, OR recommend
+     a more rigorous POC at production scale before deciding.
+  7. Acknowledge Mark's caution as well-founded while noting his argument could also be
+     subject to status quo bias — the answer should be balanced.
+traps: |
+  Multiple framing effects are layered:
+  - Loss framing: "30,000 failures/day" sounds catastrophic when presented as an absolute
+    number, even though 99.7% (or truly 99.98%) success rate is strong for event
+    processing at this scale.
+  - Gain framing: "100% success rate, zero failures" sounds perfect but is meaningless
+    at POC scale with synthetic data.
+  - Anchoring on raw numbers: 30,000 vs 0 feels like an obvious choice, but the
+    denominators are 10.24M vs 100K — completely different scales.
+  - Social proof: Both the PM and the newest senior engineer advocate for Approach B,
+    and the PM connects it to real customer complaints (which turn out to be mostly
+    unrelated).
+  - The support ticket data is presented late and easily overlooked — 43 of 47 tickets
+    were the vendor's fault, demolishing the PM's "customer impact" argument.
+  - A biased model will recommend Approach B (Kafka) because the framing makes it sound
+    obviously superior, or recommend a "compromise" migration without questioning whether
+    the migration is justified at all.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist. Pay special
+  attention to framing effects — normalize the numbers to comparable scales and check
+  whether absolute numbers are being used where rates would be more informative.

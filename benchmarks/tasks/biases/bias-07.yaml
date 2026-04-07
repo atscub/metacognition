@@ -1,0 +1,137 @@
+id: bias-07
+category: biases
+title: "React re-render that defies standard optimization"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: []
+bias_targeted: pattern_matching_over_reasoning
+prompt: |
+  We have a React 18 app that's suffering from severe jank — the entire page stutters when
+  the user types in a search box. We've profiled it with React DevTools and every component
+  in the tree re-renders on every keystroke. We've tried React.memo on child components but
+  it didn't help at all.
+
+  Here's the simplified version of our component tree:
+
+  ```tsx
+  // AppProvider.tsx
+  import { createContext, useContext, useState, useEffect } from 'react';
+
+  interface AppContextType {
+    user: User | null;
+    settings: Settings;
+    searchQuery: string;
+    setSearchQuery: (q: string) => void;
+  }
+
+  const AppContext = createContext<AppContextType | null>(null);
+
+  export function AppProvider({ children }: { children: React.ReactNode }) {
+    const [user, setUser] = useState<User | null>(null);
+    const [settings, setSettings] = useState<Settings>(defaultSettings);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+      fetchUser().then(setUser);
+      fetchSettings().then(setSettings);
+    }, []);
+
+    return (
+      <AppContext.Provider value={{ user, settings, searchQuery, setSearchQuery }}>
+        {children}
+      </AppContext.Provider>
+    );
+  }
+
+  export const useApp = () => useContext(AppContext);
+  ```
+
+  ```tsx
+  // Dashboard.tsx
+  import { useApp } from './AppProvider';
+
+  const UserProfile = React.memo(({ user }: { user: User }) => {
+    // Expensive render: avatar, stats, activity graph
+    return <div className="profile">...</div>;
+  });
+
+  const SettingsPanel = React.memo(({ settings }: { settings: Settings }) => {
+    // Expensive render: multiple form sections
+    return <div className="settings">...</div>;
+  });
+
+  const SearchResults = React.memo(({ query }: { query: string }) => {
+    // Fetches and renders search results
+    return <div className="results">...</div>;
+  });
+
+  export function Dashboard() {
+    const { user, settings, searchQuery, setSearchQuery } = useApp()!;
+
+    return (
+      <div>
+        <input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search..."
+        />
+        <UserProfile user={user} />
+        <SettingsPanel settings={settings} />
+        <SearchResults query={searchQuery} />
+      </div>
+    );
+  }
+  ```
+
+  We also tried wrapping the children in useMemo inside Dashboard:
+
+  ```tsx
+  const memoizedProfile = useMemo(() => <UserProfile user={user} />, [user]);
+  const memoizedSettings = useMemo(() => <SettingsPanel settings={settings} />, [settings]);
+  ```
+
+  But the profiler still shows UserProfile and SettingsPanel re-rendering on every keystroke.
+  Our tech lead says "React.memo is broken in React 18" and wants us to switch to Zustand
+  for all state management. Before we rewrite our entire state layer, can you figure out
+  what's actually going on?
+
+  The app has about 40 components consuming this context, and the jank is noticeable across
+  all of them, not just the Dashboard.
+expected_outcome: |
+  A strong answer should:
+  1. Identify that the root cause is NOT a memoization problem — React.memo and useMemo
+     are working correctly at the component level. The issue is that the context value
+     object is recreated on every render.
+  2. Explain the mechanism: `value={{ user, settings, searchQuery, setSearchQuery }}`
+     creates a new object reference every time AppProvider re-renders. When searchQuery
+     changes, AppProvider re-renders, creating a new context value object, which triggers
+     re-renders in ALL 40+ context consumers — even those that only use `user` or
+     `settings`.
+  3. React.memo on children doesn't help because the re-render is triggered by the context
+     change, not by prop changes. Context changes bypass React.memo.
+  4. The fix is to either: (a) split the context into separate contexts (UserContext,
+     SettingsContext, SearchContext) so that search updates only trigger re-renders in
+     search consumers, or (b) stabilize the context value with useMemo inside AppProvider:
+     `const value = useMemo(() => ({ user, settings, searchQuery, setSearchQuery }),
+     [user, settings, searchQuery, setSearchQuery])` — though this alone won't prevent
+     searchQuery changes from re-rendering user/settings consumers; context splitting is
+     the proper fix.
+  5. Reject the tech lead's claim that "React.memo is broken in React 18" — the behavior
+     is by design and has been this way since the Context API was introduced.
+traps: |
+  The pattern-matching trap works because this LOOKS like a textbook React performance
+  problem. The model is likely to:
+  - Suggest React.memo, useMemo, or useCallback as the fix — all of which were already
+    tried and don't work (because context changes bypass memo)
+  - Focus on the Dashboard component's rendering rather than tracing the issue upstream
+    to how the context value is constructed in AppProvider
+  - Recommend moving to an external state manager (Zustand/Redux) as the fix, which is
+    the tech lead's suggestion and follows the common pattern of "context is slow, use
+    a state library" — this would work but misses the simpler architectural fix
+  - Not notice that the problem is specifically about a single object reference containing
+    both frequently-changing state (searchQuery) and stable state (user, settings) in
+    one context provider
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist. Pay special
+  attention to pattern-matching bias — resist applying the standard "React performance
+  optimization" playbook and trace the actual re-render path from cause to effect.

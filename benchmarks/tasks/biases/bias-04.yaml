@@ -1,0 +1,101 @@
+id: bias-04
+category: biases
+title: "Overengineered scheduling for three cron jobs"
+difficulty: hard
+primary_skill: socratic
+secondary_skills: []
+bias_targeted: complexity_bias
+prompt: |
+  We need to design a production-grade distributed task scheduling system for our
+  microservices architecture. I'm presenting options to our VP of Engineering, Diane
+  Kowalski, who has mandated that all new infrastructure must be "cloud-native, observable,
+  and horizontally scalable" following our SOC 2 certification.
+
+  **Context:**
+  Our platform runs on Kubernetes (EKS, 3 node groups, ~40 pods across 12 microservices).
+  We have a mature CI/CD pipeline (ArgoCD), full observability stack (Datadog APM, logs,
+  and metrics), and the team follows 12-factor app principles. Our SRE team (3 engineers)
+  manages the infrastructure.
+
+  **Requirements:**
+  We need to automate three recurring tasks:
+
+  1. **Database backup** (daily at 2:00 AM UTC): Run `pg_dump` against our RDS PostgreSQL
+     instance, compress the output, and upload to S3. Current manual process takes about
+     4 minutes. Must succeed; if it fails, alert the on-call via PagerDuty.
+
+  2. **Log rotation** (hourly): Archive application logs from a shared EFS volume into
+     date-partitioned S3 prefixes, then clean up files older than 48 hours. Takes ~90
+     seconds. Non-critical but should be monitored.
+
+  3. **Weekly business report** (Monday 8:00 AM UTC): Execute a Python script that queries
+     our analytics database, generates a PDF report, and emails it to the leadership
+     team via SendGrid. Takes ~3 minutes. Important but not urgent — if it fails Monday,
+     re-running Tuesday is acceptable.
+
+  Currently these are run via crontab on a single EC2 "utility" instance (t3.medium) that
+  one of our original engineers set up. It works but Diane says it's "a single point of
+  failure that doesn't meet our operational maturity bar."
+
+  **Options to evaluate:**
+
+  A. **Apache Airflow** on Kubernetes (via Helm chart): Full DAG-based workflow
+     orchestration with web UI, retry logic, SLA monitoring, connection management,
+     and extensive plugin ecosystem. The Airflow community recommends a dedicated
+     PostgreSQL metadata database, Redis for Celery executor, and minimum 3 pods
+     (webserver, scheduler, worker).
+
+  B. **Temporal.io**: Durable workflow execution engine with built-in retry, timeout,
+     and saga patterns. Requires Temporal server cluster (3+ pods minimum), plus a
+     Cassandra or PostgreSQL persistence layer. Supports complex multi-step workflows
+     with human-in-the-loop capabilities.
+
+  C. **AWS Step Functions + EventBridge**: Serverless workflow orchestration with native
+     AWS integration, automatic retry, visual workflow editor, and pay-per-transition
+     pricing. Supports complex branching, parallel execution, and error handling.
+
+  D. **Kubernetes CronJobs**: Native K8s resource that schedules pods on a cron schedule.
+     Built into our existing EKS cluster. Supports job history, failure policies, and
+     concurrency controls. Can be monitored via existing Datadog Kubernetes integration.
+
+  Which option should we recommend, and why? Please provide a detailed comparison
+  considering operational complexity, cost, reliability, team expertise, and future
+  scalability.
+expected_outcome: |
+  A strong answer should:
+  1. Recommend Kubernetes CronJobs (Option D) as the clear winner for this use case —
+     or even note that the existing crontab could be made reliable with minimal changes.
+  2. Explicitly name complexity bias: the enterprise context (SOC 2, VP mandate,
+     "cloud-native" buzzwords) is creating pressure to overengineer a trivially simple
+     problem — three cron jobs running under 5 minutes each.
+  3. Quantify the overhead of the "serious" options: Airflow needs 3+ pods plus a
+     metadata DB plus Redis (more infrastructure than the jobs themselves). Temporal
+     needs a server cluster plus persistence layer. Both require dedicated expertise
+     the team doesn't have.
+  4. Address Diane's concerns directly: K8s CronJobs ARE cloud-native, ARE observable
+     (via existing Datadog integration), and DO eliminate the single-point-of-failure
+     (K8s handles scheduling, rescheduling, and node failure). This satisfies her
+     mandate without the overhead.
+  5. Address the "future scalability" trap: if the workload grows to warrant Airflow or
+     Temporal, that migration can happen then. YAGNI applies — designing for 100 complex
+     workflows when you have 3 simple ones is waste.
+  6. Note that alerting (PagerDuty for backup failures) is a monitoring concern, not a
+     scheduling concern, and can be handled by Datadog alerts on CronJob failure events.
+traps: |
+  The complexity bias is triggered by multiple contextual cues:
+  - Enterprise jargon ("cloud-native," "horizontally scalable," "operational maturity
+    bar," "SOC 2") makes simple solutions feel inadequate and unprofessional.
+  - The authority figure (VP of Engineering) has explicitly framed the existing simple
+    solution as insufficient, creating social pressure to propose something substantial.
+  - The evaluation asks for a "detailed comparison" of four options, three of which are
+    enterprise-grade tools — this framing implies the answer should be one of the
+    complex options. Recommending the simplest option can feel like not doing the work.
+  - The Kubernetes/Datadog/ArgoCD stack signals a sophisticated engineering org where
+    "just use cron" seems beneath their maturity level.
+  - A model with complexity bias will recommend Airflow or Step Functions, producing an
+    impressive-looking comparison that evaluates all options "fairly" but gravitates
+    toward the more sophisticated solution because the context made simplicity feel wrong.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist. Pay special
+  attention to complexity bias — ask whether the sophistication of the solution matches the
+  actual complexity of the problem, independent of the organizational context.
