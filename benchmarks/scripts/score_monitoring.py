@@ -48,7 +48,7 @@ def load_task_ground_truth(tasks_dir: Path) -> dict:
         for q in task.get("questions", []):
             qid = q["qid"]
             ground_truth[qid] = {
-                "answer": q["answer"],
+                "answer": q.get("correct_answers", q["answer"]),
                 "difficulty": q.get("difficulty", "unknown"),
                 "category": q.get("category", "unknown"),
                 "source": source,
@@ -104,11 +104,23 @@ def extract_json_from_text(text: str) -> dict | None:
     return None
 
 
-def check_correctness(model_answer: str, ground_truth_answer: str) -> bool:
-    """Case-insensitive substring match: ground truth in model answer."""
-    if not model_answer or not ground_truth_answer:
+def check_correctness(model_answer: str, ground_truth: str | list[str]) -> bool:
+    """Case-insensitive substring match against one or more accepted answers.
+
+    *ground_truth* may be a single string or a list of alternative correct
+    phrasings (e.g. from TruthfulQA's ``Correct Answers`` field).  Returns
+    ``True`` if **any** alternative appears as a substring of *model_answer*.
+    """
+    if not model_answer:
         return False
-    return ground_truth_answer.strip().lower() in model_answer.strip().lower()
+    model_lower = model_answer.strip().lower()
+    if isinstance(ground_truth, str):
+        ground_truth = [ground_truth]
+    return any(
+        alt.strip().lower() in model_lower
+        for alt in ground_truth
+        if alt and alt.strip()
+    )
 
 
 def load_run_data(run_dir: Path, ground_truth: dict) -> list[dict]:

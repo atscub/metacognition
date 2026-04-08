@@ -50,7 +50,7 @@ def load_tasks(tasks_dir: Path) -> dict[str, dict]:
                 qid = q["qid"]
                 questions[qid] = {
                     "question": q["question"],
-                    "answer": q.get("answer", ""),
+                    "answer": q.get("correct_answers", q.get("answer", "")),
                     "answerability": q.get("answerability", q.get("category", "known")),
                 }
         else:
@@ -58,7 +58,7 @@ def load_tasks(tasks_dir: Path) -> dict[str, dict]:
             tid = task.get("id", yaml_path.stem)
             questions[tid] = {
                 "question": task.get("prompt", ""),
-                "answer": task.get("answer", ""),
+                "answer": task.get("correct_answers", task.get("answer", "")),
                 "answerability": task.get("answerability", "known"),
             }
     return questions
@@ -142,14 +142,23 @@ def classify_abstention(parsed: dict | None, raw_text: str) -> bool:
     return False
 
 
-def check_correctness(model_answer: str, ground_truth: str) -> bool:
-    """Substring match: true if the ground truth appears in the model answer.
+def check_correctness(model_answer: str, ground_truth: str | list[str]) -> bool:
+    """Case-insensitive substring match against one or more accepted answers.
 
-    Case-insensitive. Matches the approach used by score_monitoring.py.
+    *ground_truth* may be a single string or a list of alternative correct
+    phrasings (e.g. from TruthfulQA).  Returns ``True`` if **any** alternative
+    appears as a substring of *model_answer*.
     """
-    if not ground_truth:
+    if not model_answer:
         return False
-    return ground_truth.strip().lower() in model_answer.strip().lower()
+    model_lower = model_answer.strip().lower()
+    if isinstance(ground_truth, str):
+        ground_truth = [ground_truth]
+    return any(
+        alt.strip().lower() in model_lower
+        for alt in ground_truth
+        if alt and alt.strip()
+    )
 
 
 # ---------------------------------------------------------------------------
