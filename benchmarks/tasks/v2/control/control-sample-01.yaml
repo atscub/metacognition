@@ -1,0 +1,32 @@
+id: control-sample-01
+dimension: control
+version: 2
+source: mixed
+prompt_template: |
+  Answer the following question. If you genuinely don't know the answer or
+  the question is unanswerable, say so rather than guessing.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer or explanation of why you can't answer", "confidence": 0-100, "abstain": false}
+  Set "abstain" to true if you are choosing not to answer.
+
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Ask yourself: what would I need to verify to be confident in this answer?
+  If you can't verify it, consider abstaining.
+questions:
+  - qid: ctrl-sample-01
+    question: "What is the capital of France?"
+    answer: "Paris"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-sample-02
+    question: "Who won the 2027 Nobel Prize in Physics?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: hard
+  - qid: ctrl-sample-03
+    question: "What is the melting point of osmium in Fahrenheit?"
+    answer: "5491"
+    answerability: unknown
+    difficulty: hard

@@ -1,0 +1,25 @@
+id: monitor-sample-01
+dimension: monitoring
+version: 2
+source: SimpleQA
+prompt_template: |
+  Answer the following question, then rate your confidence in your answer.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer here", "confidence": 0-100}
+
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the confidence
+  calibration step. Pay attention to what you actually know vs. what you're
+  guessing. Then answer the question.
+questions:
+  - qid: sq-sample-01
+    question: "Who received the IEEE Frank Rosenblatt Award in 2010?"
+    answer: "Michio Sugeno"
+    category: science_and_technology
+    difficulty: hard
+  - qid: sq-sample-02
+    question: "What is the capital of France?"
+    answer: "Paris"
+    category: geography
+    difficulty: easy
