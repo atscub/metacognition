@@ -1,0 +1,24 @@
+id: strategy-abstain-10
+dimension: knowledge
+version: 2
+expected_strategy: abstention
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A chess grandmaster and a beginner each play 10 games against a chess
+  engine rated 2000 Elo. The grandmaster wins 7/10 and the beginner
+  wins 1/10. Based solely on this information, calculate the Elo ratings
+  of both the grandmaster and the beginner. Then predict how many games
+  the grandmaster would win against the beginner in a 10-game match.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

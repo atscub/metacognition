@@ -1,0 +1,25 @@
+id: strategy-abstain-09
+dimension: knowledge
+version: 2
+expected_strategy: abstention
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: In a certain country, every family continues having children until they
+  have a boy, then they stop. What fraction of the population is female?
+  Assume each birth has an independent 50/50 chance of being male or
+  female. Now, the government wants to know: will this policy increase
+  or decrease the total population compared to each family having
+  exactly 2 children?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

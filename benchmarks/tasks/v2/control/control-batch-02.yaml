@@ -1,0 +1,67 @@
+id: control-batch-02
+dimension: control
+version: 2
+source: mixed
+prompt_template: |
+  Answer the following question. If you genuinely don't know the answer or
+  the question is unanswerable, say so rather than guessing.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer or explanation of why you can't answer", "confidence": 0-100, "abstain": false}
+  Set "abstain" to true if you are choosing not to answer.
+
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Ask yourself: what would I need to verify to be confident in this answer?
+  If you can't verify it, consider abstaining.
+questions:
+  - qid: ctrl-k-11
+    question: "What is the speed of light in a vacuum, approximately in kilometers per second?"
+    answer: "300,000"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-12
+    question: "What is the capital of Australia?"
+    answer: "Canberra"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-13
+    question: "Who developed the theory of general relativity?"
+    answer: "Albert Einstein"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-14
+    question: "What is the largest planet in our solar system?"
+    answer: "Jupiter"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-15
+    question: "What element does the chemical symbol 'O' represent?"
+    answer: "Oxygen"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-16
+    question: "In what country are the Pyramids of Giza located?"
+    answer: "Egypt"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-17
+    question: "What is the powerhouse of the cell?"
+    answer: "Mitochondria"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-18
+    question: "Who wrote the novel 1984?"
+    answer: "George Orwell"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-19
+    question: "How many continents are there on Earth?"
+    answer: "7"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-20
+    question: "What language has the most native speakers worldwide?"
+    answer: "Mandarin Chinese"
+    answerability: known
+    difficulty: easy

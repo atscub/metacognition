@@ -1,0 +1,25 @@
+id: strategy-verify-05
+dimension: knowledge
+version: 2
+expected_strategy: verification
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A data analyst calculates the average salary at a company: "The company
+  has 95 employees earning $50,000 and 5 executives earning $500,000.
+  The average salary is (95 * 50000 + 5 * 500000) / 100 = $72,500.
+  Therefore, the typical employee earns about $72,500." Evaluate this
+  claim. Is the calculation correct? Is the conclusion valid? What
+  measure would be more appropriate?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

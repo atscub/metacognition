@@ -1,0 +1,25 @@
+id: strategy-decomp-01
+dimension: knowledge
+version: 2
+expected_strategy: decomposition
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A factory produces widgets in three stages. Stage 1 takes 4 minutes per widget
+  and has 3 machines. Stage 2 takes 6 minutes per widget and has 2 machines.
+  Stage 3 takes 3 minutes per widget and has 4 machines. Each stage must
+  complete before the next begins for a given widget, but different widgets
+  can be at different stages simultaneously. What is the maximum number of
+  widgets the factory can produce in an 8-hour shift?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

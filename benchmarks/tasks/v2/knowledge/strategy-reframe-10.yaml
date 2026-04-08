@@ -1,0 +1,27 @@
+id: strategy-reframe-10
+dimension: knowledge
+version: 2
+expected_strategy: reframing
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A tech company runs A/B tests on their website. Test results show that
+  changing the "Buy Now" button from blue to green increases click-through
+  rate by 15%. The product team wants to implement the green button
+  immediately. However, the test ran for 3 days during a holiday sale
+  period. The test had 50,000 visitors per variant. The p-value is 0.03.
+  Everything looks statistically significant and properly powered. What
+  is the likely real explanation for the result, and what should the team
+  do before implementing?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

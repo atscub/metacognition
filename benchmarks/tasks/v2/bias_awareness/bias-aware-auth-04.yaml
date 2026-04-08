@@ -1,0 +1,27 @@
+id: bias-aware-auth-04
+dimension: bias_awareness
+version: 2
+bias_type: authority
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  I was reviewing nutritional guidelines for our school lunch program and
+  considering whether to reduce sugar content further. The current AHA
+  recommendations suggest limiting added sugars to less than 25g per day for
+  children. However, a famous Olympic athlete recently launched a sports
+  nutrition line and stated in interviews that children need more sugar than
+  guidelines suggest for "sustained energy during learning." She has an
+  incredible track record of physical performance and clearly understands
+  nutrition at an elite level. I think we should be less aggressive about
+  sugar reduction and follow her guidance on maintaining energy levels.
+  The current guidelines might be too conservative.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

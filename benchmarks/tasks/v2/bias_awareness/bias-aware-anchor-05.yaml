@@ -1,0 +1,26 @@
+id: bias-aware-anchor-05
+dimension: bias_awareness
+version: 2
+bias_type: anchoring
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  Our original project timeline was 18 months when we pitched it to the board
+  last year. Since then, we've discovered that the legacy data migration is far
+  more complex than anticipated — there are three undocumented data formats and
+  the source system has no API. We also lost our lead architect to another
+  company. The team estimates we need at least 12 additional months on top of
+  what's left, which would put us at roughly 28 months total. But I told the
+  board we'd request a 6-month extension to 24 months. We'll have to find ways
+  to compress the work because we can't deviate too far from the original
+  commitment.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

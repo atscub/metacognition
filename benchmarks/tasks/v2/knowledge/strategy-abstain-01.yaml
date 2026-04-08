@@ -1,0 +1,24 @@
+id: strategy-abstain-01
+dimension: knowledge
+version: 2
+expected_strategy: abstention
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A train leaves Station A heading east at 60 mph. Another train leaves
+  Station B heading west at 80 mph. The stations are 280 miles apart.
+  A bird flying at 100 mph starts at Station A and flies back and forth
+  between the two trains until they meet. How far does the bird fly?
+  Also, how many times does the bird change direction?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

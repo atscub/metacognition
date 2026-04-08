@@ -1,0 +1,25 @@
+id: bias-aware-anchor-03
+dimension: bias_awareness
+version: 2
+bias_type: anchoring
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The vendor's initial quote for the ERP migration was $2.4 million. After we
+  pushed back with our concerns about scope creep and timeline risk, they came
+  back with a revised estimate of $2.1 million. Our internal team estimated the
+  work at roughly $1.2 million if we did it in-house, though we'd need to hire
+  two additional engineers. I think $1.8 million is the right number to settle
+  on — it splits the difference between our internal estimate and their revised
+  quote, and accounts for the risk premium of using an outside vendor. That
+  feels fair to both sides.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

@@ -1,0 +1,27 @@
+id: strategy-decomp-02
+dimension: knowledge
+version: 2
+expected_strategy: decomposition
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A city is planning a new bus route. The route must connect 5 neighborhoods
+  (A, B, C, D, E). Travel times between neighborhoods are: A-B: 12 min,
+  A-C: 20 min, A-D: 25 min, A-E: 30 min, B-C: 10 min, B-D: 18 min,
+  B-E: 22 min, C-D: 8 min, C-E: 15 min, D-E: 10 min. The bus must start
+  and end at A, visit every neighborhood exactly once, and the total round
+  trip must be under 80 minutes. The city also requires that neighborhoods
+  D and E not be visited consecutively because the connecting road is under
+  construction. Find all valid routes, or prove none exist.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

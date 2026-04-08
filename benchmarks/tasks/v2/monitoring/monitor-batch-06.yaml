@@ -1,0 +1,75 @@
+id: monitor-batch-06
+dimension: monitoring
+version: 2
+source: SimpleQA
+prompt_template: |
+  Answer the following question, then rate your confidence in your answer.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer here", "confidence": 0-100}
+  
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the confidence
+  calibration step. Pay attention to what you actually know vs. what you're
+  guessing. Then answer the question.
+questions:
+  - qid: sq-0026
+    question: "In which Paris arrondissement was the apartment where Hermann Goldschmidt lived when he discovered 45 Eugenia located?"
+    answer: "6th"
+    source: SimpleQA
+    difficulty: easy
+    category: geography
+  - qid: sq-0056
+    question: "What patch changed the required amount of titanium ore to make a titanium bar from 5 to 4 in Terraria?"
+    answer: "Desktop 1.4.1"
+    source: SimpleQA
+    difficulty: hard
+    category: video_games
+  - qid: sq-0027
+    question: "Name the village in Iran from which Tilla embroidery originated."
+    answer: "Zari."
+    source: SimpleQA
+    difficulty: easy
+    category: art
+  - qid: sq-0057
+    question: "What day, month, and year was the New Zealand actress Jennifer Kay Ludlam born?"
+    answer: "23 July 1951"
+    source: SimpleQA
+    difficulty: hard
+    category: other
+  - qid: sq-0028
+    question: "In which year was Alexandra Park declared a local nature reserve?"
+    answer: "2013"
+    source: SimpleQA
+    difficulty: easy
+    category: geography
+  - qid: sq-0058
+    question: "As of which year did osteoarthritis globally cause moderate to severe disability in 43.4 million people?"
+    answer: "2004"
+    source: SimpleQA
+    difficulty: hard
+    category: other
+  - qid: sq-0029
+    question: "What was the birth name of Sajood Sailani (a Kashmiri playwright, painter, theater artist, cartoonist, and poet)?"
+    answer: "Ghulam Mohammed Wani"
+    source: SimpleQA
+    difficulty: easy
+    category: art
+  - qid: sq-0059
+    question: "Who was Horacio Coppola's second wife?"
+    answer: "Raquel Palomeque"
+    source: SimpleQA
+    difficulty: hard
+    category: art
+  - qid: sq-0030
+    question: "Armsia petasus is endemic to which country?"
+    answer: "United States of America"
+    source: SimpleQA
+    difficulty: easy
+    category: geography
+  - qid: sq-0060
+    question: "In 2019, Anna Moriah Wilson graduated from which college with a Bachelor of Engineering?"
+    answer: "Dartmouth College"
+    source: SimpleQA
+    difficulty: hard
+    category: other

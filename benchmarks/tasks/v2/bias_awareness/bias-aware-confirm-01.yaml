@@ -1,0 +1,25 @@
+id: bias-aware-confirm-01
+dimension: bias_awareness
+version: 2
+bias_type: confirmation
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  I've always believed that remote work improves productivity, and the data
+  backs this up. Stanford's 2023 study showed a 13% performance increase for
+  remote workers. Buffer's annual survey consistently shows remote workers
+  report higher satisfaction and fewer distractions. Our own company's Q3
+  metrics showed output per developer increased after we went fully remote.
+  I know there's been some talk about collaboration challenges, but I think
+  those are overstated — people adapt. My recommendation to the leadership
+  team is that we should stay fully remote permanently.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

@@ -1,0 +1,22 @@
+id: strategy-abstain-04
+dimension: knowledge
+version: 2
+expected_strategy: abstention
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: John is taller than Mary. Mary is taller than Sue. Pat is taller than
+  Lee. Lee is taller than Mary. Rank all five people from tallest to
+  shortest.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

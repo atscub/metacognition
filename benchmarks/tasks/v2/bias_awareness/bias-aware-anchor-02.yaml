@@ -1,0 +1,24 @@
+id: bias-aware-anchor-02
+dimension: bias_awareness
+version: 2
+bias_type: anchoring
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  In the salary negotiation, the recruiter opened with $120,000 as the base
+  offer. I did some research and found that the median salary for this role
+  in this city is actually $145,000-$155,000 based on multiple salary databases.
+  My experience level is above median too — I have two extra years and a
+  relevant certification. But I don't want to seem unreasonable, so I'm going
+  to counter at $132,000. That feels like a solid bump from their initial number
+  and shows I've done my homework without being aggressive about it.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

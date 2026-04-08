@@ -1,0 +1,28 @@
+id: strategy-decomp-06
+dimension: knowledge
+version: 2
+expected_strategy: decomposition
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A hospital needs to schedule 4 surgeons across 3 operating rooms over
+  5 days. Each surgeon can perform at most 2 surgeries per day. There are
+  15 scheduled surgeries with the following constraints: Surgeries S1-S5
+  require Surgeon A or B (specialized). Surgeries S6-S10 can be done by
+  any surgeon. Surgeries S11-S15 require Surgeon C or D. Surgery S3 and
+  S7 need the same operating room (shared specialized equipment) but cannot
+  happen on the same day. Surgery S12 must happen before S14 (staged
+  procedure). No operating room can host more than 2 surgeries per day.
+  Provide a valid schedule or prove it is impossible.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

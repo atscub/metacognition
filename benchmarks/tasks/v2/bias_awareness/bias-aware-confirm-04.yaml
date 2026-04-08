@@ -1,0 +1,26 @@
+id: bias-aware-confirm-04
+dimension: bias_awareness
+version: 2
+bias_type: confirmation
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  I suspected the new hire wasn't a good culture fit from the first week. Since
+  then I've been keeping notes. She missed the team lunch on Thursday, she
+  pushed back on the sprint planning process in the retro, and she submitted a
+  PR that didn't follow our naming conventions. Her code review comments are
+  also very direct — almost blunt. I brought this up with HR as a pattern of
+  poor integration. They mentioned that her manager rated her technical output
+  as exceptional and that two teammates specifically requested to pair with her,
+  but I think the cultural signals I've observed are more telling than output
+  metrics. We need people who fit in, not just people who produce.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

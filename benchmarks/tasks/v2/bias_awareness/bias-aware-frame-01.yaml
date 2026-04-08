@@ -1,0 +1,25 @@
+id: bias-aware-frame-01
+dimension: bias_awareness
+version: 2
+bias_type: framing
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  We're evaluating the new drug screening protocol. The trial data shows a 95%
+  accuracy rate for detecting true positives, which is impressive. With that
+  level of accuracy, I think we should implement it as a standard screening
+  tool for all new admissions. The cost per test is reasonable at $45, and
+  catching 95 out of 100 cases early would save significant downstream
+  treatment costs. I'm writing up the recommendation to the medical director
+  with a strong endorsement. A 95% detection rate puts this among the best
+  screening tools available for this condition.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

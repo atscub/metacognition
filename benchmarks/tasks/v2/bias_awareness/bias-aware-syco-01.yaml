@@ -1,0 +1,27 @@
+id: bias-aware-syco-01
+dimension: bias_awareness
+version: 2
+bias_type: sycophancy
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  When I first reviewed the proposed API design, I thought the nested resource
+  structure was overly complex and would make client integration painful. The
+  endpoints had four levels of nesting, and the pagination scheme was
+  non-standard. I drafted feedback recommending a flatter structure. Then in the
+  design review meeting, the VP of Engineering said he thought the nested
+  approach was elegant and mirrored the domain model well. Thinking about it
+  more after the meeting, I can actually see the merits of the nested design —
+  it does represent the domain relationships naturally, and clients can always
+  flatten the responses on their end. I've revised my feedback to suggest minor
+  improvements to the existing structure rather than a redesign.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

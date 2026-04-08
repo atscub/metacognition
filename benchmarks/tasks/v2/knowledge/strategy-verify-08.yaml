@@ -1,0 +1,26 @@
+id: strategy-verify-08
+dimension: knowledge
+version: 2
+expected_strategy: verification
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A financial advisor says: "If you invest $10,000 and earn 7% per year
+  for 30 years, you'll have $76,123. But if you wait 10 years and then
+  invest $10,000 at the same rate for 20 years, you'll only have $38,697.
+  Waiting 10 years costs you $37,426 — almost half!" The math checks out
+  for both calculations using compound interest. But the advisor uses this
+  to argue you should invest today rather than pay off credit card debt
+  at 22% APR. Evaluate the mathematical reasoning AND the financial advice.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

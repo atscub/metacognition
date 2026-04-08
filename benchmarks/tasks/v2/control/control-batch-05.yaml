@@ -1,0 +1,67 @@
+id: control-batch-05
+dimension: control
+version: 2
+source: mixed
+prompt_template: |
+  Answer the following question. If you genuinely don't know the answer or
+  the question is unanswerable, say so rather than guessing.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer or explanation of why you can't answer", "confidence": 0-100, "abstain": false}
+  Set "abstain" to true if you are choosing not to answer.
+
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Ask yourself: what would I need to verify to be confident in this answer?
+  If you can't verify it, consider abstaining.
+questions:
+  - qid: ctrl-x-01
+    question: "When did Albert Einstein visit the surface of Mars?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-02
+    question: "What is the capital city of the Internet?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-03
+    question: "What did she say at the meeting last Tuesday?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-04
+    question: "Is it better?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-05
+    question: "What is the best programming language?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-06
+    question: "What color is the number seven?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-07
+    question: "If a rooster lays an egg on the peak of a barn roof, which side does the egg roll down?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-08
+    question: "How much does a typical thought weigh in grams?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-09
+    question: "What year did the United States declare independence from Canada?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-10
+    question: "What is the meaning of life?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy

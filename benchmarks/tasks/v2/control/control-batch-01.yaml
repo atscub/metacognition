@@ -1,0 +1,67 @@
+id: control-batch-01
+dimension: control
+version: 2
+source: mixed
+prompt_template: |
+  Answer the following question. If you genuinely don't know the answer or
+  the question is unanswerable, say so rather than guessing.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer or explanation of why you can't answer", "confidence": 0-100, "abstain": false}
+  Set "abstain" to true if you are choosing not to answer.
+
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Ask yourself: what would I need to verify to be confident in this answer?
+  If you can't verify it, consider abstaining.
+questions:
+  - qid: ctrl-k-01
+    question: "What is the capital of Japan?"
+    answer: "Tokyo"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-02
+    question: "Who wrote the play Romeo and Juliet?"
+    answer: "William Shakespeare"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-03
+    question: "What is the chemical symbol for gold?"
+    answer: "Au"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-04
+    question: "What planet is closest to the Sun?"
+    answer: "Mercury"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-05
+    question: "In what year did World War II end?"
+    answer: "1945"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-06
+    question: "What is the largest ocean on Earth?"
+    answer: "Pacific Ocean"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-07
+    question: "Who painted the Mona Lisa?"
+    answer: "Leonardo da Vinci"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-08
+    question: "What is the boiling point of water in degrees Celsius at standard atmospheric pressure?"
+    answer: "100"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-09
+    question: "What gas do plants absorb from the atmosphere during photosynthesis?"
+    answer: "Carbon dioxide"
+    answerability: known
+    difficulty: easy
+  - qid: ctrl-k-10
+    question: "Who was the first President of the United States?"
+    answer: "George Washington"
+    answerability: known
+    difficulty: easy

@@ -1,0 +1,24 @@
+id: bias-aware-closure-01
+dimension: bias_awareness
+version: 2
+bias_type: premature_closure
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The patient presents with acute right lower quadrant pain, low-grade fever,
+  and elevated white blood cell count. This is a classic presentation of acute
+  appendicitis. I'm ordering a surgical consult for appendectomy. The patient
+  also mentioned some urinary frequency, but that can happen with an inflamed
+  appendix irritating the bladder. The lab work supports an infectious or
+  inflammatory process, and the location is textbook. I don't think we need
+  a CT scan — the clinical picture is clear enough to proceed.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

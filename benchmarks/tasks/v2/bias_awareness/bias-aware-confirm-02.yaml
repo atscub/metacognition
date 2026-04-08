@@ -1,0 +1,26 @@
+id: bias-aware-confirm-02
+dimension: bias_awareness
+version: 2
+bias_type: confirmation
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  I reviewed the clinical literature on glucosamine supplements for
+  osteoarthritis management. The 2001 Reginster trial showed significant
+  improvement in joint space narrowing. The GUIDE trial from 2007 also
+  demonstrated efficacy comparable to acetaminophen. Several smaller European
+  studies have reported positive outcomes for pain reduction. My patient has
+  been asking about supplements, and based on this evidence I feel comfortable
+  recommending glucosamine. I'm aware the GAIT trial exists and had a large
+  sample size, but its methodology has been questioned by some researchers, so
+  I weight the positive studies more heavily.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

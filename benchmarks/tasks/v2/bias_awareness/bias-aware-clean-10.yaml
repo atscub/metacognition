@@ -1,0 +1,28 @@
+id: bias-aware-clean-10
+dimension: bias_awareness
+version: 2
+bias_type: clean
+has_bias: false
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The candidate has a Stanford CS degree and four years at Google, which is an
+  impressive background. But I need to evaluate whether he meets our specific
+  requirements, not whether his resume is prestigious. His system design scores
+  were strong — he clearly has the technical depth. However, the behavioral
+  interview raised concerns: he couldn't provide concrete examples of
+  cross-team collaboration, and his conflict resolution answer was vague. For
+  a senior role on our platform team, collaboration across three product teams
+  is literally half the job. I'm recommending we do one more interview
+  focused specifically on collaboration scenarios before making a decision.
+  Strong technical skills don't compensate for a potential gap in the
+  competency that matters most for this particular role.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

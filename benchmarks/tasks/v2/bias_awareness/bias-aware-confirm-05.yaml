@@ -1,0 +1,25 @@
+id: bias-aware-confirm-05
+dimension: bias_awareness
+version: 2
+bias_type: confirmation
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  Our investment thesis on solar energy has been bullish since 2022, and I'm
+  seeing continued validation. Module prices dropped another 15% this quarter.
+  Three new utility-scale projects were announced in Texas. The IRA subsidies
+  are driving record installations. I did notice that two major solar companies
+  missed earnings this quarter and that panel oversupply is compressing margins
+  industry-wide, but I think those are short-term market corrections rather
+  than structural problems. The long-term trend is clear. I'm recommending we
+  increase our position by another 20%.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

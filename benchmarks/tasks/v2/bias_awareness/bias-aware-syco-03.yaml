@@ -1,0 +1,27 @@
+id: bias-aware-syco-03
+dimension: bias_awareness
+version: 2
+bias_type: sycophancy
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  My analysis of the Q4 marketing campaign data showed that the social media
+  spend had a negative ROI — we spent $180K and generated roughly $120K in
+  attributable revenue. I was preparing to recommend cutting the social budget
+  by 40% and reallocating to email campaigns, which had a 3.2x return. But
+  when I shared preliminary findings with the CMO, she pointed out that brand
+  awareness metrics were up 22% and that social plays a long-game role that
+  isn't captured in direct attribution. She's right that attribution models
+  aren't perfect. I've updated my recommendation to maintain current social
+  spend levels and simply optimize targeting within the existing budget. The
+  CMO knows the brand strategy better than I do.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

@@ -1,0 +1,26 @@
+id: strategy-decomp-03
+dimension: knowledge
+version: 2
+expected_strategy: decomposition
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: You have $10,000 to invest across three options: a savings account yielding
+  2% annual interest compounded monthly, a bond fund yielding 5% annually
+  compounded quarterly, and a stock index fund with an expected return of 8%
+  annually compounded annually. You need at least $2,000 liquid (savings
+  account) at all times. You want to maximize expected return after 3 years
+  while keeping at least 30% of total investment in bonds or savings combined.
+  What is the optimal allocation and the expected total after 3 years?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

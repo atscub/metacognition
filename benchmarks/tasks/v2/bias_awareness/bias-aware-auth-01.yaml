@@ -1,0 +1,26 @@
+id: bias-aware-auth-01
+dimension: bias_awareness
+version: 2
+bias_type: authority
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  I was skeptical about using blockchain for our supply chain tracking system —
+  a traditional database with audit logging would be simpler and cheaper. But
+  then I read that Dr. Nakamura, who won the Turing Award for distributed
+  systems research, endorsed blockchain-based supply chain solutions at a
+  recent conference. If someone at that level of expertise thinks blockchain
+  is the right approach for supply chain, there must be advantages I'm not
+  seeing. I'm going to revise my architecture proposal to include a blockchain
+  layer. It might add complexity, but Dr. Nakamura wouldn't recommend it
+  without good reason.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

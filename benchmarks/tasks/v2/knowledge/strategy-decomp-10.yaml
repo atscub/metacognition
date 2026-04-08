@@ -1,0 +1,28 @@
+id: strategy-decomp-10
+dimension: knowledge
+version: 2
+expected_strategy: decomposition
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: An e-commerce company ships packages from 2 warehouses (W1 in New York,
+  W2 in Los Angeles) to 3 regions (East, Central, West). Daily demand:
+  East needs 500 packages, Central needs 300, West needs 400. Shipping
+  costs per package: W1->East $2, W1->Central $5, W1->West $8,
+  W2->East $9, W2->Central $4, W2->West $2. W1 can ship 700 packages/day,
+  W2 can ship 600 packages/day. However, packages over 600 total from
+  either warehouse incur a $1/package overtime surcharge on ALL packages
+  from that warehouse that day. What shipping plan minimizes total daily
+  cost?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

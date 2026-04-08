@@ -1,0 +1,31 @@
+id: strategy-verify-02
+dimension: knowledge
+version: 2
+expected_strategy: verification
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A programmer writes this function to check if a year is a leap year:
+
+  def is_leap_year(year):
+      if year % 4 == 0:
+          if year % 100 == 0:
+              return False
+          return True
+      return False
+
+  They test it with 2024 (True), 2023 (False), and 1900 (False), and
+  all tests pass. Is the function correct? If not, identify the specific
+  input that would produce a wrong result and explain the bug.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

@@ -1,0 +1,23 @@
+id: strategy-verify-01
+dimension: knowledge
+version: 2
+expected_strategy: verification
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A student solves the following: "A store offers 20% off, then an additional
+  15% off the reduced price. What is the total discount?" The student
+  answers: "20% + 15% = 35% total discount." Is this answer correct?
+  If not, what is the actual total discount percentage?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

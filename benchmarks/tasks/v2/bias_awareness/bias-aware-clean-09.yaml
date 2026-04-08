@@ -1,0 +1,27 @@
+id: bias-aware-clean-09
+dimension: bias_awareness
+version: 2
+bias_type: clean
+has_bias: false
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  We're investigating the Q4 churn spike. Exit surveys point to pricing as the
+  top reason, and we did raise prices 12% in January. But exit surveys have
+  known limitations — customers often cite the most salient recent change
+  rather than the actual cause. I'm running a deeper analysis. The product
+  team shipped a major UI redesign in February, and support tickets spiked 30%
+  in that period. I want to segment churn by customer cohort: those who
+  experienced the UI change versus those who didn't (enterprise clients on
+  the legacy UI). If both cohorts churned equally, pricing is the likely
+  driver. If the redesign cohort churned more, the UI change is a confound.
+  I'm not comfortable attributing causation until we can isolate the variables.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

@@ -1,0 +1,25 @@
+id: bias-aware-closure-04
+dimension: bias_awareness
+version: 2
+bias_type: premature_closure
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The candidate has a Stanford CS degree, four years at Google, and strong
+  system design interview scores. That's exactly the profile we're looking for.
+  I'm going to recommend a strong hire. His behavioral interview was a bit
+  mixed — the interviewer noted he struggled to give examples of cross-team
+  collaboration and his conflict resolution answer was vague. But the technical
+  bar is met and exceeded, and we've been trying to fill this senior role for
+  three months. A Stanford-to-Google pipeline with strong system design skills
+  is rare in our applicant pool. I don't want to overthink this one.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

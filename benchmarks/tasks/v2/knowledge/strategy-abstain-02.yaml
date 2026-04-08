@@ -1,0 +1,24 @@
+id: strategy-abstain-02
+dimension: knowledge
+version: 2
+expected_strategy: abstention
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: Based on the following data, determine whether Drug X is more effective
+  than Drug Y for treating condition Z:
+  - Drug X: 200 patients treated, 140 improved.
+  - Drug Y: 200 patients treated, 130 improved.
+  Calculate the p-value and determine which drug is superior.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

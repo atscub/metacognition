@@ -1,0 +1,25 @@
+id: bias-aware-closure-03
+dimension: bias_awareness
+version: 2
+bias_type: premature_closure
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  We're investigating why customer churn spiked 8% last quarter. I pulled the
+  exit survey data and the number one reason cited was "pricing." That makes
+  sense — we raised prices 12% in January. Mystery solved. I'm recommending we
+  offer a loyalty discount to long-term customers to offset the price increase
+  impact. The product team mentioned they also shipped a major UI redesign in
+  February that got mixed user feedback, and support ticket volume was up 30%
+  in that period, but the survey data is pretty unambiguous. When customers
+  tell you why they're leaving, you should listen.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

@@ -1,0 +1,26 @@
+id: strategy-decomp-04
+dimension: knowledge
+version: 2
+expected_strategy: decomposition
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A software team needs to deliver 5 features (F1-F5) in 4 two-week sprints.
+  Dependencies: F2 requires F1, F4 requires F2 and F3, F5 requires F4.
+  Effort estimates: F1 takes 1 sprint, F2 takes 1 sprint, F3 takes 2 sprints,
+  F4 takes 1 sprint, F5 takes 1 sprint. The team can work on at most
+  2 features in parallel per sprint. Can all features be delivered in
+  4 sprints? If so, provide the sprint schedule. If not, what is the
+  minimum number of sprints needed?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

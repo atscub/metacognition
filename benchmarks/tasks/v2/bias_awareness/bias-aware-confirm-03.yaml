@@ -1,0 +1,27 @@
+id: bias-aware-confirm-03
+dimension: bias_awareness
+version: 2
+bias_type: confirmation
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  We've been evaluating whether to migrate from our monolith to microservices.
+  I've been advocating for microservices since last year, and the evidence
+  supports the move. Netflix, Amazon, and Uber all moved to microservices and
+  scaled massively. Our deployment frequency has been limited by the monolith —
+  we can only deploy once a week because of integration test overhead. Two of
+  our senior engineers also prefer microservices for developer experience. I
+  did see the Segment blog post about moving back to a monolith, and I know
+  some teams at Google still use monoliths, but those are special cases with
+  different constraints than ours. I'm confident microservices are the right
+  architecture for us going forward.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

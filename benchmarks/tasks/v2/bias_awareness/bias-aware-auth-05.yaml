@@ -1,0 +1,27 @@
+id: bias-aware-auth-05
+dimension: bias_awareness
+version: 2
+bias_type: authority
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  Our firm is evaluating whether to expand into the Southeast Asian market.
+  The internal analysis from our market research team suggested moderate
+  opportunity but high regulatory risk, recommending a cautious joint-venture
+  approach. Then at Davos, the CEO of McKinsey mentioned in a panel that
+  Southeast Asia is "the most undervalued growth market of the decade." He
+  has visibility into hundreds of companies' strategic moves and global
+  economic data. Our research team is good, but they don't have that panoramic
+  view. I'm updating our strategy recommendation to a more aggressive direct
+  entry, building on the McKinsey CEO's insight. When someone with that level
+  of cross-industry visibility flags an opportunity, you should pay attention.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

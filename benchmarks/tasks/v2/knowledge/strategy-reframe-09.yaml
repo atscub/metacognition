@@ -1,0 +1,27 @@
+id: strategy-reframe-09
+dimension: knowledge
+version: 2
+expected_strategy: reframing
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: An airline wants to reduce fuel costs. Their engineers propose replacing
+  the fleet with more fuel-efficient aircraft at a cost of $2 billion.
+  A junior analyst discovers that the average flight carries 12,000 lbs
+  of fuel reserves beyond what is needed for the route plus regulatory
+  minimums. The extra fuel is there because pilots add it "just in case."
+  Carrying this extra fuel burns approximately 3% more fuel per flight.
+  What reframing does this suggest, and what would be the much cheaper
+  intervention?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

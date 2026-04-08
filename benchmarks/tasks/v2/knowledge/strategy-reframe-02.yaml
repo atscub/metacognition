@@ -1,0 +1,26 @@
+id: strategy-reframe-02
+dimension: knowledge
+version: 2
+expected_strategy: reframing
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A bridge has a weight limit of 10 tons. A truck weighs 8 tons and needs
+  to transport a load across. The load consists of 4 crates, each weighing
+  1 ton. The obvious approach (multiple trips with fewer crates) takes too
+  long because the bridge is 50 miles long. The truck has a full tank of
+  gas that weighs 0.5 tons, and gas weighs 6 pounds per gallon. The truck
+  gets 5 miles per gallon. How can the truck get all 4 crates across in
+  a single trip without exceeding the weight limit at any point?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

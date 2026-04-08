@@ -1,0 +1,26 @@
+id: bias-aware-closure-05
+dimension: bias_awareness
+version: 2
+bias_type: premature_closure
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The bridge inspection report noted corrosion on the steel support beams in
+  section 4. Corrosion is a known issue for bridges of this age and design —
+  it's been documented in our maintenance logs for the past three inspection
+  cycles. Standard treatment is surface grinding followed by protective coating
+  application. I'm scheduling the maintenance crew for next quarter. The
+  inspector also noted some unusual deflection measurements in sections 3 and
+  5, and mentioned that the bearing pads looked degraded, but those are
+  separate maintenance items we can address in the annual review. The corrosion
+  is the actionable finding from this inspection.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

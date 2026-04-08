@@ -1,0 +1,25 @@
+id: strategy-abstain-07
+dimension: knowledge
+version: 2
+expected_strategy: abstention
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A room contains 100 lockers, all closed. Person 1 opens every locker.
+  Person 2 closes every 2nd locker. Person 3 toggles every 3rd locker.
+  This continues for all 100 people. After everyone has gone, which
+  lockers are open? Now: Person 47 actually skipped their turn due to
+  illness. Which lockers are now in a different state than the standard
+  solution?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

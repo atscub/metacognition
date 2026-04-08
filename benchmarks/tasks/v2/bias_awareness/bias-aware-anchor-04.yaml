@@ -1,0 +1,25 @@
+id: bias-aware-anchor-04
+dimension: bias_awareness
+version: 2
+bias_type: anchoring
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The patient's previous physician had documented a pain score of 8 out of 10
+  in the referral notes from three months ago. During my examination today, the
+  patient is ambulatory, has full range of motion, and reports that physical
+  therapy has helped considerably. When I asked about current pain levels, she
+  said "much better, maybe a 5 on a good day." I'm going to document her current
+  pain as moderate-to-severe and continue the same medication regimen. Given
+  where she started at an 8, a 5 represents meaningful progress but she's still
+  clearly in significant discomfort.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

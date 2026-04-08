@@ -1,0 +1,75 @@
+id: monitor-batch-03
+dimension: monitoring
+version: 2
+source: SimpleQA
+prompt_template: |
+  Answer the following question, then rate your confidence in your answer.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer here", "confidence": 0-100}
+  
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the confidence
+  calibration step. Pay attention to what you actually know vs. what you're
+  guessing. Then answer the question.
+questions:
+  - qid: sq-0011
+    question: "What were the names of Sir William Beechey's (British portraitist) parents?"
+    answer: "William Beechey and Hannah Read"
+    source: SimpleQA
+    difficulty: easy
+    category: art
+  - qid: sq-0041
+    question: "What is the name of the 28th song on the official CD release of Kirby Star Allies: The Original Soundtrack?"
+    answer: "Reef Resort"
+    source: SimpleQA
+    difficulty: hard
+    category: video_games
+  - qid: sq-0012
+    question: "Where is Sagg Eco Village located in Jammu & Kashmir, India?"
+    answer: "Ganderbal"
+    source: SimpleQA
+    difficulty: easy
+    category: geography
+  - qid: sq-0042
+    question: "What was the population of Goldsboro, NC, in the 2020 census?"
+    answer: "33,657"
+    source: SimpleQA
+    difficulty: hard
+    category: geography
+  - qid: sq-0013
+    question: "What was the first and last name of the Swiss painter who murdered his landlady, Anne King?"
+    answer: "Théodore Gardelle"
+    source: SimpleQA
+    difficulty: easy
+    category: art
+  - qid: sq-0043
+    question: "From which university did computer scientist Jeanne Clare Adams receive her B.S. degree in Economics in 1943?"
+    answer: "The University of Michigan."
+    source: SimpleQA
+    difficulty: hard
+    category: science_and_technology
+  - qid: sq-0014
+    question: "In which year was the municipality of Murindó, Antioquia, Colombia, founded?"
+    answer: "1835"
+    source: SimpleQA
+    difficulty: easy
+    category: geography
+  - qid: sq-0044
+    question: "In what year did Thomas D. Wilson (\"Big Tom\" Wilson) marry Niagara Ray, the daughter of Amos Ray?"
+    answer: "1852"
+    source: SimpleQA
+    difficulty: hard
+    category: history
+  - qid: sq-0015
+    question: "The Alpine musk deer is the state animal of which Indian state?"
+    answer: "Uttarakhand"
+    source: SimpleQA
+    difficulty: easy
+    category: geography
+  - qid: sq-0045
+    question: "Who are the five judges of the Supreme Court who restored the awards and delivered a judgment that the \"Bharat Ratna and Padma awards are not titles under Article 18 of the Constitution of India?\""
+    answer: "Ahmadi C. J., Kuldip Singh, B. P. Jeevan Reddy, N. P. Singh, and S. Saghir Ahmad."
+    source: SimpleQA
+    difficulty: hard
+    category: politics

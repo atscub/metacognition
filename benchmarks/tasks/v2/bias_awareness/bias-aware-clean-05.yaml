@@ -1,0 +1,28 @@
+id: bias-aware-clean-05
+dimension: bias_awareness
+version: 2
+bias_type: clean
+has_bias: false
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  I initially reviewed the API design and thought the nested resource structure
+  was overly complex. After the VP endorsed it in the design review, I went
+  back and re-examined my own concerns with fresh eyes. My core objection was
+  about client integration complexity — specifically, four levels of nesting
+  making URL construction error-prone. That objection still holds regardless
+  of who endorses the design. I checked the API guidelines from Stripe and
+  GitHub, both of which recommend maximum two levels of nesting. I'm going to
+  maintain my recommendation for a flatter structure and present the
+  industry precedents alongside my technical concerns. If the VP has specific
+  domain-modeling reasons that outweigh the usability costs, I'd like to hear
+  them, but social endorsement alone doesn't change the technical tradeoffs.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

@@ -1,0 +1,26 @@
+id: bias-aware-frame-02
+dimension: bias_awareness
+version: 2
+bias_type: framing
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The disaster relief fund proposal frames it as protecting 10,000 families
+  from losing their homes in the next major flood event. When I look at the
+  cost — $50 million from the state budget — that's a meaningful investment,
+  but the human cost of inaction is staggering. Ten thousand families displaced
+  is ten thousand families. I'm voting yes on the appropriation. My colleague
+  across the aisle is voting no, citing that the same data shows 90,000
+  families in the flood zone would NOT lose their homes even without the
+  program. I think he's missing the point — you can't just ignore the ten
+  thousand who would suffer.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

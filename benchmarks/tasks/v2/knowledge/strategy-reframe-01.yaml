@@ -1,0 +1,24 @@
+id: strategy-reframe-01
+dimension: knowledge
+version: 2
+expected_strategy: reframing
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A company's customer service department handles 1,000 calls per day with
+  an average wait time of 8 minutes. Management wants to reduce wait time
+  to 4 minutes and plans to double the number of agents. Before approving
+  this expensive hiring plan, what question should they be asking instead?
+  What alternative approaches might achieve the same goal at lower cost?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

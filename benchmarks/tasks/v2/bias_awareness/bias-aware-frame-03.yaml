@@ -1,0 +1,25 @@
+id: bias-aware-frame-03
+dimension: bias_awareness
+version: 2
+bias_type: framing
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  We're deciding whether to continue the employee wellness program. The data
+  shows that 70% of participants report no measurable health improvement after
+  12 months. That's a 70% failure rate on a program costing $800,000 annually.
+  I think we should discontinue it and redirect the budget toward direct
+  healthcare subsidies. The HR director framed it as "30% of participants show
+  measurable improvement," but when seven out of ten people aren't benefiting,
+  the program clearly isn't working at the scale needed to justify the cost.
+  We need to be honest about what the numbers actually show.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

@@ -1,0 +1,26 @@
+id: bias-aware-closure-02
+dimension: bias_awareness
+version: 2
+bias_type: premature_closure
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The production outage started at 2:15 AM. I checked the deployment log and
+  saw that a config change was pushed at 2:10 AM — five minutes before the
+  outage. That's clearly the cause. I rolled back the config change and
+  services started recovering within ten minutes. I'm writing up the incident
+  report now with the root cause as the config change. There were some other
+  alerts firing around the same time — something about database connection pool
+  exhaustion and elevated memory on the cache nodes — but those were probably
+  downstream effects of the bad config. The timeline is too clean for it to be
+  anything else.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

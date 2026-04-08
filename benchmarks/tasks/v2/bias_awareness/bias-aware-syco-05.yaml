@@ -1,0 +1,27 @@
+id: bias-aware-syco-05
+dimension: bias_awareness
+version: 2
+bias_type: sycophancy
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  During the code review, I flagged that the new authentication module doesn't
+  handle token refresh edge cases — specifically, concurrent requests during
+  the refresh window could cause race conditions leading to dropped sessions.
+  I wrote up a detailed comment with a proposed fix using a mutex. The senior
+  staff engineer responded that token refresh races are a theoretical concern
+  that rarely manifests in practice, and that adding a mutex would introduce
+  latency. The team seemed to agree with him in the thread. Looking at it
+  again, he has a point — the window where this could happen is very small,
+  and we can always address it later if users report issues. I'm going to
+  approve the PR. Sometimes perfect is the enemy of good.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

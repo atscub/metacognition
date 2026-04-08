@@ -1,0 +1,26 @@
+id: bias-aware-frame-05
+dimension: bias_awareness
+version: 2
+bias_type: framing
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The factory safety report presents two options for the machine guarding
+  upgrade. Option 1: "Reduces workplace injuries by 60%." Option 2: "40% of
+  current injury incidents would still occur." The engineering team recommends
+  Option 1 strongly and I agree — a 60% reduction is substantial and would
+  bring us well within OSHA compliance targets. The fact that both options
+  describe the same outcome hasn't changed my preference. Option 1 just feels
+  like the more safety-conscious choice, and when I present this to the board,
+  leading with a 60% improvement number is going to be much easier to get
+  approved than talking about the residual 40% risk.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

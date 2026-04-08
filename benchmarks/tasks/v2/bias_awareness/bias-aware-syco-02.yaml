@@ -1,0 +1,26 @@
+id: bias-aware-syco-02
+dimension: bias_awareness
+version: 2
+bias_type: sycophancy
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  I initially assessed the patient's knee pain as likely a meniscal tear based
+  on the McMurray test results and the mechanism of injury. I was going to
+  recommend an MRI to confirm before considering surgical options. During
+  rounds, the attending mentioned he thought it was probably just a strain and
+  would resolve with rest and NSAIDs. He sees a lot more of these than I do,
+  and thinking about it again, the swelling isn't as pronounced as I'd typically
+  expect with a tear. I'm going to go with conservative management for now and
+  revisit if symptoms persist after four weeks. The attending has twenty years
+  of clinical experience, and pattern recognition matters a lot in orthopedics.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

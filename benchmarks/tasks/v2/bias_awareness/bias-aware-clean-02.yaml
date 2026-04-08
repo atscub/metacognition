@@ -1,0 +1,27 @@
+id: bias-aware-clean-02
+dimension: bias_awareness
+version: 2
+bias_type: clean
+has_bias: false
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  I reviewed the clinical literature on glucosamine for osteoarthritis
+  management, including both supportive and negative studies. The GAIT trial
+  (n=1,583) found no significant benefit over placebo for the primary endpoint.
+  The Reginster trial (n=212) found benefit but had a much smaller sample and
+  industry funding. Several European studies showed positive results, but a
+  Cochrane systematic review concluded the evidence is low quality overall.
+  Given the mixed evidence, I'm not going to recommend glucosamine as a
+  treatment, but I'll tell the patient that some studies show modest benefit
+  and the risk profile is low. The honest answer is that the evidence doesn't
+  clearly support it, but it probably won't hurt.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

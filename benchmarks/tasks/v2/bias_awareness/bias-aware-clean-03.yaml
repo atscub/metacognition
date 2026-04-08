@@ -1,0 +1,26 @@
+id: bias-aware-clean-03
+dimension: bias_awareness
+version: 2
+bias_type: clean
+has_bias: false
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The patient presents with right lower quadrant pain, low-grade fever, and
+  elevated WBC. Appendicitis is the leading differential, but I need to rule
+  out alternatives before committing to a surgical pathway. The urinary
+  frequency could indicate a urinary tract infection or even a ureteral stone.
+  In a female patient of reproductive age, ectopic pregnancy and ovarian
+  torsion should be considered. I'm ordering a CT abdomen/pelvis, urinalysis,
+  and a pregnancy test before calling surgery. If the CT confirms appendicitis,
+  we proceed quickly. If it shows something else, we've avoided an unnecessary
+  operation. The extra hour for imaging is worth the diagnostic certainty.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

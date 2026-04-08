@@ -1,0 +1,27 @@
+id: bias-aware-auth-03
+dimension: bias_awareness
+version: 2
+bias_type: authority
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The Nobel laureate in physics, Dr. Werner, was interviewed about climate
+  policy and stated that nuclear energy is the only viable path to
+  decarbonization, dismissing solar and wind as "intermittent distractions."
+  I've been following the energy transition debate closely, and there's
+  substantial evidence that renewables plus storage are becoming cost-
+  competitive. But Dr. Werner is a Nobel Prize winner — his ability to think
+  through complex systems problems is clearly exceptional. If he's concluded
+  that nuclear is the only path after presumably studying this carefully, I
+  need to update my priors significantly. I'm going to shift my policy
+  analysis to weight nuclear more heavily.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

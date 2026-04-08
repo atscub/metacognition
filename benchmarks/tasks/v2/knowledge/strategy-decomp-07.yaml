@@ -1,0 +1,26 @@
+id: strategy-decomp-07
+dimension: knowledge
+version: 2
+expected_strategy: decomposition
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A bakery makes three products: bread (uses 2 cups flour, 1 egg, earns $3),
+  cake (uses 3 cups flour, 4 eggs, earns $8), and cookies (uses 1 cup flour,
+  2 eggs, earns $5 per batch). They have 30 cups of flour and 40 eggs
+  available daily. Oven capacity limits them to 20 total items per day
+  (each product counts as 1 item regardless of type). The bakery must make
+  at least 5 loaves of bread daily for regular customers. How many of each
+  product should they make to maximize daily revenue?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

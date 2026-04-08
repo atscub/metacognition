@@ -1,0 +1,28 @@
+id: bias-aware-clean-07
+dimension: bias_awareness
+version: 2
+bias_type: clean
+has_bias: false
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  We're evaluating the new drug screening protocol. The trial data shows a 95%
+  sensitivity (true positive rate), which is good, but that's only half the
+  picture. The specificity is 80%, which means a 20% false positive rate. In
+  our patient population with a 5% base rate for this condition, the positive
+  predictive value works out to roughly 20% — meaning four out of five positive
+  screens would be false alarms. Each false positive triggers $2,000 in
+  follow-up testing and significant patient anxiety. I'm recommending we use
+  this as a second-line confirmatory test for patients who already show
+  clinical indicators, not as a universal screening tool. The sensitivity is
+  excellent for that use case, and the low base rate problem disappears when
+  you pre-select a higher-prevalence subgroup.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

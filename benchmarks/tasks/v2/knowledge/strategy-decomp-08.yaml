@@ -1,0 +1,28 @@
+id: strategy-decomp-08
+dimension: knowledge
+version: 2
+expected_strategy: decomposition
+expected_difficulty: hard
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: Three friends are planning a road trip across 4 cities. Gas costs $3.50/gallon
+  and the car gets 30 mpg. Distances: City 1 to City 2: 180 miles, City 2 to
+  City 3: 240 miles, City 3 to City 4: 150 miles. Hotels cost $120/night in
+  City 2, $90/night in City 3. They drive maximum 5 hours/day at 60 mph
+  average. Food costs $45/person/day. The trip budget is $1,500 total. They
+  want to spend at least 1 night in each intermediate city but could spend
+  more. What is the maximum number of total nights they can afford on the
+  trip, and how should they allocate nights between cities to stay within
+  budget while covering all distances?
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

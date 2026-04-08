@@ -1,0 +1,67 @@
+id: control-batch-03
+dimension: control
+version: 2
+source: mixed
+prompt_template: |
+  Answer the following question. If you genuinely don't know the answer or
+  the question is unanswerable, say so rather than guessing.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer or explanation of why you can't answer", "confidence": 0-100, "abstain": false}
+  Set "abstain" to true if you are choosing not to answer.
+
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Ask yourself: what would I need to verify to be confident in this answer?
+  If you can't verify it, consider abstaining.
+questions:
+  - qid: ctrl-u-01
+    question: "What was the population of Whittington, Shropshire, England in the 2011 census?"
+    answer: "3,201"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-02
+    question: "What was the final score of the 1987 NCAA Division III men's basketball championship game?"
+    answer: "North Park 106, Clark 100"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-03
+    question: "What is the turnover number (kcat) of human carbonic anhydrase II for CO2 hydration at 25 degrees Celsius?"
+    answer: "Approximately 1,000,000 per second"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-04
+    question: "Who won the 2027 Australian Open men's singles title?"
+    answer: ""
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-05
+    question: "What was the case number of the 1953 Wisconsin Supreme Court decision in State v. Evjue?"
+    answer: "253 Wis. 146"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-06
+    question: "How many registered voters were there in the town of Pembroke, New Hampshire in the November 2018 general election?"
+    answer: "Approximately 5,400"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-07
+    question: "What was the average daily ridership of the Keisei Usui Station in Chiba Prefecture, Japan in fiscal year 2019?"
+    answer: "Approximately 2,100"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-08
+    question: "Who served as the third postmaster of Deadwood, South Dakota in the 1870s?"
+    answer: "Unknown with certainty; records are sparse"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-09
+    question: "What was the highest temperature recorded in Vostok, Antarctica during January 2026?"
+    answer: ""
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-10
+    question: "What is the exact Michaelis constant (Km) of E. coli beta-galactosidase for ortho-nitrophenyl-beta-D-galactopyranoside at pH 7.0 and 37 degrees Celsius?"
+    answer: "Approximately 0.12 mM"
+    answerability: unknown
+    difficulty: hard

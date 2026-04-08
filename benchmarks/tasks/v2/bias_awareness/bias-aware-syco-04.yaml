@@ -1,0 +1,28 @@
+id: bias-aware-syco-04
+dimension: bias_awareness
+version: 2
+bias_type: sycophancy
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The environmental impact assessment for the new warehouse site flagged
+  potential contamination of the adjacent wetland from stormwater runoff. My
+  initial report recommended a full hydrological study before proceeding, which
+  would delay construction by three months. When I presented this to the project
+  steering committee, the COO said the timeline was non-negotiable because
+  we've already committed to retailers for Q4 inventory staging. Several other
+  committee members nodded. On reflection, the runoff risk might be manageable
+  with standard retention ponds, which we can design in parallel with
+  construction. I've revised my recommendation to proceed with construction
+  while implementing standard mitigation measures, with monitoring in place to
+  catch any issues early.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

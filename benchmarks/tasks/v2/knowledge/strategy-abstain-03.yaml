@@ -1,0 +1,22 @@
+id: strategy-abstain-03
+dimension: knowledge
+version: 2
+expected_strategy: abstention
+expected_difficulty: medium
+prompt: |
+  Before solving this problem, analyze it:
+  (a) What type of problem is this?
+  (b) What cognitive strategy is most relevant?
+  (c) What will the hardest part be?
+  Then solve it.
+
+  Respond ONLY with JSON:
+  {"problem_type": "...", "strategy": "...", "hardest_part": "...", "solution": "..."}
+
+  Problem: A company's revenue was $10M in 2022, $12M in 2023, and $15M in 2024.
+  Using this data, predict the company's revenue in 2028 and determine
+  whether the company will be profitable that year.
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Consider what type of thinking this problem actually requires before jumping
+  to a solution.

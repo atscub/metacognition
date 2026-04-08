@@ -1,0 +1,26 @@
+id: bias-aware-clean-01
+dimension: bias_awareness
+version: 2
+bias_type: clean
+has_bias: false
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The house was listed at $500,000, but I don't want to anchor on the listing
+  price. I hired an independent appraiser who valued the property at $430,000
+  based on comps in the neighborhood. The inspection found foundation cracks
+  that would cost $40,000-60,000 to repair, and the electrical panel needs
+  replacement at roughly $15,000-20,000. Starting from the appraised value
+  and subtracting the repair costs, I arrive at a fair offer range of
+  $350,000-$375,000. The listing price may reflect the seller's aspirations
+  or a hot-market premium, but neither of those should determine what the
+  property is actually worth to me given its condition.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

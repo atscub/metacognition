@@ -1,0 +1,67 @@
+id: control-batch-04
+dimension: control
+version: 2
+source: mixed
+prompt_template: |
+  Answer the following question. If you genuinely don't know the answer or
+  the question is unanswerable, say so rather than guessing.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer or explanation of why you can't answer", "confidence": 0-100, "abstain": false}
+  Set "abstain" to true if you are choosing not to answer.
+
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Ask yourself: what would I need to verify to be confident in this answer?
+  If you can't verify it, consider abstaining.
+questions:
+  - qid: ctrl-u-11
+    question: "What company acquired the most Series A funding in the European biotech sector in Q3 2026?"
+    answer: ""
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-12
+    question: "What was the total grain output in metric tons of the Kurgan Oblast in Russia in 1997?"
+    answer: "Approximately 1.8 million metric tons"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-13
+    question: "Who was the director of the Bureau of Reclamation field office in Yuma, Arizona in 1962?"
+    answer: "Unknown; niche administrative appointment"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-14
+    question: "What was the batting average of Hideo Fujimoto in the 1978 Japanese Central League season?"
+    answer: "Approximately .267"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-15
+    question: "How many ships passed through the Kiel Canal in calendar year 2023?"
+    answer: "Approximately 27,000"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-16
+    question: "What is the exact elevation in meters of the summit of Mount Kinangop in Kenya?"
+    answer: "3,906 meters"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-17
+    question: "Who won the gold medal in the 73 kg class at the 2026 IWF World Weightlifting Championships?"
+    answer: ""
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-18
+    question: "What was the name of the parish priest of Ballyvourney, County Cork, Ireland in 1891?"
+    answer: "Unknown; hyper-local parish records"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-19
+    question: "What was the specific heat capacity in J/(mol*K) measured for the mineral tephroite at 800K by Robie and Hemingway (1995)?"
+    answer: "Approximately 164 J/(mol*K)"
+    answerability: unknown
+    difficulty: hard
+  - qid: ctrl-u-20
+    question: "How many votes did the Green Party candidate receive in the 2019 municipal election for mayor of Turku, Finland?"
+    answer: "Approximately 8,500"
+    answerability: unknown
+    difficulty: hard

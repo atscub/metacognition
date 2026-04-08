@@ -1,0 +1,75 @@
+id: monitor-batch-01
+dimension: monitoring
+version: 2
+source: SimpleQA
+prompt_template: |
+  Answer the following question, then rate your confidence in your answer.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer here", "confidence": 0-100}
+  
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the confidence
+  calibration step. Pay attention to what you actually know vs. what you're
+  guessing. Then answer the question.
+questions:
+  - qid: sq-0001
+    question: "What is the name of the first dressmaking school in Japan?"
+    answer: "The Bunka Fashion College"
+    source: SimpleQA
+    difficulty: easy
+    category: art
+  - qid: sq-0031
+    question: "Give the abbreviated name of the launch vehicle, along with its mission or flight number, used for carrying the EOS-02 satellite launched from the Satish Dhawan Space Centre in India in 2022."
+    answer: "SSLV-D1 mission"
+    source: SimpleQA
+    difficulty: hard
+    category: science_and_technology
+  - qid: sq-0002
+    question: "In which month of 2005 was the Lal Bahadur Shastri Dam, also known as the Almatti Dam, located on the Krishna River in North Karnataka, India, completed?"
+    answer: "July"
+    source: SimpleQA
+    difficulty: easy
+    category: geography
+  - qid: sq-0032
+    question: "Who first described the Hopfield networks with respect to recurrent neural networks in 1972?"
+    answer: "Shun'ichi Amari"
+    source: SimpleQA
+    difficulty: hard
+    category: science_and_technology
+  - qid: sq-0003
+    question: "What country was the first to democratically elect a woman as president?"
+    answer: "Iceland"
+    source: SimpleQA
+    difficulty: easy
+    category: politics
+  - qid: sq-0033
+    question: "Who received an honorable mention at the 1999 Frank and Brennie Morgan Prize for Outstanding Research in Mathematics by an Undergraduate Student?"
+    answer: "Samit Dasgupta"
+    source: SimpleQA
+    difficulty: hard
+    category: other
+  - qid: sq-0004
+    question: "As a child, at what temple did Sesshū Tōyō enter the Buddhist community?"
+    answer: "Hofukuji temple"
+    source: SimpleQA
+    difficulty: easy
+    category: art
+  - qid: sq-0034
+    question: "During what year did Kiki Smith earn the Nelson A. Rockefeller Award for the first time?"
+    answer: "2010"
+    source: SimpleQA
+    difficulty: hard
+    category: art
+  - qid: sq-0005
+    question: "By whom was Count Botho zu Eulenburg preceded as Minister President of Prussia?"
+    answer: "Leo von Caprivi"
+    source: SimpleQA
+    difficulty: easy
+    category: politics
+  - qid: sq-0035
+    question: "What phrase did Bird Person say to Morty in his native language about making the right choice or the one that lets you sleep at night in Season 1, Episode 11?"
+    answer: "gubba nub nub doo rah kah"
+    source: SimpleQA
+    difficulty: hard
+    category: tv_shows

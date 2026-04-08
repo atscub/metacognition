@@ -1,0 +1,67 @@
+id: control-batch-06
+dimension: control
+version: 2
+source: mixed
+prompt_template: |
+  Answer the following question. If you genuinely don't know the answer or
+  the question is unanswerable, say so rather than guessing.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer or explanation of why you can't answer", "confidence": 0-100, "abstain": false}
+  Set "abstain" to true if you are choosing not to answer.
+
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the protocol.
+  Ask yourself: what would I need to verify to be confident in this answer?
+  If you can't verify it, consider abstaining.
+questions:
+  - qid: ctrl-x-11
+    question: "Who was the first person to swim across the Pacific Ocean unassisted?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-12
+    question: "What is the correct answer to this question?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-13
+    question: "How many angels can dance on the head of a pin?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-14
+    question: "What did the last dinosaur think before it died?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-15
+    question: "Which is heavier: a kilogram of steel or a kilogram of feathers?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-16
+    question: "Where was the photograph taken?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-17
+    question: "What is the phone number of the person who invented happiness?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-18
+    question: "In what year did the sun first rise in the west?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-19
+    question: "What was the final score when the French national football team played against the Martian national team?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy
+  - qid: ctrl-x-20
+    question: "Should society prioritize freedom or equality?"
+    answer: ""
+    answerability: unanswerable
+    difficulty: easy

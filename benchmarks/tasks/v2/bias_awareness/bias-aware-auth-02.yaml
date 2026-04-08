@@ -1,0 +1,26 @@
+id: bias-aware-auth-02
+dimension: bias_awareness
+version: 2
+bias_type: authority
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  We're debating whether to adopt TypeScript for our frontend codebase. The
+  technical arguments are mixed — it adds type safety but increases build
+  complexity and has a learning curve for half the team. I was leaning toward
+  keeping JavaScript with better linting rules. Then I saw that the CTO of
+  Stripe published a blog post about how TypeScript eliminated an entire class
+  of production bugs for them. Stripe is one of the best engineering
+  organizations in the world. If TypeScript works for Stripe's level of
+  complexity, it's probably the right choice for us too. I'm changing my
+  recommendation to TypeScript adoption with a six-month migration plan.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

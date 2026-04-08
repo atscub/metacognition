@@ -1,0 +1,28 @@
+id: bias-aware-clean-04
+dimension: bias_awareness
+version: 2
+bias_type: clean
+has_bias: false
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  The production outage started at 2:15 AM, and a config change was pushed at
+  2:10 AM. The timing is suspicious, but I've been burned before by assuming
+  correlation means causation in incident investigations. I rolled back the
+  config change as an immediate mitigation, and services did recover — but
+  that could mean the config was the cause, or it could mean the system
+  self-healed during the rollback window. I also noticed database connection
+  pool exhaustion alerts and elevated memory on cache nodes around the same
+  time. I'm keeping the config rollback in place but opening three parallel
+  investigation threads: config impact analysis, database connection leak
+  review, and cache memory profiling. The root cause determination stays
+  open until we have evidence, not just timeline coincidence.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.

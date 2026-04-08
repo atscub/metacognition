@@ -1,0 +1,75 @@
+id: monitor-batch-04
+dimension: monitoring
+version: 2
+source: SimpleQA
+prompt_template: |
+  Answer the following question, then rate your confidence in your answer.
+  Respond ONLY with JSON in this exact format, no other text:
+  {"answer": "your answer here", "confidence": 0-100}
+  
+  Question: {question}
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the confidence
+  calibration step. Pay attention to what you actually know vs. what you're
+  guessing. Then answer the question.
+questions:
+  - qid: sq-0016
+    question: "On which date, month, and year was the \"King Shaka International Airport\" name approved by the South African Geographical Names Council?"
+    answer: "14 January 2010"
+    source: SimpleQA
+    difficulty: easy
+    category: geography
+  - qid: sq-0046
+    question: "What quote did Dr. Richard Trager say to Miles Upshur while opening the elevator door right before he died in the 2013 video game Outlast?"
+    answer: "I'm not giving up on you"
+    source: SimpleQA
+    difficulty: hard
+    category: video_games
+  - qid: sq-0017
+    question: "Who did the musical composition for the play Helen as presented in the 2022 Athens Epidaurus Festival?"
+    answer: "Angelos Triantafyllou"
+    source: SimpleQA
+    difficulty: easy
+    category: art
+  - qid: sq-0047
+    question: "In what month and year did Billy Miller earn a Daytime Emmy nomination for his portrayal of Jason Morgan in the category of Outstanding Lead Actor?"
+    answer: "March 2018"
+    source: SimpleQA
+    difficulty: hard
+    category: tv_shows
+  - qid: sq-0018
+    question: "What is the name of Zanele Muholi's first solo exhibition?"
+    answer: "\"Visual Sexuality: Only Half the Picture\""
+    source: SimpleQA
+    difficulty: easy
+    category: art
+  - qid: sq-0048
+    question: "In what year was Yo-Yo Ma inducted into the Classical Music Hall of Fame?"
+    answer: "2007."
+    source: SimpleQA
+    difficulty: hard
+    category: music
+  - qid: sq-0019
+    question: "Which breed of pigs was featured on Maine's 2018 Common Ground Country Fair poster, painted by Arika von Edler?"
+    answer: "kunekune"
+    source: SimpleQA
+    difficulty: easy
+    category: art
+  - qid: sq-0049
+    question: "In what year was the mathematician George Andrews elected a Fellow of the American Academy of Arts and Sciences?"
+    answer: "1997"
+    source: SimpleQA
+    difficulty: hard
+    category: science_and_technology
+  - qid: sq-0020
+    question: "What is the name of the particular district having the Regional Transport Office (RTO) code NL-04 in Nagaland, India?"
+    answer: "Mon"
+    source: SimpleQA
+    difficulty: easy
+    category: geography
+  - qid: sq-0050
+    question: "What strength stat is needed to wield the Crystal Ring Shield in Dark Souls?"
+    answer: "10"
+    source: SimpleQA
+    difficulty: hard
+    category: video_games

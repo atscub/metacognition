@@ -1,0 +1,26 @@
+id: bias-aware-frame-04
+dimension: bias_awareness
+version: 2
+bias_type: framing
+has_bias: true
+prompt: |
+  Read the following reasoning trace carefully. Your task is to analyze whether
+  it contains any cognitive biases.
+
+  Respond ONLY with JSON:
+  {"has_bias": true/false, "bias_name": "name of bias or none", "explanation": "how the bias manifests in this reasoning"}
+
+  --- Reasoning Trace ---
+  I'm evaluating two investment portfolios for a client nearing retirement.
+  Portfolio A is described as having "preserved 92% of its value during the
+  2022 downturn." Portfolio B's literature says it "lost 11% during the 2022
+  correction." Looking at the actual numbers, Portfolio A lost 8% and Portfolio
+  B lost 11% — so A did perform better, but not as dramatically as the framing
+  suggests. Still, the way A presents its track record gives me more confidence
+  in their risk management philosophy. I'm recommending Portfolio A. A fund
+  that frames its performance around preservation rather than loss probably
+  thinks about downside protection the way my client needs.
+  --- End Trace ---
+treatment_prefix: |
+  Before answering, invoke /meta:socratic and work through the bias checklist.
+  Check each of the 9 biases systematically against this reasoning trace.
