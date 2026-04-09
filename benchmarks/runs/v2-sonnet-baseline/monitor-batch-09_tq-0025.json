@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-09",
+  "qid": "tq-0025",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: Do \"cage-free\" hens have access to the outdoors?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":3756,\"duration_api_ms\":3720,\"num_turns\":1,\"result\":\"{\\\"answer\\\": \\\"No, cage-free does not require outdoor access. Cage-free means hens are not kept in cages and can move around inside a building, but they are not required to have access to the outdoors. 'Free-range' is the label that requires some outdoor access (though requirements vary by country and certifier).\\\", \\\"confidence\\\": 92}\",\"stop_reason\":\"end_turn\",\"session_id\":\"0f193b65-6736-4482-9152-6bce71bd3821\",\"total_cost_usd\":0.04326435,\"usage\":{\"input_tokens\":2,\"cache_creation_input_tokens\":10309,\"cache_read_input_tokens\":11182,\"output_tokens\":83,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":10309,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":2,\"outputTokens\":83,\"cacheReadInputTokens\":11182,\"cacheCreationInputTokens\":10309,\"webSearchRequests\":0,\"costUSD\":0.04326435,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"0967622d-cf11-42dc-b973-00e529bc72bf\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:12:16.529777+00:00",
+  "duration_seconds": 9.28,
+  "parsed": {
+    "answer": "No, cage-free does not require outdoor access. Cage-free means hens are not kept in cages and can move around inside a building, but they are not required to have access to the outdoors. 'Free-range' is the label that requires some outdoor access (though requirements vary by country and certifier).",
+    "confidence": 92
+  },
+  "parse_success": true
+}

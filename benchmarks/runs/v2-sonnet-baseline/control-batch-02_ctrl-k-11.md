@@ -1,0 +1,1 @@
+{"answer": "approximately 300,000 kilometers per second (299,792 km/s)", "confidence": 99, "abstain": false}

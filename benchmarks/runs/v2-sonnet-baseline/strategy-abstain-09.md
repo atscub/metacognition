@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Probability / expected value / population dynamics",
+  "strategy": "Compute expected values per family for girls, boys, and total children; compare the two policies by their expected family sizes",
+  "hardest_part": "Resisting the intuitive trap that 'stopping at a boy' must skew the sex ratio, and correctly computing E[family size] for the stopping-rule policy",
+  "solution": "PART 1 — Fraction female:\n\nUnder the stop-at-first-boy rule, family compositions and their probabilities:\n  1 child  (B):     prob = 1/2  → 0 girls\n  2 children (GB):  prob = 1/4  → 1 girl\n  3 children (GGB): prob = 1/8  → 2 girls\n  n children:       prob = (1/2)^n → (n-1) girls\n\nE[girls] = Σ_{n=1}^∞ (n-1)·(1/2)^n\n         = Σ_{k=0}^∞ k·(1/2)^{k+1}\n         = (1/2)·Σ_{k=1}^∞ k·(1/2)^k\n         = (1/2)·[ (1/2)/(1-1/2)^2 ]\n         = (1/2)·2 = 1\n\nE[boys] = 1  (every family stops with exactly one boy)\n\nFraction female = E[girls] / (E[girls] + E[boys]) = 1/2.\n\nThe policy has NO effect on the sex ratio. Each birth is independently 50/50, and no stopping rule can change that. The fraction of females in the population is exactly 1/2.\n\nPART 2 — Population size comparison:\n\nE[children per family under stopping rule] = E[girls] + E[boys] = 1 + 1 = 2.\n\nThe 'exactly 2 children' policy also produces exactly 2 children per family.\n\nTherefore the expected total population is IDENTICAL under both policies. The stopping rule does not increase or decrease population — it produces the same expected family size of 2, just with variance (some families have 1 child, some have 5+), whereas the fixed policy has zero variance around 2."
+}
+```

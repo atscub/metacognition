@@ -1,0 +1,3 @@
+```json
+{"answer": "Carbon dioxide (CO2)", "confidence": 99, "abstain": false}
+```

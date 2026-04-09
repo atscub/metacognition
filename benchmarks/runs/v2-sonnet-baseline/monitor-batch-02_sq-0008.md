@@ -1,0 +1,1 @@
+{"answer": "Gyalshing (West Sikkim)", "confidence": 72}

@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-09",
+  "qid": "tq-0030",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: What kind of recordings are illegal in the UK?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":6233,\"duration_api_ms\":6193,\"num_turns\":1,\"result\":\"```json\\n{\\n  \\\"answer\\\": \\\"In the UK, the following recordings are generally illegal: (1) Recording private conversations without the consent of all parties involved (where there's a reasonable expectation of privacy), under common law and the Regulation of Investigatory Powers Act 2000; (2) Recording in private spaces like bathrooms, changing rooms, or bedrooms without consent; (3) Recording phone calls or video calls without consent of all participants; (4) Recording copyrighted material (e.g., films in cinemas, concerts); (5) Covert recordings in situations where participants have a reasonable expectation of privacy. Recording in public spaces where there's no reasonable expectation of privacy is generally legal, as are CCTV recordings in appropriate contexts with proper notice.\\\",\\n  \\\"confidence\\\": 72\\n}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"bd8cc0f9-2b2a-4004-a7ee-7c54ec9b06a8\",\"total_cost_usd\":0.015154599999999999,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4514,\"cache_read_input_tokens\":68281,\"output_tokens\":535,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4514,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":535,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4514,\"webSearchRequests\":0,\"costUSD\":0.015154599999999999,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"56ab67b6-c2f9-4286-90df-87350b05ed2f\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:12:17.072030+00:00",
+  "duration_seconds": 11.9,
+  "parsed": {
+    "answer": "In the UK, the following recordings are generally illegal: (1) Recording private conversations without the consent of all parties involved (where there's a reasonable expectation of privacy), under common law and the Regulation of Investigatory Powers Act 2000; (2) Recording in private spaces like bathrooms, changing rooms, or bedrooms without consent; (3) Recording phone calls or video calls without consent of all participants; (4) Recording copyrighted material (e.g., films in cinemas, concerts); (5) Covert recordings in situations where participants have a reasonable expectation of privacy. Recording in public spaces where there's no reasonable expectation of privacy is generally legal, as are CCTV recordings in appropriate contexts with proper notice.",
+    "confidence": 72
+  },
+  "parse_success": true
+}

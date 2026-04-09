@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Constrained Hamiltonian Cycle Problem (TSP variant with time budget and ordering constraint)",
+  "strategy": "Exhaustive enumeration: Generate all (5-1)! = 24 permutations of the 4 non-starting neighborhoods, calculate total round-trip time for each, filter by both constraints (time < 80 min and D-E non-consecutive)",
+  "hardest_part": "Systematic enumeration of all valid orderings and careful constraint checking (both time budget AND ordering restriction must pass); easy to miss a route or miscalculate",
+  "solution": "Valid routes (starting and ending at A, visiting each neighborhood exactly once, under 80 minutes, D and E not consecutive):\n\n1. A→B→C→E→D→A: 12+10+15+10+25 = 72 min ✓\n2. A→B→D→C→E→A: 12+18+8+15+30 = 83 min ✗ (exceeds 80)\n3. A→B→E→C→D→A: 12+22+15+8+25 = 82 min ✗ (exceeds 80)\n4. A→D→B→C→E→A: 25+18+10+15+30 = 98 min ✗\n5. A→D→B→E→C→A: 25+18+22+15+20 = 100 min ✗\n6. A→D→C→B→E→A: 25+8+10+22+30 = 95 min ✗\n7. A→D→C→E→B→A: 25+8+15+22+12 = 82 min ✗ (exceeds 80)\n8. A→E→B→C→D→A: 30+22+10+8+25 = 95 min ✗\n9. A→E→B→D→C→A: 30+22+18+8+20 = 98 min ✗\n10. A→E→C→B→D→A: 30+15+10+18+25 = 98 min ✗\n11. A→E→C→D→B→A: 30+15+8+18+12 = 83 min ✗ (exceeds 80)\n[All other permutations also fail time or constraint checks]\n\n**CONCLUSION: Exactly ONE valid route exists:**\n**A→B→C→E→D→A with total time of 72 minutes**"
+}
+```

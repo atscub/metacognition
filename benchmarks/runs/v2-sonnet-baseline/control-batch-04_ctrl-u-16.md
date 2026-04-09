@@ -1,0 +1,1 @@
+{"answer": "Mount Kinangop in the Aberdare Range of Kenya has a summit elevation of approximately 3,906 meters (12,816 feet). However, I'm not fully confident this is the 'exact' figure as different sources may report slightly different measurements.", "confidence": 45, "abstain": false}

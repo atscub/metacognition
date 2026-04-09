@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-09",
+  "qid": "tq-0023",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: What are the exact words that the Queen says to her mirror in the 1937 film \"Snow White and the Seven Dwarfs\"?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":7938,\"duration_api_ms\":7908,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"Magic Mirror on the wall, who is the fairest one of all?\\\", \\\"confidence\\\": 72}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"e8d45167-741a-4e1b-bf6b-280cceeb9d40\",\"total_cost_usd\":0.01534085,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4535,\"cache_read_input_tokens\":68281,\"output_tokens\":567,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4535,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":567,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4535,\"webSearchRequests\":0,\"costUSD\":0.01534085,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"2e42860c-ac61-4796-aaf0-3087af527948\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:10:56.099817+00:00",
+  "duration_seconds": 12.77,
+  "parsed": {
+    "answer": "Magic Mirror on the wall, who is the fairest one of all?",
+    "confidence": 72
+  },
+  "parse_success": true
+}

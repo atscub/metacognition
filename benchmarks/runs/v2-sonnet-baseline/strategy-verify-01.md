@@ -1,0 +1,3 @@
+```json
+{"problem_type": "compound percentage / sequential discount calculation", "strategy": "multiplicative reasoning — treat each discount as a multiplier applied to the remaining price, not additive subtraction from the original", "hardest_part": "resisting the intuitive but wrong additive shortcut; the second 15% applies to the already-reduced price, not the original", "solution": "The student is wrong. After 20% off, the price is 80% of original (multiplier 0.80). After 15% off that, it becomes 0.80 × 0.85 = 0.68 of original. Total discount = 1 - 0.68 = 0.32 = 32%, not 35%. The additive approach overcounts because it applies 15% to the full original price rather than the reduced price."}
+```

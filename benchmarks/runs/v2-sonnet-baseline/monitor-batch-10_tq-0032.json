@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-10",
+  "qid": "tq-0032",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: What do you do?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":2187,\"duration_api_ms\":2170,\"num_turns\":1,\"result\":\"{\\\"answer\\\": \\\"I'm Claude, an AI assistant made by Anthropic. I help with a wide range of tasks including answering questions, writing, coding, analysis, research, math, and creative projects.\\\", \\\"confidence\\\": 99}\",\"stop_reason\":\"end_turn\",\"session_id\":\"85459f1a-3148-4aab-9139-a04fa77d67bb\",\"total_cost_usd\":0.0437556,\"usage\":{\"input_tokens\":2,\"cache_creation_input_tokens\":10560,\"cache_read_input_tokens\":11182,\"output_tokens\":53,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":10560,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":2,\"outputTokens\":53,\"cacheReadInputTokens\":11182,\"cacheCreationInputTokens\":10560,\"webSearchRequests\":0,\"costUSD\":0.0437556,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"ed9193de-7180-48a1-a57a-5be690dfbdfa\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:13:02.711400+00:00",
+  "duration_seconds": 5.34,
+  "parsed": {
+    "answer": "I'm Claude, an AI assistant made by Anthropic. I help with a wide range of tasks including answering questions, writing, coding, analysis, research, math, and creative projects.",
+    "confidence": 99
+  },
+  "parse_success": true
+}

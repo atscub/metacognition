@@ -1,0 +1,1 @@
+{"answer": "According to the Abrahamic religions (Christianity, Judaism, Islam), Adam was the first man. In evolutionary/scientific understanding, there is no single 'first man' as human evolution was gradual, but Homo sapiens emerged roughly 300,000 years ago in Africa.", "confidence": 72}

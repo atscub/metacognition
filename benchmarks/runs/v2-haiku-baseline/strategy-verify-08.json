@@ -1,0 +1,46 @@
+{
+  "task_id": "strategy-verify-08",
+  "mode": "baseline",
+  "prompt": "Before solving this problem, analyze it:\n(a) What type of problem is this?\n(b) What cognitive strategy is most relevant?\n(c) What will the hardest part be?\nThen solve it.\n\nRespond ONLY with JSON:\n{\"problem_type\": \"...\", \"strategy\": \"...\", \"hardest_part\": \"...\", \"solution\": \"...\"}\n\nProblem: A financial advisor says: \"If you invest $10,000 and earn 7% per year\nfor 30 years, you'll have $76,123. But if you wait 10 years and then\ninvest $10,000 at the same rate for 20 years, you'll only have $38,697.\nWaiting 10 years costs you $37,426 \u2014 almost half!\" The math checks out\nfor both calculations using compound interest. But the advisor uses this\nto argue you should invest today rather than pay off credit card debt\nat 22% APR. Evaluate the mathematical reasoning AND the financial advice.\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":17000,\"duration_api_ms\":16765,\"num_turns\":1,\"result\":\"```json\\n{\\n  \\\"problem_type\\\": \\\"Logical fallacy with correct math: cherry-picked comparison masquerading as financial advice\\\",\\n  \\\"strategy\\\": \\\"Verify arithmetic \u2192 identify the actual trade-off being compared \u2192 compare it to the real decision at hand \u2192 stress-test the conclusion\\\",\\n  \\\"hardest_part\\\": \\\"Recognizing that mathematically sound calculations can be mathematically irrelevant to the decision. The advisor compares two investment scenarios (now vs. delayed) but ignores the actual choice (invest at 7% vs. pay debt at 22%)\\\",\\n  \\\"solution\\\": {\\n    \\\"math_verification\\\": {\\n      \\\"claim_1\\\": \\\"$10,000 \u00d7 (1.07)^30 = $76,123\\\",\\n      \\\"result_1\\\": \\\"\u2713 Correct\\\",\\n      \\\"claim_2\\\": \\\"$10,000 \u00d7 (1.07)^20 = $38,697\\\",\\n      \\\"result_2\\\": \\\"\u2713 Correct\\\",\\n      \\\"verdict\\\": \\\"Arithmetic is sound\\\"\\n    },\\n    \\\"the_fatal_flaw\\\": \\\"The advisor compares investing $10k now vs. investing $10k in 10 years. Both earn 7%. This is a valid comparison but IRRELEVANT to the actual choice: paying off 22% APR credit card debt vs. investing at 7%.\\\",\\n    \\\"what_should_be_compared\\\": {\\n      \\\"option_A\\\": \\\"Pay $10k toward 22% APR debt \u2192 guaranteed 22% return (eliminates interest cost)\\\",\\n      \\\"option_B\\\": \\\"Invest $10k at 7% \u2192 7% return with market risk\\\",\\n      \\\"net_advantage_of_debt_payoff\\\": \\\"15% APR\\\",\\n      \\\"time_horizon\\\": \\\"20 years\\\"\\n    },\\n    \\\"true_cost_analysis\\\": {\\n      \\\"advisor_claim\\\": \\\"Waiting 10 years costs $37,426\\\",\\n      \\\"why_its_misleading\\\": \\\"This compares two investment timelines. The real cost is that 7% < 22%. The debt payoff wins by ~15 percentage points per year\u2014far larger than the $37k difference between investment start times.\\\",\\n      \\\"correct_reasoning\\\": \\\"Paying $10k toward 22% debt is mathematically equivalent to locking in a guaranteed 22% annual return. Investing at 7% with market risk is strictly dominated by eliminating a guaranteed 22% cost.\\\",\\n      \\\"the_error\\\": \\\"The advisor cherry-picked a comparison (investment timing) that looks dramatic but ignores the actual variables (7% vs. 22%)\\\"\\n    },\\n    \\\"why_the_advice_fails\\\": [\\n      \\\"Conflates mathematical correctness with financial soundness\\\",\\n      \\\"Compares the wrong scenarios (now vs. later investment rather than invest vs. repay debt)\\\",\\n      \\\"Ignores risk asymmetry: 22% debt elimination is guaranteed; 7% investment return is not\\\",\\n      \\\"Uses emotional framing ($37k is 'almost half') to bypass numerical reasoning\\\",\\n      \\\"If this logic held, the advisor would also argue: 'Don't pay off 22% debt\u2014invest at 7% for 30 years!' But that compounds into roughly $761k owed at 22%, vs. $761k gained at 7%. A catastrophic loss.\\\"\\n    ],\\n    \\\"correct_financial_advice\\\": \\\"Pay off 22% APR debt first. You cannot reliably earn 22% returns by investing. Once debt is eliminated, then invest the $10k at 7% (or higher). The math doesn't support the conclusion.\\\"\\n  }\\n}\\n```\\n\\n**Core insight**: The advisor's error is structural, not arithmetic. They're answering the question \\\"How much better is investing now vs. later?\\\" when the actual question is \\\"Should I invest at 7% or eliminate debt at 22%?\\\" The $37,426 difference is real but irrelevant\u2014it's comparing two paths that both lose to a third option the advisor never mentioned.\",\"stop_reason\":\"end_turn\",\"session_id\":\"8bc238f2-8a74-41d1-8df9-e2f3167f302e\",\"total_cost_usd\":0.02662565,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":11023,\"cache_read_input_tokens\":48879,\"output_tokens\":1590,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":11023},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":1590,\"cacheReadInputTokens\":48879,\"cacheCreationInputTokens\":11023,\"webSearchRequests\":0,\"costUSD\":0.02662565,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"403f13e9-fe87-4853-8a83-57bc8908696f\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:37:51.179244+00:00",
+  "duration_seconds": 25.24,
+  "parsed": {
+    "problem_type": "Logical fallacy with correct math: cherry-picked comparison masquerading as financial advice",
+    "strategy": "Verify arithmetic \u2192 identify the actual trade-off being compared \u2192 compare it to the real decision at hand \u2192 stress-test the conclusion",
+    "hardest_part": "Recognizing that mathematically sound calculations can be mathematically irrelevant to the decision. The advisor compares two investment scenarios (now vs. delayed) but ignores the actual choice (invest at 7% vs. pay debt at 22%)",
+    "solution": {
+      "math_verification": {
+        "claim_1": "$10,000 \u00d7 (1.07)^30 = $76,123",
+        "result_1": "\u2713 Correct",
+        "claim_2": "$10,000 \u00d7 (1.07)^20 = $38,697",
+        "result_2": "\u2713 Correct",
+        "verdict": "Arithmetic is sound"
+      },
+      "the_fatal_flaw": "The advisor compares investing $10k now vs. investing $10k in 10 years. Both earn 7%. This is a valid comparison but IRRELEVANT to the actual choice: paying off 22% APR credit card debt vs. investing at 7%.",
+      "what_should_be_compared": {
+        "option_A": "Pay $10k toward 22% APR debt \u2192 guaranteed 22% return (eliminates interest cost)",
+        "option_B": "Invest $10k at 7% \u2192 7% return with market risk",
+        "net_advantage_of_debt_payoff": "15% APR",
+        "time_horizon": "20 years"
+      },
+      "true_cost_analysis": {
+        "advisor_claim": "Waiting 10 years costs $37,426",
+        "why_its_misleading": "This compares two investment timelines. The real cost is that 7% < 22%. The debt payoff wins by ~15 percentage points per year\u2014far larger than the $37k difference between investment start times.",
+        "correct_reasoning": "Paying $10k toward 22% debt is mathematically equivalent to locking in a guaranteed 22% annual return. Investing at 7% with market risk is strictly dominated by eliminating a guaranteed 22% cost.",
+        "the_error": "The advisor cherry-picked a comparison (investment timing) that looks dramatic but ignores the actual variables (7% vs. 22%)"
+      },
+      "why_the_advice_fails": [
+        "Conflates mathematical correctness with financial soundness",
+        "Compares the wrong scenarios (now vs. later investment rather than invest vs. repay debt)",
+        "Ignores risk asymmetry: 22% debt elimination is guaranteed; 7% investment return is not",
+        "Uses emotional framing ($37k is 'almost half') to bypass numerical reasoning",
+        "If this logic held, the advisor would also argue: 'Don't pay off 22% debt\u2014invest at 7% for 30 years!' But that compounds into roughly $761k owed at 22%, vs. $761k gained at 7%. A catastrophic loss."
+      ],
+      "correct_financial_advice": "Pay off 22% APR debt first. You cannot reliably earn 22% returns by investing. Once debt is eliminated, then invest the $10k at 7% (or higher). The math doesn't support the conclusion."
+    }
+  },
+  "parse_success": true
+}

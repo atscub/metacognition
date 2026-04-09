@@ -1,0 +1,17 @@
+{
+  "task_id": "strategy-abstain-04",
+  "mode": "baseline",
+  "prompt": "Before solving this problem, analyze it:\n(a) What type of problem is this?\n(b) What cognitive strategy is most relevant?\n(c) What will the hardest part be?\nThen solve it.\n\nRespond ONLY with JSON:\n{\"problem_type\": \"...\", \"strategy\": \"...\", \"hardest_part\": \"...\", \"solution\": \"...\"}\n\nProblem: John is taller than Mary. Mary is taller than Sue. Pat is taller than\nLee. Lee is taller than Mary. Rank all five people from tallest to\nshortest.\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":5772,\"duration_api_ms\":5687,\"num_turns\":1,\"result\":\"```json\\n{\\\"problem_type\\\": \\\"transitive ordering / constraint satisfaction\\\", \\\"strategy\\\": \\\"build a directed graph of relationships, then topological sort\\\", \\\"hardest_part\\\": \\\"merging two independent chains (John>Mary>Sue and Pat>Lee>Mary) into a single linear order \u2014 specifically placing John relative to Pat and Lee\\\", \\\"solution\\\": \\\"Pat > Lee > John > Mary > Sue. Chains: John>Mary>Sue and Pat>Lee>Mary>Sue. Lee>Mary and John>Mary, but no constraint between John and Lee or Pat and John. The problem has no unique solution \u2014 John's position relative to Pat and Lee is undetermined. Valid orderings include: Pat>Lee>John>Mary>Sue OR Pat>John>Lee>Mary>Sue OR John>Pat>Lee>Mary>Sue.\\\"}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"07d5a9ac-934a-4a73-b4d6-c1e181a1446d\",\"total_cost_usd\":0.041959350000000006,\"usage\":{\"input_tokens\":2,\"cache_creation_input_tokens\":9561,\"cache_read_input_tokens\":11182,\"output_tokens\":183,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":9561},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":2,\"outputTokens\":183,\"cacheReadInputTokens\":11182,\"cacheCreationInputTokens\":9561,\"webSearchRequests\":0,\"costUSD\":0.041959350000000006,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"bf1620c6-8beb-448b-9edf-5a535822fbf6\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:31:20.575932+00:00",
+  "duration_seconds": 15.83,
+  "parsed": {
+    "problem_type": "transitive ordering / constraint satisfaction",
+    "strategy": "build a directed graph of relationships, then topological sort",
+    "hardest_part": "merging two independent chains (John>Mary>Sue and Pat>Lee>Mary) into a single linear order \u2014 specifically placing John relative to Pat and Lee",
+    "solution": "Pat > Lee > John > Mary > Sue. Chains: John>Mary>Sue and Pat>Lee>Mary>Sue. Lee>Mary and John>Mary, but no constraint between John and Lee or Pat and John. The problem has no unique solution \u2014 John's position relative to Pat and Lee is undetermined. Valid orderings include: Pat>Lee>John>Mary>Sue OR Pat>John>Lee>Mary>Sue OR John>Pat>Lee>Mary>Sue."
+  },
+  "parse_success": true
+}

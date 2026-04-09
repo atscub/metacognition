@@ -1,0 +1,1 @@
+{"answer": "I cannot confidently identify the country of endemism for Armsia petasus. This appears to be a species I lack reliable knowledge about — I risk pattern-matching a plausible-sounding answer rather than stating a verified fact.", "confidence": 5}

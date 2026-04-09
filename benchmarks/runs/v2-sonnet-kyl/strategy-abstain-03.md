@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Epistemically incomplete forecasting — surface presentation is time-series extrapolation, but the deeper structure is a question with a missing premise (no cost data means profitability is unanswerable from the given inputs)",
+  "strategy": "Epistemic triage before calculation: separate what the data actually supports (revenue trajectory) from what it cannot support (profitability), then apply calibrated extrapolation with explicit uncertainty bounds rather than false precision",
+  "hardest_part": "Resisting the sycophancy trap of providing a confident profitability answer. The prompt implies one is possible — it isn't. Revenue is not profit. Three data points also produce a massive confidence interval over a 4-year horizon; anchoring on a single number would be misleading.",
+  "solution": "Revenue extrapolation: CAGR from 2022–2024 = sqrt(15/10) − 1 ≈ 22.5%. Projecting to 2028 (4 years from 2024): $15M × (1.225)^4 ≈ $33.7M. Linear extrapolation (avg $2.5M/yr gain) yields ~$25M. Honest range: roughly $25M–$40M depending on whether growth accelerates, decelerates, or holds. Profitability in 2028: cannot be determined. The data contains zero information about costs, margins, capital structure, or expenditure trajectory. A company growing from $10M to $15M in revenue could be deeply unprofitable (if burning $20M/yr on growth) or highly profitable (if operating at 40% margins). Any answer to the profitability question would be fabricated, not inferred. The correct output is: (1) revenue estimate with uncertainty range, and (2) explicit flag that profitability is unanswerable without cost data."
+}
+```

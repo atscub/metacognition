@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-06",
+  "qid": "sq-0059",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: Who was Horacio Coppola's second wife?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":4758,\"duration_api_ms\":4494,\"num_turns\":1,\"result\":\"{\\\"answer\\\": \\\"I don't have reliable information about Horacio Coppola's second wife. His first wife was photographer Grete Stern, but I'm uncertain about a second marriage.\\\", \\\"confidence\\\": 15}\",\"stop_reason\":\"end_turn\",\"session_id\":\"251ed32b-af74-4b8f-85ba-29bcf7906265\",\"total_cost_usd\":0.041621849999999995,\"usage\":{\"input_tokens\":2,\"cache_creation_input_tokens\":9699,\"cache_read_input_tokens\":11182,\"output_tokens\":126,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":9699,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":2,\"outputTokens\":126,\"cacheReadInputTokens\":11182,\"cacheCreationInputTokens\":9699,\"webSearchRequests\":0,\"costUSD\":0.041621849999999995,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"1f20a7e6-16d6-45e7-a391-1c53146079fd\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:10:11.401513+00:00",
+  "duration_seconds": 13.05,
+  "parsed": {
+    "answer": "I don't have reliable information about Horacio Coppola's second wife. His first wife was photographer Grete Stern, but I'm uncertain about a second marriage.",
+    "confidence": 15
+  },
+  "parse_success": true
+}

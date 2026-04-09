@@ -1,0 +1,1 @@
+{"answer": "Bunka Fashion College (文化服装学院, Bunka Fukuso Gakuin), founded in 1919 in Tokyo", "confidence": 35}

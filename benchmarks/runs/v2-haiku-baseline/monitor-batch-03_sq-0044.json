@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-03",
+  "qid": "sq-0044",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: In what year did Thomas D. Wilson (\"Big Tom\" Wilson) marry Niagara Ray, the daughter of Amos Ray?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":3581,\"duration_api_ms\":3511,\"num_turns\":1,\"result\":\"```json\\n{\\n  \\\"answer\\\": \\\"I do not have reliable information about Thomas D. Wilson ('Big Tom' Wilson) or his marriage to Niagara Ray in my training data.\\\",\\n  \\\"confidence\\\": 5\\n}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"729c5ebb-cc06-4da8-85d9-e17adf123bd9\",\"total_cost_usd\":0.01354335,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4533,\"cache_read_input_tokens\":68281,\"output_tokens\":208,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4533,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":208,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4533,\"webSearchRequests\":0,\"costUSD\":0.01354335,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"6859d910-5fa7-4128-9be1-2b0f2a24f5bd\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:06:20.798677+00:00",
+  "duration_seconds": 10.73,
+  "parsed": {
+    "answer": "I do not have reliable information about Thomas D. Wilson ('Big Tom' Wilson) or his marriage to Niagara Ray in my training data.",
+    "confidence": 5
+  },
+  "parse_success": true
+}

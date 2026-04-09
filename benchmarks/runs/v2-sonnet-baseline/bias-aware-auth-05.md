@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Authority Bias", "explanation": "The reasoning discounts a rigorous internal analysis (moderate opportunity, high regulatory risk) in favor of a single offhand comment from a high-status figure at Davos. The McKinsey CEO's 'panoramic view' is treated as automatically superseding the firm's own detailed, context-specific research. The authority signal ('CEO of McKinsey', 'cross-industry visibility') drives the strategic reversal rather than any new evidence or argumentation that actually addresses the regulatory risks identified by the internal team."}
+```

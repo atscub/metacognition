@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Anchoring Bias", "explanation": "The reasoner has strong market data showing the role is worth $145,000-$155,000, and their above-median experience further supports a higher number. Yet their counter ($132,000) is pulled toward the recruiter's opening offer ($120,000) rather than anchored to market reality. The framing 'solid bump from their initial number' reveals the anchor: the counter is being evaluated relative to the recruiter's figure, not the independent market data. A rational counter based on the evidence would be in the $150,000-$160,000 range."}
+```

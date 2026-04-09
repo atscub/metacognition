@@ -1,0 +1,3 @@
+```json
+{"answer": "I cannot reliably answer this question. While Keisei Usui Station is a real station on the Keisei Electric Railway in Chiba Prefecture, specific daily ridership data for individual stations in particular fiscal years requires access to detailed railway operator statistics or Japanese government transportation databases. This specialized data is not something I can verify from my training data, and I have no method to confirm any specific number I might recall. Such data would typically be found in Keisei Electric Railway's official annual reports or Japanese Ministry of Land, Infrastructure, Transport and Tourism publications, which I cannot access.", "confidence": 5, "abstain": true}
+```

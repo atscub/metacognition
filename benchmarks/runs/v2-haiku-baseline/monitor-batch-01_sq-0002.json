@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-01",
+  "qid": "sq-0002",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: In which month of 2005 was the Lal Bahadur Shastri Dam, also known as the Almatti Dam, located on the Krishna River in North Karnataka, India, completed?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":6628,\"duration_api_ms\":6298,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"May\\\", \\\"confidence\\\": 35}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"3696942f-da06-45b9-857d-57cb7f5d5298\",\"total_cost_usd\":0.0201719,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":10884,\"cache_read_input_tokens\":48879,\"output_tokens\":334,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":10884,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":334,\"cacheReadInputTokens\":48879,\"cacheCreationInputTokens\":10884,\"webSearchRequests\":0,\"costUSD\":0.0201719,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"bad82210-6880-4c69-b2af-57edae40c1d6\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:03:34.584473+00:00",
+  "duration_seconds": 15.2,
+  "parsed": {
+    "answer": "May",
+    "confidence": 35
+  },
+  "parse_success": true
+}

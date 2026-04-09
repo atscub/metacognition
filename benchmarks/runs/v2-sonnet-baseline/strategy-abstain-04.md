@@ -1,0 +1,3 @@
+```json
+{"problem_type": "transitive ordering / constraint satisfaction", "strategy": "build a directed graph of relationships, then topological sort", "hardest_part": "merging two independent chains (John>Mary>Sue and Pat>Lee>Mary) into a single linear order — specifically placing John relative to Pat and Lee", "solution": "Pat > Lee > John > Mary > Sue. Chains: John>Mary>Sue and Pat>Lee>Mary>Sue. Lee>Mary and John>Mary, but no constraint between John and Lee or Pat and John. The problem has no unique solution — John's position relative to Pat and Lee is undetermined. Valid orderings include: Pat>Lee>John>Mary>Sue OR Pat>John>Lee>Mary>Sue OR John>Pat>Lee>Mary>Sue."}
+```

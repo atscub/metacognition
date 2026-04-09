@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-05",
+  "qid": "sq-0051",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: In which year did Atul Gawande earn an M.A. in Philosophy, Politics and Economics (PPE) from Balliol College, Oxford?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":4987,\"duration_api_ms\":4957,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"1999\\\", \\\"confidence\\\": 25}\\n```\\n\\nI'm not confident in this answer. While I know Atul Gawande is a surgeon and writer who studied at Oxford, I don't have reliable information about the specific year he earned his M.A. in Philosophy, Politics and Economics from Balliol College. I would recommend verifying this through a biographical source or his official biography.\",\"stop_reason\":\"end_turn\",\"session_id\":\"ce389747-c391-45da-9978-83c32900ea6c\",\"total_cost_usd\":0.0811165,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":63530,\"cache_read_input_tokens\":0,\"output_tokens\":339,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":63530,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":339,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":63530,\"webSearchRequests\":0,\"costUSD\":0.0811165,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"a81f522b-4d01-4666-a89c-0f3106a4227b\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:06:59.729451+00:00",
+  "duration_seconds": 8.42,
+  "parsed": {
+    "answer": "1999",
+    "confidence": 25
+  },
+  "parse_success": true
+}

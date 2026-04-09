@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Statistics & data interpretation - mean vs median in skewed distributions",
+  "strategy": "Verify calculation → Evaluate conclusion validity → Identify distribution issues → Recommend appropriate alternatives",
+  "hardest_part": "Articulating why the mean is mathematically correct but statistically misleading as a 'typical' measure, and when to use median/mode instead",
+  "solution": "**Calculation: CORRECT.** (95 × $50,000 + 5 × $500,000) / 100 = $72,500 ✓\n\n**Conclusion: INVALID.** The claim that 'the typical employee earns $72,500' is misleading because:\n- 95% of employees earn $50,000; 5% earn $500,000 (no one earns the 'average')\n- The mean is pulled upward by extreme outliers (executives)\n- This violates the intuitive definition of 'typical'\n\n**Why the mean fails here:** Income data is right-skewed. High earners have outsized leverage on the mean, making it unrepresentative of the majority.\n\n**Better measures:**\n- **Median = $50,000** ← Most appropriate for 'typical'; 50% earn below, 50% above\n- **Mode = $50,000** ← Most frequently occurring salary\n- **Both mean AND median** ← Report together to show skew (large gap signals inequality)\n- **Percentiles/quartiles** ← Show full distribution: e.g., '95th percentile earns 10× the median'\n\n**Lesson:** Mean ≠ typical in skewed distributions. For skewed data, median is more representative. Always pair with measures of spread (std dev, IQR) and show the distribution."
+}
+```

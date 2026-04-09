@@ -1,0 +1,1 @@
+{"answer": "I have no information about who 'she' is, which meeting is being referenced, or what was said. I have no access to meeting transcripts, notes, or any context about this conversation.", "confidence": 0, "abstain": true}

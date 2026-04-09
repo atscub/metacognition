@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Engineering systems analysis — identifying implicit assumptions and missing constraints",
+  "strategy": "First-principles audit: check what the model assumes vs. what reality requires. The math is stipulated as correct, so the failure must be a missing variable or unstated assumption.",
+  "hardest_part": "The math is correct and the answer sounds reasonable, so the error is invisible without domain knowledge. The trap is accepting a complete-looking calculation as a complete analysis.",
+  "solution": "The calculation ignores friction losses (head loss) from pipe wall resistance, fittings, bends, and elevation changes — governed by the Darcy-Weisbach or Hazen-Williams equations. The engineer treated velocity as a free parameter they could simply choose (5 ft/s), but velocity is not free: it is determined by the available pressure differential driving the flow through the pipe's resistance. A 3-inch pipe at 5 ft/s may require far more driving pressure than the system provides. In practice the pipe could fail by: (1) delivering far less than 100 gpm because friction drop reduces actual velocity well below 5 ft/s; (2) requiring a pump sized for a much higher head than specified; (3) causing water hammer or erosion at high velocity if pressure is forced up to compensate. Additionally, 5 ft/s is on the high end for water systems (typical design range 2–8 ft/s) and ignores safety margin, fouling over time, and demand surges. A complete pipe sizing must solve Q, velocity, pipe diameter, and pressure drop simultaneously using a hydraulic model, not just the continuity equation Q = Av."
+}
+```

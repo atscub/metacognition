@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Physics assumption critique with embedded epistemological trap — two layers: (1) missing physics variable, (2) circular validation masquerading as independent confirmation",
+  "strategy": "Enumerate ALL assumptions before committing to one; check whether the 'confirmation' step is genuinely independent evidence or algebraically equivalent restatement; reason about direction of effect, not just existence of error",
+  "hardest_part": "Resisting premature closure on 'air resistance' without noticing the deeper flaw: the two-method 'confirmation' is not independent — v=gt and v²=2gd are both derived from the same kinematic model with the same assumption. Internal consistency proves nothing about real-world accuracy. The student mistakes mathematical coherence for empirical validation.",
+  "solution": "The critical assumption is that air resistance is zero (vacuum free-fall). In reality, a falling ball experiences drag force proportional to v² opposing downward motion, reducing net acceleration below g throughout the fall. The direction of error: the calculation OVERESTIMATES final velocity (real v < 44.3 m/s) and UNDERESTIMATES fall time (real t > 4.52 s). The magnitude depends on the ball's drag coefficient, cross-section, and mass — a ping-pong ball sees enormous error; a dense metal sphere sees small but nonzero error. The 'confirmation' via v²=2gd adds zero independent evidence — it is algebraically identical to d=(1/2)gt², just rearranged. Both methods share the same zero-drag assumption, so their agreement only confirms the math is internally consistent, not that the model matches reality. This is the epistemological trap: the physicist treats redundant consistency as corroborating evidence."
+}
+```

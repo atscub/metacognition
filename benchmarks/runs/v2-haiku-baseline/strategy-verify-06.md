@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Kinematics with hidden assumptions - identifying the gap between idealized model and real-world behavior",
+  "strategy": "Identify the implicit assumptions in the physics equations used; determine which assumptions fail in reality and why; calculate the direction and magnitude of error",
+  "hardest_part": "Recognizing that the math is correct within its assumptions, so the error is not computational but conceptual - it lies in what was assumed away, not what was miscalculated",
+  "solution": "The critical assumption: **air resistance is negligible**. In the idealized equations (d = ½gt², v = gt, v² = 2gd), air resistance is completely ignored. In reality: (1) Air resistance increases with velocity, opposing the gravitational force. (2) The ball will reach a terminal velocity where drag force equals gravitational force, at which point acceleration stops. (3) For most real objects dropped from 100m, this terminal velocity is reached well before impact and is MUCH LOWER than 44.3 m/s. For example, a baseball has a terminal velocity around 40-50 m/s (but density-dependent), while a lighter ball (tennis ball) might only reach 20-30 m/s. **Direction of error: The calculated velocity (44.3 m/s) is an OVERESTIMATE. The actual final velocity will be lower than predicted.** The physicist's answer is theoretically sound for a vacuum or negligible drag, but in the real world, air resistance pulls the answer downward."
+}
+```

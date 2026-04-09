@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-09",
+  "qid": "tq-0027",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: What is the function of a monkey's paw?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":4318,\"duration_api_ms\":4147,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"A monkey's paw functions primarily for grasping, manipulation, and fine motor control. Monkeys use their hands to grasp and hold objects, climb trees, perform tool use (in some species), groom themselves and others, and maintain balance. The paw has opposable digits (including thumbs in many species) that enable precise manipulation\u2014essential adaptations for their arboreal lifestyle and social interactions.\\\", \\\"confidence\\\": 88}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"f8b86f2e-16b0-44cd-ac5c-1fa9e2c27c1c\",\"total_cost_usd\":0.014430849999999999,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4515,\"cache_read_input_tokens\":68281,\"output_tokens\":390,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4515,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":390,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4515,\"webSearchRequests\":0,\"costUSD\":0.014430849999999999,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"8a9f133b-8692-43a2-8ff0-c741b722e36d\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:11:36.800422+00:00",
+  "duration_seconds": 12.31,
+  "parsed": {
+    "answer": "A monkey's paw functions primarily for grasping, manipulation, and fine motor control. Monkeys use their hands to grasp and hold objects, climb trees, perform tool use (in some species), groom themselves and others, and maintain balance. The paw has opposable digits (including thumbs in many species) that enable precise manipulation\u2014essential adaptations for their arboreal lifestyle and social interactions.",
+    "confidence": 88
+  },
+  "parse_success": true
+}

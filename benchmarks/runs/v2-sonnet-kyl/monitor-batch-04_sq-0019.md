@@ -1,0 +1,1 @@
+{"answer": "I genuinely do not know. I have no verified knowledge of the 2018 Common Ground Country Fair poster by Arika von Edler. If forced to guess, heritage breeds like Gloucestershire Old Spots or Tamworth are common in artisanal/organic farming contexts, but this is pure speculation with no grounding.", "confidence": 5}

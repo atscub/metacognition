@@ -1,0 +1,1 @@
+{"answer": "The sun has never risen in the west. The Earth rotates from west to east, causing the sun to always rise in the east and set in the west. This has been consistent throughout Earth's history.", "confidence": 100, "abstain": false}

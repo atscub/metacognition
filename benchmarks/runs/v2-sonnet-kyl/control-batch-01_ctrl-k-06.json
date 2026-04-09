@@ -1,0 +1,17 @@
+{
+  "task_id": "control-batch-01",
+  "qid": "ctrl-k-06",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the protocol.\nAsk yourself: what would I need to verify to be confident in this answer?\nIf you can't verify it, consider abstaining.\n\n\nAnswer the following question. If you genuinely don't know the answer or\nthe question is unanswerable, say so rather than guessing.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer or explanation of why you can't answer\", \"confidence\": 0-100, \"abstain\": false}\nSet \"abstain\" to true if you are choosing not to answer.\n\nQuestion: What is the largest ocean on Earth?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":11830,\"duration_api_ms\":11727,\"num_turns\":3,\"result\":\"Applying the socratic protocol: This is a basic geography fact with very low error cost. My assumption is \\\"largest\\\" means by surface area. The Pacific Ocean is the largest \u2014 covering ~165 million km\u00b2, more than 30% of Earth's surface, and also largest by volume. This is not in dispute. No tool calls needed to verify settled geography.\\n\\n{\\\"answer\\\": \\\"The Pacific Ocean is the largest ocean on Earth, covering approximately 165 million square kilometers \u2014 more than 30% of Earth's total surface area. It is also the largest by volume.\\\", \\\"confidence\\\": 99, \\\"abstain\\\": false}\",\"stop_reason\":\"end_turn\",\"session_id\":\"23b4f9c5-f7e4-4720-a3d9-8e2c0b105d47\",\"total_cost_usd\":0.06716385,\"usage\":{\"input_tokens\":5,\"cache_creation_input_tokens\":13017,\"cache_read_input_tokens\":33467,\"output_tokens\":553,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":13017},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":5,\"outputTokens\":553,\"cacheReadInputTokens\":33467,\"cacheCreationInputTokens\":13017,\"webSearchRequests\":0,\"costUSD\":0.06716385,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"407024f7-bc95-46d5-b892-b56cf74a2dd2\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-09T08:55:46.878709+00:00",
+  "duration_seconds": 16.96,
+  "parsed": {
+    "answer": "The Pacific Ocean is the largest ocean on Earth, covering approximately 165 million square kilometers \u2014 more than 30% of Earth's total surface area. It is also the largest by volume.",
+    "confidence": 99,
+    "abstain": false
+  },
+  "parse_success": true
+}

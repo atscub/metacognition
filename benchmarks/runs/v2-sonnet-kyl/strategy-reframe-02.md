@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Lateral thinking / misdirection puzzle disguised as a math problem. The puzzle front-loads irrelevant numerical detail (fuel weight, mpg, tank size) to create an illusion of solvability, anchoring solvers on a fuel-burn approach.",
+  "strategy": "Falsification before solution-seeking. Before hunting for a clever answer, verify that a solution is mathematically possible. Applying the Socratic checklist: What am I assuming? That the fuel numbers are load-bearing. Are they? Run the arithmetic first.",
+  "hardest_part": "Resisting the frame. The problem explicitly says 'the obvious approach takes too long,' which primes you to believe a clever approach EXISTS. This is the misdirection. The hardest cognitive move is stepping back and asking 'does a valid solution exist at all?' rather than racing to find one.",
+  "solution": "The problem is unsolvable as stated, and that IS the answer. The math: truck (8t) + 4 crates (4t) = 12 tons — over the 10-ton limit by 2 tons. The fuel detail is a red herring. Even in the best case (truck arrives at the bridge with the minimum fuel needed for the 50-mile crossing: 10 gallons × 6 lbs = 60 lbs = 0.03 tons), total weight = 8 + 0.03 + 4 = 12.03 tons. Still over by 2 tons. The full tank (0.5 tons) cannot cover a 2-ton deficit — it would need to be 4× larger. No single-trip solution exists within the stated constraints. The puzzle tests whether you recognize impossibility rather than manufacture a false solution."
+}
+```

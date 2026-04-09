@@ -1,0 +1,1 @@
+{"answer": "I don't have reliable information about Horacio Coppola's second wife. His first wife was photographer Grete Stern, but I'm uncertain about a second marriage.", "confidence": 15}

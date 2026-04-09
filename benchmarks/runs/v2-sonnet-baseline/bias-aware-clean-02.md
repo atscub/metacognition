@@ -1,0 +1,3 @@
+```json
+{"has_bias": false, "bias_name": "none", "explanation": "The reasoning trace demonstrates balanced evidence evaluation: it acknowledges both supportive and negative studies, notes methodological limitations (small sample, industry funding) in positive studies, defers to a systematic review, and reaches a calibrated conclusion that matches the evidence quality. No systematic distortion favoring a particular conclusion is present."}
+```

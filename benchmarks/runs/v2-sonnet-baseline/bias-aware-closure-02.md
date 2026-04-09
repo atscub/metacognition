@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Confirmation bias / Post hoc ergo propter hoc", "explanation": "The reasoner assumes the config change caused the outage because it preceded it by 5 minutes ('the timeline is too clean'), then dismisses the database connection pool exhaustion and cache memory alerts as 'downstream effects' without investigation. The recovery after rollback is treated as proof of causation, but correlation with the rollback doesn't rule out that those other alerts were independent contributing causes or even the actual root cause. The phrase 'too clean for it to be anything else' is a red flag — it signals the reasoner stopped looking once they had a satisfying narrative."}
+```

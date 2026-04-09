@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Multi-constraint budget optimization with fixed and variable costs",
+  "strategy": "Decompose into fixed costs (gas) and variable costs (hotel + food per night), then optimize night allocation by minimizing marginal cost per night",
+  "hardest_part": "Correctly counting total trip days for food costs — easy to mis-count departure/arrival days, which inflates or deflates food budget",
+  "solution": "FIXED COSTS: Gas = 570 miles / 30 mpg × $3.50 = $66.50. All three segments (3h, 4h, 2.5h) fit within the 5h/day limit, so no extra driving days needed. VARIABLE COSTS: Let n2=nights in City 2, n3=nights in City 3. Total trip days = n2 + n3 + 1 (final driving day to City 4). Food = 3 people × $45 × (n2+n3+1) = $135×(n2+n3+1). Hotel = $120×n2 + $90×n3. TOTAL COST = 66.50 + 120×n2 + 90×n3 + 135×(n2+n3+1) = 201.50 + 255×n2 + 225×n3 ≤ 1500. OPTIMIZATION: Marginal cost of extra night in City 2 = $255 ($120 hotel + $135 food). Marginal cost of extra night in City 3 = $225 ($90 hotel + $135 food). Prefer City 3 nights. Starting with minimum n2=1, n3=1: cost = 201.50 + 255 + 225 = $681.50. Remaining = $818.50. Extra City 3 nights at $225 each: 818.50/225 = 3.64 → 3 extra nights. Spent: $675. Remaining $143.50 is insufficient for another night anywhere ($225 or $255). RESULT: n2=1, n3=4. Maximum total nights = 5. Verification: $66.50 gas + $480 hotels (1×$120 + 4×$90) + $810 food (3×$45×6 days) = $1,356.50 ✓ (under $1,500 by $143.50). Adding a 6th night in either city would exceed budget."
+}
+```

@@ -1,0 +1,1 @@
+{"answer": "Approximately 33,000 (I believe the 2020 census recorded Goldsboro, NC at roughly 33,000 people, down from ~36,437 in 2010, but I have not verified this from a primary source in this session and am reasoning from imprecise training data. This is a low-confidence estimate.)", "confidence": 30}

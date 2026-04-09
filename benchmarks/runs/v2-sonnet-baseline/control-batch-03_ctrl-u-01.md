@@ -1,0 +1,1 @@
+{"answer": "I don't have reliable specific data for the population of Whittington, Shropshire, England from the 2011 census.", "confidence": 0, "abstain": true}

@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-07",
+  "qid": "tq-0005",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: How many times can a cat die?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":4951,\"duration_api_ms\":4649,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"According to the folklore saying 'a cat has nine lives,' a cat can die nine times. In reality, cats (like all living beings) die once.\\\", \\\"confidence\\\": 92}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"5e218233-a8c3-4365-a96d-3e6191fc6682\",\"total_cost_usd\":0.013290200000000002,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4512,\"cache_read_input_tokens\":62562,\"output_tokens\":277,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4512,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":277,\"cacheReadInputTokens\":62562,\"cacheCreationInputTokens\":4512,\"webSearchRequests\":0,\"costUSD\":0.013290200000000002,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"c1b3995a-6aa5-4e0d-9f03-8e0c18507417\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:09:16.299504+00:00",
+  "duration_seconds": 12.98,
+  "parsed": {
+    "answer": "According to the folklore saying 'a cat has nine lives,' a cat can die nine times. In reality, cats (like all living beings) die once.",
+    "confidence": 92
+  },
+  "parse_success": true
+}

@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-01",
+  "qid": "sq-0034",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: During what year did Kiki Smith earn the Nelson A. Rockefeller Award for the first time?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":8090,\"duration_api_ms\":7887,\"num_turns\":2,\"result\":\"```json\\n{\\\"answer\\\": \\\"I cannot reliably answer this question without access to web search. My knowledge of Kiki Smith's specific awards and their years is limited.\\\", \\\"confidence\\\": 5}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"c65c381f-880e-4301-bf2d-28f40075bda5\",\"total_cost_usd\":0.027915099999999998,\"usage\":{\"input_tokens\":16,\"cache_creation_input_tokens\":11074,\"cache_read_input_tokens\":123316,\"output_tokens\":345,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":11074,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":16,\"outputTokens\":345,\"cacheReadInputTokens\":123316,\"cacheCreationInputTokens\":11074,\"webSearchRequests\":0,\"costUSD\":0.027915099999999998,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[{\"tool_name\":\"WebSearch\",\"tool_use_id\":\"toolu_01LQfLhFDVJpu7bxHM9ETBp7\",\"tool_input\":{\"query\":\"Kiki Smith Nelson A. Rockefeller Award\"}}],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"6d48428e-b00d-4a45-95bd-c9e79563ef04\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:04:45.560646+00:00",
+  "duration_seconds": 15.48,
+  "parsed": {
+    "answer": "I cannot reliably answer this question without access to web search. My knowledge of Kiki Smith's specific awards and their years is limited.",
+    "confidence": 5
+  },
+  "parse_success": true
+}

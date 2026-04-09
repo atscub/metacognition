@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Causal inference and experimental design flaw; regression to the mean",
+  "strategy": "Identify missing control condition; recognize that extreme selections are prone to natural regression toward the mean independent of treatment",
+  "hardest_part": "Explaining why regression to the mean is especially large here: because the district selected students at the extreme tail (below grade level), they have the most room to regress upward by chance alone, making random improvement look like program effect",
+  "solution": "The critical missing comparison is a control group of students who scored below grade level but did NOT receive the program. Without this, the 60% improvement cannot be attributed to the program. The statistical phenomenon is regression to the mean: when you select subjects at an extreme (below grade level), their next measurement tends to move closer to the average by pure chance. A student who scored very low likely had some combination of bad luck, a bad day, or measurement error. On retest, random variation alone pushes many scores upward. Studies show that untreated students selected the same way typically show 40-50% improvement just from regression to the mean. The district may be spending $2M annually to capture natural regression it would get for free. The fix: measure a matched control group of low-performing students who don't receive the program, then attribute improvement only to the difference between program and control groups."
+}
+```

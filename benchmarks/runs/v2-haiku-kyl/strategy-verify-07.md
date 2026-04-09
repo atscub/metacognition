@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Edge case analysis — input robustness testing",
+  "strategy": "Stress-test the core assumption that words are separated by exactly one space. Find inputs where the split(' ) logic breaks down.",
+  "hardest_part": "Distinguishing between true bugs vs. design trade-offs. The function works correctly for 'well-formed' input with single spaces, but real-world text violates that assumption.",
+  "solution": "Two clear failure cases:\n\n1. **Multiple consecutive spaces**: `count_words('hello  world')` returns **3** instead of 2.\n   - `split(' ')` yields `['hello', '', 'world']` (the empty string counts as a list element)\n   - Why: split(' ) only splits on single space; multiple spaces create empty strings\n\n2. **Leading or trailing spaces**: `count_words(' hello world ')` returns **4** instead of 2.\n   - `split(' ')` yields `['', 'hello', 'world', '']`\n   - Why: spaces at the boundaries create empty strings before and after\n\n**Bonus failure**: `count_words('hello\\tworld')` returns **1** instead of 2.\n   - Tabs are not split (only single spaces are), so the tab remains inside what the function treats as one 'word'\n   - Why: the function conflates 'space character' with 'word boundary' instead of normalizing whitespace\n\n**Root cause**: The function assumes single-space-separated input and doesn't normalize whitespace. Real-world text varies in spacing, leading/trailing whitespace, and may use tabs or multiple spaces for formatting."
+}
+```

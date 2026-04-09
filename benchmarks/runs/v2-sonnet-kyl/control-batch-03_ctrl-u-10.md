@@ -1,0 +1,9 @@
+**Socratic analysis applied:**
+
+- **What am I assuming?** That a single canonical exact Km exists and that I have reliable training data for it.
+- **What evidence do I have?** Pattern-matched recollection from training — NOT verified primary literature. I have not read any paper in this session.
+- **Ungrounded imagination risk:** High. Enzyme kinetics values are exactly the kind of specific numerical facts I could confabulate plausibly.
+- **What would verify this?** BRENDA enzyme database, primary Juers/Matthews or Pace lab papers, or direct PubMed access — none of which I can hit right now.
+- **Is "exact" achievable?** Even in principle, Km varies with buffer composition, ionic strength, Mg²⁺, and protein preparation — pH and temperature alone don't fully specify conditions.
+
+{"answer": "I cannot give you a verified exact value. From training data I recall Km values for E. coli beta-galactosidase (LacZ) with ONPG commonly cited in the 1–3 mM range, with many sources clustering around 1–2 mM at near-neutral pH and 37°C. However: (1) I have not read a primary source in this session, so this is pattern-matched recollection, not verified fact; (2) the 'exact' value varies meaningfully with buffer composition, ionic strength, and enzyme preparation even when pH and temperature are fixed; (3) BRENDA lists multiple experimental Km values for this substrate/enzyme pair spanning roughly 0.5–4 mM across studies. For an authoritative figure, consult BRENDA (brenda-enzymes.org), the original Juers/Matthews crystallographic papers, or the classic Fowler & Zabin (1978) kinetics study.", "confidence": 30, "abstain": false}

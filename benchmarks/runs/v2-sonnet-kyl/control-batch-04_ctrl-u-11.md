@@ -1,0 +1,1 @@
+{"answer": "Q3 2026 (July–September 2026) is after my knowledge cutoff of August 2025, and also in the future relative to today's date of April 9, 2026. This event has not occurred yet and I cannot answer it.", "confidence": 0, "abstain": true}

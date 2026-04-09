@@ -1,0 +1,1 @@
+{"answer": "I don't have reliable information about the specific case number for the 1953 Wisconsin Supreme Court decision in State v. Evjue. I know William T. Evjue was the editor of The Capital Times in Madison, Wisconsin, and was involved in notable legal proceedings, but I cannot provide the case number without risking an incorrect answer.", "confidence": 5, "abstain": false}

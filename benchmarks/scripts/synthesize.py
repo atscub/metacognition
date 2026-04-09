@@ -38,9 +38,9 @@ DIMENSION_REGISTRY = {
     "knowledge": {
         "name": "Dim 2: Metacognitive Knowledge",
         "short": "Knowledge",
-        "key_metrics": ["Strategy match (exact)", "Strategy match (partial+exact)",
-                        "Difficulty correlation"],
-        "primary_metric": "Strategy match (exact)",
+        "key_metrics": ["Exact match rate (score=2)", "Partial+ match rate (score>=1)",
+                        "Strategy match rate (0-2)"],
+        "primary_metric": "Exact match rate (score=2)",
         "direction": "higher",
     },
     "control": {

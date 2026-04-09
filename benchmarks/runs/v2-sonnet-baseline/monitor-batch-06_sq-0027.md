@@ -1,0 +1,1 @@
+{"answer": "I don't have confident knowledge of the specific Iranian village from which Tilla embroidery originated.", "confidence": 10}

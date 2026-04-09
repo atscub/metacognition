@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-06",
+  "qid": "sq-0030",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: Armsia petasus is endemic to which country?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":4214,\"duration_api_ms\":4162,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"I don't have reliable information about Armsia petasus or which country it is endemic to. This may be a plant or animal species, but I cannot find confident knowledge about it in my training data.\\\", \\\"confidence\\\": 5}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"87d90ef6-e215-484c-a7e8-d5fe16d69c79\",\"total_cost_usd\":0.01398085,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4515,\"cache_read_input_tokens\":68281,\"output_tokens\":300,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4515,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":300,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4515,\"webSearchRequests\":0,\"costUSD\":0.01398085,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"5c2cf544-34be-455e-bb05-f918606489d4\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:08:19.166240+00:00",
+  "duration_seconds": 8.34,
+  "parsed": {
+    "answer": "I don't have reliable information about Armsia petasus or which country it is endemic to. This may be a plant or animal species, but I cannot find confident knowledge about it in my training data.",
+    "confidence": 5
+  },
+  "parse_success": true
+}

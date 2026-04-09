@@ -1,0 +1,50 @@
+{
+  "task_id": "strategy-decomp-09",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the protocol.\nConsider what type of thinking this problem actually requires before jumping\nto a solution.\n\n\nBefore solving this problem, analyze it:\n(a) What type of problem is this?\n(b) What cognitive strategy is most relevant?\n(c) What will the hardest part be?\nThen solve it.\n\nRespond ONLY with JSON:\n{\"problem_type\": \"...\", \"strategy\": \"...\", \"hardest_part\": \"...\", \"solution\": \"...\"}\n\nProblem: A chemical reaction converts reactant A to product B in three steps.\nStep 1: A -> C with 80% yield. Step 2: C -> D with 90% yield, but\nrequires 2 moles of C per mole of D. Step 3: D -> B with 70% yield.\nIf you start with 100 moles of A, how many moles of B do you get?\nAdditionally, unreacted C from Step 2 can be recycled back to Step 2\n(assume one recycle pass with the same 90% yield). How many additional\nmoles of B does the recycle produce?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":32400,\"duration_api_ms\":32108,\"num_turns\":3,\"result\":\"```json\\n{\\n  \\\"problem_type\\\": \\\"Sequential stoichiometric yield calculation with a recycling loop\\\",\\n  \\\"strategy\\\": \\\"Track moles step-by-step, being careful to separate the stoichiometric 2:1 ratio (a hard constraint on how much C is consumed) from the 90% yield (how efficiently the reaction proceeds within that constraint). The two interact to determine leftover C.\\\",\\n  \\\"hardest_part\\\": \\\"Step 2 conflates two things: stoichiometry (2 mol C \u2192 1 mol D) and yield (90% of possible D is actually made). Both affect how much C is consumed. Getting that interaction wrong cascades through everything including the recycle.\\\",\\n  \\\"solution\\\": {\\n    \\\"step_1\\\": {\\n      \\\"input_A\\\": 100,\\n      \\\"yield\\\": 0.80,\\n      \\\"C_produced\\\": 80\\n    },\\n    \\\"step_2_no_recycle\\\": {\\n      \\\"C_available\\\": 80,\\n      \\\"stoichiometry\\\": \\\"2 mol C per mol D\\\",\\n      \\\"theoretical_max_D\\\": 40,\\n      \\\"yield\\\": 0.90,\\n      \\\"D_produced\\\": 36,\\n      \\\"C_consumed\\\": \\\"36 \u00d7 2 = 72\\\",\\n      \\\"C_unreacted\\\": \\\"80 - 72 = 8\\\"\\n    },\\n    \\\"step_3_no_recycle\\\": {\\n      \\\"D_input\\\": 36,\\n      \\\"yield\\\": 0.70,\\n      \\\"B_produced\\\": 25.2\\n    },\\n    \\\"recycle_pass\\\": {\\n      \\\"C_recycled\\\": 8,\\n      \\\"theoretical_max_D\\\": 4,\\n      \\\"yield\\\": 0.90,\\n      \\\"D_produced\\\": 3.6,\\n      \\\"B_additional\\\": \\\"3.6 \u00d7 0.70 = 2.52\\\"\\n    },\\n    \\\"answers\\\": {\\n      \\\"moles_B_without_recycle\\\": 25.2,\\n      \\\"additional_moles_B_from_recycle\\\": 2.52,\\n      \\\"total_moles_B_with_recycle\\\": 27.72\\n    },\\n    \\\"confidence\\\": \\\"High \u2014 the stoichiometry is explicit in the problem. The key assumption is that '90% yield' means 90% of the theoretical maximum D is obtained, which determines C consumed as 2 \u00d7 D_actual rather than 2 \u00d7 D_theoretical. This is the standard chemical-engineering interpretation.\\\"\\n  }\\n}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"7507bdc9-8b2a-4232-aa61-e09e8b8a98a1\",\"total_cost_usd\":0.08122560000000001,\"usage\":{\"input_tokens\":4,\"cache_creation_input_tokens\":12028,\"cache_read_input_tokens\":32512,\"output_tokens\":1757,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":12028},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":4,\"outputTokens\":1757,\"cacheReadInputTokens\":32512,\"cacheCreationInputTokens\":12028,\"webSearchRequests\":0,\"costUSD\":0.08122560000000001,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"4baf5e40-007d-48a3-b31a-c009c221005d\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T23:00:43.477515+00:00",
+  "duration_seconds": 42.76,
+  "parsed": {
+    "problem_type": "Sequential stoichiometric yield calculation with a recycling loop",
+    "strategy": "Track moles step-by-step, being careful to separate the stoichiometric 2:1 ratio (a hard constraint on how much C is consumed) from the 90% yield (how efficiently the reaction proceeds within that constraint). The two interact to determine leftover C.",
+    "hardest_part": "Step 2 conflates two things: stoichiometry (2 mol C \u2192 1 mol D) and yield (90% of possible D is actually made). Both affect how much C is consumed. Getting that interaction wrong cascades through everything including the recycle.",
+    "solution": {
+      "step_1": {
+        "input_A": 100,
+        "yield": 0.8,
+        "C_produced": 80
+      },
+      "step_2_no_recycle": {
+        "C_available": 80,
+        "stoichiometry": "2 mol C per mol D",
+        "theoretical_max_D": 40,
+        "yield": 0.9,
+        "D_produced": 36,
+        "C_consumed": "36 \u00d7 2 = 72",
+        "C_unreacted": "80 - 72 = 8"
+      },
+      "step_3_no_recycle": {
+        "D_input": 36,
+        "yield": 0.7,
+        "B_produced": 25.2
+      },
+      "recycle_pass": {
+        "C_recycled": 8,
+        "theoretical_max_D": 4,
+        "yield": 0.9,
+        "D_produced": 3.6,
+        "B_additional": "3.6 \u00d7 0.70 = 2.52"
+      },
+      "answers": {
+        "moles_B_without_recycle": 25.2,
+        "additional_moles_B_from_recycle": 2.52,
+        "total_moles_B_with_recycle": 27.72
+      },
+      "confidence": "High \u2014 the stoichiometry is explicit in the problem. The key assumption is that '90% yield' means 90% of the theoretical maximum D is obtained, which determines C consumed as 2 \u00d7 D_actual rather than 2 \u00d7 D_theoretical. This is the standard chemical-engineering interpretation."
+    }
+  },
+  "parse_success": true
+}

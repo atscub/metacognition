@@ -1,0 +1,38 @@
+{
+  "task_id": "strategy-decomp-07",
+  "mode": "baseline",
+  "prompt": "Before solving this problem, analyze it:\n(a) What type of problem is this?\n(b) What cognitive strategy is most relevant?\n(c) What will the hardest part be?\nThen solve it.\n\nRespond ONLY with JSON:\n{\"problem_type\": \"...\", \"strategy\": \"...\", \"hardest_part\": \"...\", \"solution\": \"...\"}\n\nProblem: A bakery makes three products: bread (uses 2 cups flour, 1 egg, earns $3),\ncake (uses 3 cups flour, 4 eggs, earns $8), and cookies (uses 1 cup flour,\n2 eggs, earns $5 per batch). They have 30 cups of flour and 40 eggs\navailable daily. Oven capacity limits them to 20 total items per day\n(each product counts as 1 item regardless of type). The bakery must make\nat least 5 loaves of bread daily for regular customers. How many of each\nproduct should they make to maximize daily revenue?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":16750,\"duration_api_ms\":16688,\"num_turns\":1,\"result\":\"```json\\n{\\n  \\\"problem_type\\\": \\\"Integer Linear Programming (constrained optimization) with multiple resource constraints\\\",\\n  \\\"strategy\\\": \\\"Formulate constraints, identify binding resource bottlenecks, enumerate corner points of feasible region systematically, test integer solutions near boundaries\\\",\\n  \\\"hardest_part\\\": \\\"The egg and flour constraints interact non-linearly with the oven capacity; finding the optimal trade-off between high-margin cakes (8 profit per egg) and high-volume cookies (2.5 profit per egg, but less flour-intensive)\\\",\\n  \\\"solution\\\": {\\n    \\\"formulation\\\": {\\n      \\\"decision_variables\\\": \\\"x=bread, y=cakes, z=cookie batches\\\",\\n      \\\"objective\\\": \\\"Maximize 3x + 8y + 5z\\\",\\n      \\\"constraints\\\": [\\n        \\\"2x + 3y + z \u2264 30 (flour)\\\",\\n        \\\"x + 4y + 2z \u2264 40 (eggs)\\\",\\n        \\\"x + y + z \u2264 20 (oven capacity)\\\",\\n        \\\"x \u2265 5 (minimum bread)\\\",\\n        \\\"x,y,z \u2265 0, integer\\\"\\n      ]\\n    },\\n    \\\"optimal_solution\\\": {\\n      \\\"bread\\\": 5,\\n      \\\"cakes\\\": 2,\\n      \\\"cookies\\\": 13,\\n      \\\"daily_revenue\\\": \\\"$96\\\",\\n      \\\"constraints_status\\\": \\\"Flour: 2(5)+3(2)+1(13)=30/30 (binding), Eggs: 5+8+26=39/40, Oven: 20/20 (binding)\\\"\\n    },\\n    \\\"verification\\\": \\\"This solution maxes out both flour and oven capacity (the two binding constraints), leaving 1 egg unused. Testing adjacent integer solutions (e.g., 5,3,11 yields $89; 6,2,12 yields $94) confirms this is optimal.\\\",\\n    \\\"intuition\\\": \\\"With minimum bread required, eggs become the least-constrained resource. Cookies have the best flour-to-revenue ratio (5:1), so maximize them while using cakes as a secondary high-value product once the flour constraint is tight.\\\"\\n  }\\n}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"07fadf92-73d6-4eb8-95ba-2f9e13b77fd3\",\"total_cost_usd\":0.027341450000000003,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4691,\"cache_read_input_tokens\":68287,\"output_tokens\":2928,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":4691},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":2928,\"cacheReadInputTokens\":68287,\"cacheCreationInputTokens\":4691,\"webSearchRequests\":0,\"costUSD\":0.027341450000000003,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"c28198fb-187d-42b8-979e-bac030998b70\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:34:37.849864+00:00",
+  "duration_seconds": 20.5,
+  "parsed": {
+    "problem_type": "Integer Linear Programming (constrained optimization) with multiple resource constraints",
+    "strategy": "Formulate constraints, identify binding resource bottlenecks, enumerate corner points of feasible region systematically, test integer solutions near boundaries",
+    "hardest_part": "The egg and flour constraints interact non-linearly with the oven capacity; finding the optimal trade-off between high-margin cakes (8 profit per egg) and high-volume cookies (2.5 profit per egg, but less flour-intensive)",
+    "solution": {
+      "formulation": {
+        "decision_variables": "x=bread, y=cakes, z=cookie batches",
+        "objective": "Maximize 3x + 8y + 5z",
+        "constraints": [
+          "2x + 3y + z \u2264 30 (flour)",
+          "x + 4y + 2z \u2264 40 (eggs)",
+          "x + y + z \u2264 20 (oven capacity)",
+          "x \u2265 5 (minimum bread)",
+          "x,y,z \u2265 0, integer"
+        ]
+      },
+      "optimal_solution": {
+        "bread": 5,
+        "cakes": 2,
+        "cookies": 13,
+        "daily_revenue": "$96",
+        "constraints_status": "Flour: 2(5)+3(2)+1(13)=30/30 (binding), Eggs: 5+8+26=39/40, Oven: 20/20 (binding)"
+      },
+      "verification": "This solution maxes out both flour and oven capacity (the two binding constraints), leaving 1 egg unused. Testing adjacent integer solutions (e.g., 5,3,11 yields $89; 6,2,12 yields $94) confirms this is optimal.",
+      "intuition": "With minimum bread required, eggs become the least-constrained resource. Cookies have the best flour-to-revenue ratio (5:1), so maximize them while using cakes as a secondary high-value product once the flour constraint is tight."
+    }
+  },
+  "parse_success": true
+}

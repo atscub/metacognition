@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-03",
+  "qid": "sq-0015",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the confidence\ncalibration step. Pay attention to what you actually know vs. what you're\nguessing. Then answer the question.\n\n\nAnswer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: The Alpine musk deer is the state animal of which Indian state?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":20786,\"duration_api_ms\":20697,\"num_turns\":3,\"result\":\"**Confidence calibration (Socratic protocol applied):**\\n\\n**What I'm assuming:** The Alpine musk deer is a state animal of some Indian state, and I know which one.\\n\\n**Evidence I actually have:**\\n- From memory (not verified this session): Uttarakhand's state animal is the musk deer (Alpine musk deer, *Moschus chrysogaster*)\\n- I know it's found in the Himalayan alpine zones \u2014 consistent with Uttarakhand\\n- I haven't read a primary source on this in this session\\n\\n**Potential for error:**\\n- My knowledge is from training data, not a verified lookup this session\\n- The \\\"Alpine\\\" qualifier is specific \u2014 I'm slightly less certain about that exact species designation vs. just \\\"musk deer\\\"\\n- I could be pattern-matching Himalayan state \u2192 Uttarakhand without being precise\\n\\n**Conclusion:** Medium confidence. I believe this is Uttarakhand, but I'm reasoning from memory, not a verified source.\\n\\n```json\\n{\\\"answer\\\": \\\"Uttarakhand\\\", \\\"confidence\\\": 75}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"f83ccab1-10ba-4cc5-95a7-69b447a521b9\",\"total_cost_usd\":0.0706398,\"usage\":{\"input_tokens\":5,\"cache_creation_input_tokens\":12314,\"cache_read_input_tokens\":32541,\"output_tokens\":979,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":12314,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":5,\"outputTokens\":979,\"cacheReadInputTokens\":32541,\"cacheCreationInputTokens\":12314,\"webSearchRequests\":0,\"costUSD\":0.0706398,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"47b5c9b5-39f5-4863-8774-ede4ce5fd57b\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-09T07:55:49.903768+00:00",
+  "duration_seconds": 29.99,
+  "parsed": {
+    "answer": "Uttarakhand",
+    "confidence": 75
+  },
+  "parse_success": true
+}

@@ -1,0 +1,3 @@
+```json
+{"answer": "Bargh's 1996 'Florida effect' study (where participants primed with elderly-stereotype words like 'bingo,' 'Florida,' and 'wrinkled' subsequently walked more slowly) is most commonly cited as demonstrating the ideomotor principle (perception-behavior link): that merely thinking about a concept automatically activates associated behaviors. It is often described as evidence for 'behavioral priming.' However, it is worth noting the study has faced significant replication failures (notably Doyen et al., 2012), so the claim that it 'conclusively established' any law is contested.", "confidence": 55}
+```

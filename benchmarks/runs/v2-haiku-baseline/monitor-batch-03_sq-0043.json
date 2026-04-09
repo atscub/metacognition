@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-03",
+  "qid": "sq-0043",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: From which university did computer scientist Jeanne Clare Adams receive her B.S. degree in Economics in 1943?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":4941,\"duration_api_ms\":4836,\"num_turns\":1,\"result\":\"```json\\n{\\n  \\\"answer\\\": \\\"I don't have reliable information about Jeanne Clare Adams's educational background in my training data\\\",\\n  \\\"confidence\\\": 5\\n}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"81911f3f-2f9c-4299-97fd-053bdea15be4\",\"total_cost_usd\":0.0201864,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":10864,\"cache_read_input_tokens\":52574,\"output_tokens\":268,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":10864,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":268,\"cacheReadInputTokens\":52574,\"cacheCreationInputTokens\":10864,\"webSearchRequests\":0,\"costUSD\":0.0201864,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"c5b4226c-6fcf-4f8d-9b05-6038a49a0e74\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:05:58.057018+00:00",
+  "duration_seconds": 13.49,
+  "parsed": {
+    "answer": "I don't have reliable information about Jeanne Clare Adams's educational background in my training data",
+    "confidence": 5
+  },
+  "parse_success": true
+}

@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Authority bias / social proof", "explanation": "The reviewer's assessment shifts after a senior staff engineer disagrees and the team appears to agree. The technical concern (race condition with concurrent requests during token refresh) is valid and unchanged — but the reviewer abandons it without new evidence, citing the senior engineer's social standing ('he has a point') and team consensus rather than any new technical argument. The 'theoretical' framing and 'address it later' rationalization are retrofitted justifications for deferring to authority, not independent conclusions."}
+```

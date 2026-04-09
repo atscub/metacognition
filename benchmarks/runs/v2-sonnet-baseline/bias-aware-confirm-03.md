@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Confirmation Bias", "explanation": "The reasoner has been advocating for microservices since last year, and selectively weighs evidence to support that pre-existing position. Pro-microservices evidence (Netflix/Amazon/Uber, deployment frequency, senior engineer preferences) is treated as directly applicable, while counter-evidence (Segment's migration back to monolith, Google's monolith usage) is dismissed as 'special cases with different constraints' — without examining whether those constraints actually differ from their own situation. The asymmetric scrutiny applied to confirming vs. disconfirming evidence is the hallmark of confirmation bias."}
+```

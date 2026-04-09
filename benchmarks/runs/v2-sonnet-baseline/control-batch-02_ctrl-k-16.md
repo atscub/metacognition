@@ -1,0 +1,1 @@
+{"answer": "Egypt", "confidence": 99, "abstain": false}

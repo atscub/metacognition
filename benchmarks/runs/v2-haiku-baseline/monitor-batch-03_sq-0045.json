@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-03",
+  "qid": "sq-0045",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: Who are the five judges of the Supreme Court who restored the awards and delivered a judgment that the \"Bharat Ratna and Padma awards are not titles under Article 18 of the Constitution of India?\"\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":6616,\"duration_api_ms\":6565,\"num_turns\":1,\"result\":\"```json\\n{\\n  \\\"answer\\\": \\\"I don't have reliable information about the specific five judges who delivered this judgment. While there has been litigation in the Indian Supreme Court regarding whether Bharat Ratna and Padma awards constitute 'titles' under Article 18 of the Constitution, I cannot confidently identify the exact bench composition or judge names without access to the specific judgment text or reliable legal sources. To answer this accurately, you would need to consult the Supreme Court of India's official website, legal databases like Manupatra or SCC Online, or the case judgment itself.\\\",\\n  \\\"confidence\\\": 15\\n}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"b6b479b7-eaa6-40a7-8eb5-314e3b8d0132\",\"total_cost_usd\":0.01515335,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4549,\"cache_read_input_tokens\":68281,\"output_tokens\":526,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4549,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":526,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4549,\"webSearchRequests\":0,\"costUSD\":0.01515335,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"1b818cd8-b879-4971-b873-23886207fd40\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:06:42.040473+00:00",
+  "duration_seconds": 11.68,
+  "parsed": {
+    "answer": "I don't have reliable information about the specific five judges who delivered this judgment. While there has been litigation in the Indian Supreme Court regarding whether Bharat Ratna and Padma awards constitute 'titles' under Article 18 of the Constitution, I cannot confidently identify the exact bench composition or judge names without access to the specific judgment text or reliable legal sources. To answer this accurately, you would need to consult the Supreme Court of India's official website, legal databases like Manupatra or SCC Online, or the case judgment itself.",
+    "confidence": 15
+  },
+  "parse_success": true
+}

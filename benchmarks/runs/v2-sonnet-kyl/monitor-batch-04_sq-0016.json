@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-04",
+  "qid": "sq-0016",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the confidence\ncalibration step. Pay attention to what you actually know vs. what you're\nguessing. Then answer the question.\n\n\nAnswer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: On which date, month, and year was the \"King Shaka International Airport\" name approved by the South African Geographical Names Council?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":30152,\"duration_api_ms\":30114,\"num_turns\":3,\"result\":\"{\\\"answer\\\": \\\"I do not know the specific date, month, and year the South African Geographical Names Council approved the name 'King Shaka International Airport'. I know the airport opened on 1 May 2010 for the FIFA World Cup in KwaZulu-Natal, South Africa, replacing the old Durban International Airport, but the specific SAGNC approval date is not something I can reliably state from training data without risking an ungrounded answer.\\\", \\\"confidence\\\": 5}\",\"stop_reason\":\"end_turn\",\"session_id\":\"b7275ddc-2cbb-408f-ad09-3f2a9a32e985\",\"total_cost_usd\":0.0825078,\"usage\":{\"input_tokens\":4,\"cache_creation_input_tokens\":13516,\"cache_read_input_tokens\":33386,\"output_tokens\":1453,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":13516,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":4,\"outputTokens\":1453,\"cacheReadInputTokens\":33386,\"cacheCreationInputTokens\":13516,\"webSearchRequests\":0,\"costUSD\":0.0825078,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"48f9787c-aea5-4bf9-9fd7-622c9760df91\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-09T08:00:41.795768+00:00",
+  "duration_seconds": 33.72,
+  "parsed": {
+    "answer": "I do not know the specific date, month, and year the South African Geographical Names Council approved the name 'King Shaka International Airport'. I know the airport opened on 1 May 2010 for the FIFA World Cup in KwaZulu-Natal, South Africa, replacing the old Durban International Airport, but the specific SAGNC approval date is not something I can reliably state from training data without risking an ungrounded answer.",
+    "confidence": 5
+  },
+  "parse_success": true
+}

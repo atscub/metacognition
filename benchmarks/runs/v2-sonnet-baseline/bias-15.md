@@ -1,0 +1,1 @@
+The wasted hour is on me. The fix going forward: if I haven't seen the thing that would confirm the diagnosis, I say "hypothesis" not "answer."

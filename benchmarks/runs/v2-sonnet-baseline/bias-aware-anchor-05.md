@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Anchoring Bias (combined with Planning Fallacy)", "explanation": "The reasoner anchors on the original 18-month commitment made to the board and uses it as a ceiling constraint, even after receiving credible new evidence (undocumented data formats, no API, lost lead architect) that the team's revised 28-month estimate is warranted. Rather than updating the timeline to reflect reality, they reverse-engineer a 24-month figure to stay close to the original anchor, then plan to 'compress the work' to fit — a rationalization driven by the anchor, not by the technical evidence."}
+```

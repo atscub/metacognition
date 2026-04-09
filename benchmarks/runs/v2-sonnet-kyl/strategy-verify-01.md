@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Mathematical reasoning / percentage arithmetic — deterministic, not ambiguous. The question has one correct answer derivable from arithmetic alone.",
+  "strategy": "Concrete instantiation over abstract reasoning. Assign a specific starting value ($100), apply each discount sequentially, compute the result. This bypasses the temptation to reason symbolically and catch the student's error by seeing it happen numerically. Socratic check: steelman the student's answer first — is there any interpretation where 35% is correct? Yes: if both discounts applied to the *original* price simultaneously. But the problem explicitly says '15% off the reduced price,' which rules that out.",
+  "hardest_part": "Resisting anchoring on the student's confident '35%' framing. The real trap is the intuitive but wrong model: 'two discounts → just add them.' The correct model is multiplicative: each percentage reduces what's left, so they compound downward.",
+  "solution": "The student is WRONG. Sequential discounts are multiplicative, not additive. Proof: Start at $100. After 20% off → $100 × 0.80 = $80. After 15% off the reduced price → $80 × 0.85 = $68. Total paid: $68. Total discount: ($100 − $68) / $100 = 32%. General formula: 1 − (1 − 0.20)(1 − 0.15) = 1 − (0.80 × 0.85) = 1 − 0.68 = 0.32 = 32%. The student's error: treating percentage discounts as additive. The second 15% applies to $80, not $100 — so it saves only $12, not $15. The 'missing' 3% is exactly (0.20 × 0.15) = 0.03 — the overlap term that additive reasoning ignores. Actual total discount: 32%, not 35%."
+}
+```

@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Confirmation Bias", "explanation": "The reasoner selects only evidence that supports their pre-existing belief ('I've always believed that remote work improves productivity'), citing favorable studies and internal metrics while dismissing contradictory evidence (collaboration challenges) as 'overstated' without engaging with it. No disconfirming data is examined or weighed."}
+```

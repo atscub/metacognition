@@ -1,0 +1,1 @@
+{"answer": "This question is unanswerable because there is no Martian national football team — Mars has no human inhabitants and therefore no national sports team.", "confidence": 99, "abstain": false}

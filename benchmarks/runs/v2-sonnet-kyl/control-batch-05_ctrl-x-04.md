@@ -1,0 +1,1 @@
+{"answer": "The question has no referent — 'it' refers to nothing in context, and no comparison is specified. This is unanswerable without knowing what 'it' is and what it's being compared to.", "confidence": 0, "abstain": true}

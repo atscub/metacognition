@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-02",
+  "qid": "sq-0008",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: What is the name of the district with the Regional Transport Office (RTO) code SK-07 in Sikkim, India?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":5748,\"duration_api_ms\":5696,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"I don't have reliable information about which Sikkim district corresponds to RTO code SK-07. While I know Sikkim has 4 districts (North, East, South, and West Sikkim), I cannot confidently match the specific RTO code SK-07 to any particular district.\\\", \\\"confidence\\\": 15}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"91c6dad9-6ec2-4ba0-8aa9-02b1c353ff54\",\"total_cost_usd\":0.09216649999999998,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":72406,\"cache_read_input_tokens\":0,\"output_tokens\":330,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":72406,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":330,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":72406,\"webSearchRequests\":0,\"costUSD\":0.09216649999999998,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"2fe1c464-3d2b-45d3-83c0-ec5fe74095be\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:03:55.868419+00:00",
+  "duration_seconds": 10.52,
+  "parsed": {
+    "answer": "I don't have reliable information about which Sikkim district corresponds to RTO code SK-07. While I know Sikkim has 4 districts (North, East, South, and West Sikkim), I cannot confidently match the specific RTO code SK-07 to any particular district.",
+    "confidence": 15
+  },
+  "parse_success": true
+}

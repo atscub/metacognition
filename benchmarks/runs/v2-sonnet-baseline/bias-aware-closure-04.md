@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Halo Effect / Confirmation Bias", "explanation": "The reasoning elevates prestigious credentials (Stanford, Google) and strong technical scores to override legitimate red flags in the behavioral interview. The phrase 'That's exactly the profile we're looking for' signals the decision was effectively made at the credential-screening stage, and the behavioral concerns are then minimized ('a bit mixed') rather than weighed seriously. The urgency of filling a three-month-open role further anchors the conclusion, making the reasoning function as post-hoc justification for a pre-formed hire recommendation rather than balanced evaluation."}
+```

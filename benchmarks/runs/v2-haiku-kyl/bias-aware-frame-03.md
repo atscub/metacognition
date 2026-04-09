@@ -1,0 +1,9 @@
+```json
+{
+  "has_bias": true,
+  "bias_name": "confirmation bias (primary); premature closure (secondary)",
+  "explanation": "The reasoner has formed a conclusion (discontinue the program) and interprets data selectively to support it. Key failures: (1) Treats 70% no-improvement as definitive without asking 'compared to what baseline?' — most health interventions show modest effect sizes; doesn't investigate whether 30% improvement is actually above or below expected population baseline. (2) Dismisses HR director's 30% framing as somehow less 'honest' without examining whether either metric is calculated correctly or what methodological choices underlie it. (3) Stops investigating after finding one negative data point — doesn't ask: Are there indirect benefits (retention, morale, preventive care downstream)? What's the failure rate of the *proposed alternative* (direct subsidies)? Is the 12-month measurement window the right timeframe? (4) Frames the decision as binary (continue/discontinue) without considering intermediate actions (redesign, piloting modifications, comparing cost-per-success against alternatives). The reasoning performs as if it has already decided, using data to confirm rather than to investigate."
+}
+```
+
+**Key insight for this reasoner**: You're not being "honest about the numbers" — you're selecting which numbers to emphasize. 70% and 30% describe the same data. The hard question isn't "which framing is more honest," it's "honest compared to what?" That requires external reference: baseline improvement rates in the general population, cost-effectiveness of alternatives, and non-health metrics (morale, retention). You won't find that answer in the wellness program data alone.

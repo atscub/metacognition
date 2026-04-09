@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-01",
+  "qid": "sq-0031",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: Give the abbreviated name of the launch vehicle, along with its mission or flight number, used for carrying the EOS-02 satellite launched from the Satish Dhawan Space Centre in India in 2022.\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":6011,\"duration_api_ms\":5759,\"num_turns\":1,\"result\":\"{\\\"answer\\\": \\\"SSLV-D1 (Small Satellite Launch Vehicle, first developmental flight)\\\", \\\"confidence\\\": 85}\",\"stop_reason\":\"end_turn\",\"session_id\":\"9dec4307-35bf-4a67-975e-4a58c796be48\",\"total_cost_usd\":0.0421881,\"usage\":{\"input_tokens\":2,\"cache_creation_input_tokens\":9714,\"cache_read_input_tokens\":11182,\"output_tokens\":160,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":9714,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":2,\"outputTokens\":160,\"cacheReadInputTokens\":11182,\"cacheCreationInputTokens\":9714,\"webSearchRequests\":0,\"costUSD\":0.0421881,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"c3ac7b5c-d8af-480c-9931-f7326da150fb\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:03:14.095569+00:00",
+  "duration_seconds": 15.12,
+  "parsed": {
+    "answer": "SSLV-D1 (Small Satellite Launch Vehicle, first developmental flight)",
+    "confidence": 85
+  },
+  "parse_success": true
+}

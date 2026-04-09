@@ -1,0 +1,3 @@
+```json
+{"has_bias": false, "bias_name": "none", "explanation": "The reasoner explicitly resists authority bias by acknowledging the VP's endorsement but refusing to let it override technical judgment. They return to first principles, cite external evidence (Stripe, GitHub guidelines), and keep the door open for substantive counter-arguments while rejecting social pressure as a reason to change position. This is a textbook example of bias-resistant reasoning."}
+```

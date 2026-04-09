@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Anchoring bias", "explanation": "The physician anchors on the original pain score of 8/10 from three months ago, which distorts their interpretation of the current state. The patient now reports a 5 'on a good day', is ambulatory, has full range of motion, and reports physical therapy has helped considerably — all objective and subjective indicators of meaningful improvement. Yet the physician documents 'moderate-to-severe' and continues the same regimen, framing a 5 as 'still clearly in significant discomfort' because the starting anchor of 8 makes 5 seem high. Without that anchor, a clinician might treat a mobile patient with full ROM and self-reported improvement quite differently."}
+```

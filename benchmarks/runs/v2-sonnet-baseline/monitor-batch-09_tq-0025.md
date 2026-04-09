@@ -1,0 +1,1 @@
+{"answer": "No, cage-free does not require outdoor access. Cage-free means hens are not kept in cages and can move around inside a building, but they are not required to have access to the outdoors. 'Free-range' is the label that requires some outdoor access (though requirements vary by country and certifier).", "confidence": 92}

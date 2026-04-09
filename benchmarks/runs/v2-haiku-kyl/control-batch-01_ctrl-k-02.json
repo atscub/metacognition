@@ -1,0 +1,17 @@
+{
+  "task_id": "control-batch-01",
+  "qid": "ctrl-k-02",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the protocol.\nAsk yourself: what would I need to verify to be confident in this answer?\nIf you can't verify it, consider abstaining.\n\n\nAnswer the following question. If you genuinely don't know the answer or\nthe question is unanswerable, say so rather than guessing.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer or explanation of why you can't answer\", \"confidence\": 0-100, \"abstain\": false}\nSet \"abstain\" to true if you are choosing not to answer.\n\nQuestion: Who wrote the play Romeo and Juliet?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":8588,\"duration_api_ms\":8488,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"William Shakespeare wrote the play Romeo and Juliet. It was written early in his career, likely between 1594-1596, and is one of his most famous tragedies, exploring themes of love, fate, and family conflict.\\\", \\\"confidence\\\": 99, \\\"abstain\\\": false}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"9deda48f-ae45-43db-a21b-cbf0b1de53e6\",\"total_cost_usd\":0.0150904,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":5084,\"cache_read_input_tokens\":55214,\"output_tokens\":641,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":5084,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":641,\"cacheReadInputTokens\":55214,\"cacheCreationInputTokens\":5084,\"webSearchRequests\":0,\"costUSD\":0.0150904,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"e69f5676-aeb2-4fb9-8a91-c7d3498a241c\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:28:58.815998+00:00",
+  "duration_seconds": 17.8,
+  "parsed": {
+    "answer": "William Shakespeare wrote the play Romeo and Juliet. It was written early in his career, likely between 1594-1596, and is one of his most famous tragedies, exploring themes of love, fate, and family conflict.",
+    "confidence": 99,
+    "abstain": false
+  },
+  "parse_success": true
+}

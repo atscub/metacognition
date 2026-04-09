@@ -1,0 +1,3 @@
+```json
+{"has_bias": false, "bias_name": "none", "explanation": "The reasoning is methodologically sound. The negotiator explicitly recognizes and rejects anchoring to the recruiter's opening number, grounds their counter in external market data from multiple sources, adjusts upward based on verifiable differentiators (experience, certification rarity), and has a credible BATNA. This is rational, evidence-based negotiation reasoning with active debiasing rather than cognitive bias."}
+```

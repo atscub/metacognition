@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-02",
+  "qid": "sq-0039",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: Who wrote the paper 'Multidimensional Scaling and Other Techniques for Uncovering Universals'?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":25029,\"duration_api_ms\":23748,\"num_turns\":2,\"result\":\"```json\\n{\\\"answer\\\": \\\"William Croft and Keith Poole\\\", \\\"confidence\\\": 62}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"53279395-661b-49b0-8f56-fcfd3ac56ae5\",\"total_cost_usd\":0.10789005,\"usage\":{\"input_tokens\":3,\"cache_creation_input_tokens\":10843,\"cache_read_input_tokens\":32685,\"output_tokens\":523,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":10843,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":8,\"outputTokens\":906,\"cacheReadInputTokens\":61416,\"cacheCreationInputTokens\":20227,\"webSearchRequests\":0,\"costUSD\":0.10789005,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"5f8375da-934a-42cd-8186-1dae8fb1f066\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:04:46.106997+00:00",
+  "duration_seconds": 30.73,
+  "parsed": {
+    "answer": "William Croft and Keith Poole",
+    "confidence": 62
+  },
+  "parse_success": true
+}

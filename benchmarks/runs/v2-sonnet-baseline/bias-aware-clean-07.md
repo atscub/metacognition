@@ -1,0 +1,3 @@
+```json
+{"has_bias": false, "bias_name": "none", "explanation": "The reasoning correctly applies Bayesian probability by accounting for base rates when interpreting test performance. It avoids base rate neglect (a common bias), properly calculates PPV from sensitivity, specificity, and prevalence, and draws a calibrated recommendation that matches the statistical reality. The logic is sound and shows no identifiable cognitive bias."}
+```

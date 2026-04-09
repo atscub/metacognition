@@ -1,0 +1,3 @@
+```json
+{"has_bias": false, "bias_name": "none", "explanation": "The reasoner explicitly guards against post hoc ergo propter hoc (assuming the config change caused the outage because it preceded it), acknowledges the rollback recovery is ambiguous evidence, and keeps multiple causal hypotheses open in parallel. The reasoning is methodologically sound — it uses timeline data as a signal to investigate rather than as proof of causation."}
+```

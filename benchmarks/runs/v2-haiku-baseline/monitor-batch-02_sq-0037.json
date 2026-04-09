@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-02",
+  "qid": "sq-0037",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: When Donjuan Triumphant began his career as a breeding stallion in 2020, his stud fee was set at how many Euros?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":4848,\"duration_api_ms\":4793,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"I don't have reliable information about Donjuan Triumphant's stud fee in 2020\\\", \\\"confidence\\\": 5}\\n```\\n\\nI don't have specific data about this horse's stud fee in my training data. This is a very specific factual claim about a particular breeding stallion that would require access to historical records from equestrian/breeding registries or news sources from 2020.\",\"stop_reason\":\"end_turn\",\"session_id\":\"09444563-faf3-4983-a1b9-2bfd7dc06cd4\",\"total_cost_usd\":0.02153485,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":10873,\"cache_read_input_tokens\":61946,\"output_tokens\":348,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":10873,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":348,\"cacheReadInputTokens\":61946,\"cacheCreationInputTokens\":10873,\"webSearchRequests\":0,\"costUSD\":0.02153485,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"acdbb1e7-f1b1-49d3-9e38-60a21e4c4471\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:03:45.344010+00:00",
+  "duration_seconds": 13.37,
+  "parsed": {
+    "answer": "I don't have reliable information about Donjuan Triumphant's stud fee in 2020",
+    "confidence": 5
+  },
+  "parse_success": true
+}

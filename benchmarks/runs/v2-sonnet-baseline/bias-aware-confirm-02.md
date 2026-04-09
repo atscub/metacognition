@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Confirmation bias", "explanation": "The reasoner selectively highlights studies supporting glucosamine efficacy (Reginster 2001, GUIDE 2007, smaller European studies) while dismissing the GAIT trial — the largest and most rigorous RCT, which showed no significant benefit — by invoking vague methodological criticism ('questioned by some researchers'). The GAIT trial's large sample size makes it more statistically reliable, not less, yet it receives less epistemic weight precisely because it contradicts the preferred conclusion. This pattern of selectively weighting evidence to confirm a pre-existing inclination is textbook confirmation bias."}
+```

@@ -1,0 +1,1 @@
+{"answer": "The sun has never risen in the west. Earth rotates west-to-east, causing the sun to always rise in the east and set in the west. This is a physical impossibility that has no answer.", "confidence": 99, "abstain": false}

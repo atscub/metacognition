@@ -1,0 +1,3 @@
+```json
+{"answer": "This refers to the Falkland Islands (called Islas Malvinas by Argentina), a British Overseas Territory located in the South Atlantic Ocean east of Argentina. Argentina claims sovereignty over these islands as part of its territory, but they have been under British control since 1833. The islands are not literally 'in England' geographically, but Argentina considers them rightfully Argentine territory that is currently controlled by Britain. This territorial dispute stems from 19th-century colonization and remains unresolved.", "confidence": 82}
+```

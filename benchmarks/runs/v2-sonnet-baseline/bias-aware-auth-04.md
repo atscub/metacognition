@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Authority Bias (Halo Effect)", "explanation": "The reasoner transfers the athlete's credibility in one domain (elite physical performance) to an unrelated domain (pediatric nutrition science). The athlete's 'incredible track record' is irrelevant to the validity of her nutritional claims, yet it is treated as sufficient grounds to override established AHA guidelines backed by systematic research. This is a combination of authority bias (deferring to a perceived authority figure) and halo effect (one positive attribute — athletic success — inflating perceived competence in nutrition)."}
+```

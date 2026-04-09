@@ -1,0 +1,1 @@
+{"answer": "I do not know the names of Sir William Beechey's parents with any confidence. This is highly specific biographical detail about an 18th-century portraitist that I cannot recall from training data without risk of fabricating plausible-sounding names.", "confidence": 5}

@@ -1,0 +1,47 @@
+{
+  "task_id": "strategy-decomp-03",
+  "mode": "baseline",
+  "prompt": "Before solving this problem, analyze it:\n(a) What type of problem is this?\n(b) What cognitive strategy is most relevant?\n(c) What will the hardest part be?\nThen solve it.\n\nRespond ONLY with JSON:\n{\"problem_type\": \"...\", \"strategy\": \"...\", \"hardest_part\": \"...\", \"solution\": \"...\"}\n\nProblem: You have $10,000 to invest across three options: a savings account yielding\n2% annual interest compounded monthly, a bond fund yielding 5% annually\ncompounded quarterly, and a stock index fund with an expected return of 8%\nannually compounded annually. You need at least $2,000 liquid (savings\naccount) at all times. You want to maximize expected return after 3 years\nwhile keeping at least 30% of total investment in bonds or savings combined.\nWhat is the optimal allocation and the expected total after 3 years?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":11530,\"duration_api_ms\":11481,\"num_turns\":1,\"result\":\"```json\\n{\\n  \\\"problem_type\\\": \\\"Constrained portfolio optimization with compound interest at multiple compounding frequencies\\\",\\n  \\\"strategy\\\": \\\"Identify binding constraints, then allocate remaining capital to highest-return asset. Use compound interest formulas for each frequency, then apply linear programming logic.\\\",\\n  \\\"hardest_part\\\": \\\"Correctly computing 3-year growth factors for three different compounding schedules, then recognizing which constraints are binding (active at optimum).\\\",\\n  \\\"solution\\\": {\\n    \\\"approach\\\": \\\"Since stock fund has highest 3-year return (25.97%), minimize allocations to lower-return assets while respecting constraints.\\\",\\n    \\\"calculations\\\": {\\n      \\\"growth_factors_over_3_years\\\": {\\n        \\\"savings_2_percent_monthly\\\": \\\"(1 + 0.02/12)^36 = 1.06184\\\",\\n        \\\"bonds_5_percent_quarterly\\\": \\\"(1 + 0.05/4)^12 = 1.15965\\\",\\n        \\\"stocks_8_percent_annual\\\": \\\"(1.08)^3 = 1.25971\\\"\\n      },\\n      \\\"binding_constraints\\\": [\\n        \\\"S \u2265 2,000 (liquidity) \u2192 set S = 2,000\\\",\\n        \\\"B + S \u2265 3,000 (30% minimum) \u2192 with S = 2,000, need B \u2265 1,000\\\"\\n      ],\\n      \\\"optimal_allocation\\\": {\\n        \\\"savings_S\\\": 2000,\\n        \\\"bonds_B\\\": 1000,\\n        \\\"stocks_K\\\": 7000,\\n        \\\"verification\\\": \\\"2000 + 1000 + 7000 = 10000 \u2713; B+S = 3000 \u2713\\\"\\n      },\\n      \\\"final_values_after_3_years\\\": {\\n        \\\"savings\\\": \\\"2000 \u00d7 1.06184 = 2,123.68\\\",\\n        \\\"bonds\\\": \\\"1000 \u00d7 1.15965 = 1,159.65\\\",\\n        \\\"stocks\\\": \\\"7000 \u00d7 1.25971 = 8,817.97\\\",\\n        \\\"total\\\": \\\"12,101.30\\\"\\n      }\\n    },\\n    \\\"answer\\\": {\\n      \\\"allocation\\\": \\\"$2,000 savings / $1,000 bonds / $7,000 stocks\\\",\\n      \\\"expected_total_after_3_years\\\": \\\"$12,101.30\\\",\\n      \\\"total_gain\\\": \\\"$2,101.30 (21.01% return)\\\"\\n    }\\n  }\\n}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"2ec44db3-76f6-46cc-88fa-7566207fa542\",\"total_cost_usd\":0.0206752,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4666,\"cache_read_input_tokens\":68287,\"output_tokens\":1601,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":4666},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":1601,\"cacheReadInputTokens\":68287,\"cacheCreationInputTokens\":4666,\"webSearchRequests\":0,\"costUSD\":0.0206752,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"8406f99d-6bfc-4137-bec9-6f3e8c4dc8bf\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:33:33.170161+00:00",
+  "duration_seconds": 14.59,
+  "parsed": {
+    "problem_type": "Constrained portfolio optimization with compound interest at multiple compounding frequencies",
+    "strategy": "Identify binding constraints, then allocate remaining capital to highest-return asset. Use compound interest formulas for each frequency, then apply linear programming logic.",
+    "hardest_part": "Correctly computing 3-year growth factors for three different compounding schedules, then recognizing which constraints are binding (active at optimum).",
+    "solution": {
+      "approach": "Since stock fund has highest 3-year return (25.97%), minimize allocations to lower-return assets while respecting constraints.",
+      "calculations": {
+        "growth_factors_over_3_years": {
+          "savings_2_percent_monthly": "(1 + 0.02/12)^36 = 1.06184",
+          "bonds_5_percent_quarterly": "(1 + 0.05/4)^12 = 1.15965",
+          "stocks_8_percent_annual": "(1.08)^3 = 1.25971"
+        },
+        "binding_constraints": [
+          "S \u2265 2,000 (liquidity) \u2192 set S = 2,000",
+          "B + S \u2265 3,000 (30% minimum) \u2192 with S = 2,000, need B \u2265 1,000"
+        ],
+        "optimal_allocation": {
+          "savings_S": 2000,
+          "bonds_B": 1000,
+          "stocks_K": 7000,
+          "verification": "2000 + 1000 + 7000 = 10000 \u2713; B+S = 3000 \u2713"
+        },
+        "final_values_after_3_years": {
+          "savings": "2000 \u00d7 1.06184 = 2,123.68",
+          "bonds": "1000 \u00d7 1.15965 = 1,159.65",
+          "stocks": "7000 \u00d7 1.25971 = 8,817.97",
+          "total": "12,101.30"
+        }
+      },
+      "answer": {
+        "allocation": "$2,000 savings / $1,000 bonds / $7,000 stocks",
+        "expected_total_after_3_years": "$12,101.30",
+        "total_gain": "$2,101.30 (21.01% return)"
+      }
+    }
+  },
+  "parse_success": true
+}

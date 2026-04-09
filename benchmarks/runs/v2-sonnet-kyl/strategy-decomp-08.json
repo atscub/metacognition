@@ -1,0 +1,48 @@
+{
+  "task_id": "strategy-decomp-08",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the protocol.\nConsider what type of thinking this problem actually requires before jumping\nto a solution.\n\n\nBefore solving this problem, analyze it:\n(a) What type of problem is this?\n(b) What cognitive strategy is most relevant?\n(c) What will the hardest part be?\nThen solve it.\n\nRespond ONLY with JSON:\n{\"problem_type\": \"...\", \"strategy\": \"...\", \"hardest_part\": \"...\", \"solution\": \"...\"}\n\nProblem: Three friends are planning a road trip across 4 cities. Gas costs $3.50/gallon\nand the car gets 30 mpg. Distances: City 1 to City 2: 180 miles, City 2 to\nCity 3: 240 miles, City 3 to City 4: 150 miles. Hotels cost $120/night in\nCity 2, $90/night in City 3. They drive maximum 5 hours/day at 60 mph\naverage. Food costs $45/person/day. The trip budget is $1,500 total. They\nwant to spend at least 1 night in each intermediate city but could spend\nmore. What is the maximum number of total nights they can afford on the\ntrip, and how should they allocate nights between cities to stay within\nbudget while covering all distances?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":71244,\"duration_api_ms\":70977,\"num_turns\":3,\"result\":\"```json\\n{\\n  \\\"problem_type\\\": \\\"Multi-constraint arithmetic optimization \u2014 fixed costs + per-night variable costs, maximize integer nights subject to budget\\\",\\n  \\\"strategy\\\": \\\"Decompose into fixed vs. variable costs; identify cost-per-night by city; maximize total nights by preferring cheaper city while meeting minimum-stay constraints\\\",\\n  \\\"hardest_part\\\": \\\"Correctly counting total food days \u2014 driving days ARE food days, so the formula is (hotel nights + 1 final driving day to City 4), not (hotel nights + 3 separate driving days)\\\",\\n  \\\"solution\\\": {\\n    \\\"key_assumptions\\\": [\\n      \\\"3 people total\\\",\\n      \\\"Food applies every day including driving days\\\",\\n      \\\"Each leg fits in 1 driving day: 180/240/150 miles all < 300-mile daily max\\\",\\n      \\\"No hotel at City 1 (start) or City 4 (end)\\\",\\n      \\\"Total trip days = n2 + n3 + 1 (the +1 is the final drive to City 4)\\\"\\n    ],\\n    \\\"fixed_costs\\\": {\\n      \\\"gas\\\": \\\"570 miles / 30 mpg \u00d7 $3.50 = $66.50\\\",\\n      \\\"base_food_day\\\": \\\"$45 \u00d7 3 = $135/day\\\"\\n    },\\n    \\\"cost_formula\\\": \\\"Total = $66.50 + $135\u00d7(n2 + n3 + 1) + $120\u00d7n2 + $90\u00d7n3 = $201.50 + $255\u00d7n2 + $225\u00d7n3\\\",\\n    \\\"optimization\\\": {\\n      \\\"constraint\\\": \\\"255\u00d7n2 + 225\u00d7n3 \u2264 1298.50\\\",\\n      \\\"note\\\": \\\"City 3 costs $225/night all-in vs $255 for City 2 \u2014 maximize City 3 nights\\\",\\n      \\\"with_n2_eq_1\\\": \\\"225\u00d7n3 \u2264 1043.50 \u2192 n3 \u2264 4.64 \u2192 n3 = 4\\\",\\n      \\\"can_we_get_6_nights\\\": \\\"No \u2014 cheapest 6-night option (n2=1, n3=5) costs $1,581.50 > $1,500\\\"\\n    },\\n    \\\"answer\\\": {\\n      \\\"maximum_total_nights\\\": 5,\\n      \\\"optimal_allocation\\\": \\\"1 night in City 2, 4 nights in City 3\\\",\\n      \\\"total_cost_breakdown\\\": {\\n        \\\"gas\\\": \\\"$66.50\\\",\\n        \\\"hotels\\\": \\\"$120\u00d71 + $90\u00d74 = $480\\\",\\n        \\\"food\\\": \\\"$135 \u00d7 6 days = $810\\\",\\n        \\\"total\\\": \\\"$1,356.50\\\"\\n      },\\n      \\\"budget_remaining\\\": \\\"$143.50\\\",\\n      \\\"alternative_valid_split\\\": \\\"2 nights City 2 + 3 nights City 3 also yields 5 nights at $1,386.50\\\"\\n    }\\n  }\\n}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"e57f87ef-0cd1-4af0-aed1-b1a11d64569b\",\"total_cost_usd\":0.13383195,\"usage\":{\"input_tokens\":4,\"cache_creation_input_tokens\":14511,\"cache_read_input_tokens\":33479,\"output_tokens\":4624,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":14511},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":4,\"outputTokens\":4624,\"cacheReadInputTokens\":33479,\"cacheCreationInputTokens\":14511,\"webSearchRequests\":0,\"costUSD\":0.13383195,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"82e67aff-e253-43b4-9e23-6fe4c68d1551\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T23:00:14.749356+00:00",
+  "duration_seconds": 77.29,
+  "parsed": {
+    "problem_type": "Multi-constraint arithmetic optimization \u2014 fixed costs + per-night variable costs, maximize integer nights subject to budget",
+    "strategy": "Decompose into fixed vs. variable costs; identify cost-per-night by city; maximize total nights by preferring cheaper city while meeting minimum-stay constraints",
+    "hardest_part": "Correctly counting total food days \u2014 driving days ARE food days, so the formula is (hotel nights + 1 final driving day to City 4), not (hotel nights + 3 separate driving days)",
+    "solution": {
+      "key_assumptions": [
+        "3 people total",
+        "Food applies every day including driving days",
+        "Each leg fits in 1 driving day: 180/240/150 miles all < 300-mile daily max",
+        "No hotel at City 1 (start) or City 4 (end)",
+        "Total trip days = n2 + n3 + 1 (the +1 is the final drive to City 4)"
+      ],
+      "fixed_costs": {
+        "gas": "570 miles / 30 mpg \u00d7 $3.50 = $66.50",
+        "base_food_day": "$45 \u00d7 3 = $135/day"
+      },
+      "cost_formula": "Total = $66.50 + $135\u00d7(n2 + n3 + 1) + $120\u00d7n2 + $90\u00d7n3 = $201.50 + $255\u00d7n2 + $225\u00d7n3",
+      "optimization": {
+        "constraint": "255\u00d7n2 + 225\u00d7n3 \u2264 1298.50",
+        "note": "City 3 costs $225/night all-in vs $255 for City 2 \u2014 maximize City 3 nights",
+        "with_n2_eq_1": "225\u00d7n3 \u2264 1043.50 \u2192 n3 \u2264 4.64 \u2192 n3 = 4",
+        "can_we_get_6_nights": "No \u2014 cheapest 6-night option (n2=1, n3=5) costs $1,581.50 > $1,500"
+      },
+      "answer": {
+        "maximum_total_nights": 5,
+        "optimal_allocation": "1 night in City 2, 4 nights in City 3",
+        "total_cost_breakdown": {
+          "gas": "$66.50",
+          "hotels": "$120\u00d71 + $90\u00d74 = $480",
+          "food": "$135 \u00d7 6 days = $810",
+          "total": "$1,356.50"
+        },
+        "budget_remaining": "$143.50",
+        "alternative_valid_split": "2 nights City 2 + 3 nights City 3 also yields 5 nights at $1,386.50"
+      }
+    }
+  },
+  "parse_success": true
+}

@@ -1,0 +1,1 @@
+{"answer": "SOS does not officially stand for anything — it was chosen as a distress signal because of its simplicity in Morse code (three dots, three dashes, three dots), not as an acronym. The backronyms 'Save Our Souls' and 'Save Our Ship' were invented after the fact.", "confidence": 92}

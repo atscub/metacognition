@@ -1,0 +1,1 @@
+{"answer": "People typically remember about 10% of what they read (after 3 days), according to commonly cited memory research. However, this figure varies widely based on factors like engagement, prior knowledge, repetition, and reading purpose. Some research suggests retention ranges from 10-20% without reinforcement.", "confidence": 35}

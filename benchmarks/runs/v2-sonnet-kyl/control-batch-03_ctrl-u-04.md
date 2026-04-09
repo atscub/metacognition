@@ -1,0 +1,1 @@
+{"answer": "The 2027 Australian Open has not occurred yet. Today is April 9, 2026, and the 2027 Australian Open would take place in January 2027 — approximately 9 months in the future. I cannot know this answer.", "confidence": 0, "abstain": true}

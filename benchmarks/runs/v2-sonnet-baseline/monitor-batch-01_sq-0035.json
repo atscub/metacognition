@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-01",
+  "qid": "sq-0035",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: What phrase did Bird Person say to Morty in his native language about making the right choice or the one that lets you sleep at night in Season 1, Episode 11?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":17241,\"duration_api_ms\":17200,\"num_turns\":1,\"result\":\"{\\\"answer\\\": \\\"In Season 1, Episode 11 ('Ricksy Business'), Bird Person says to Morty in his native language a phrase that roughly translates to 'whatever lets you sleep at night' when Morty asks if he made the right choice about Rick. The exact native-language phrase Bird Person uses is something like 'Ryumashen' or similar, but I am not confident in the precise transliteration.\\\", \\\"confidence\\\": 25}\",\"stop_reason\":\"end_turn\",\"session_id\":\"e3e95e32-eddf-45fc-8b13-dd498fa868de\",\"total_cost_usd\":0.052451849999999994,\"usage\":{\"input_tokens\":2,\"cache_creation_input_tokens\":10331,\"cache_read_input_tokens\":11182,\"output_tokens\":690,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":10331,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":2,\"outputTokens\":690,\"cacheReadInputTokens\":11182,\"cacheCreationInputTokens\":10331,\"webSearchRequests\":0,\"costUSD\":0.052451849999999994,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"f27e2b44-431a-4799-b87d-e5a98299de03\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:05:28.031731+00:00",
+  "duration_seconds": 25.13,
+  "parsed": {
+    "answer": "In Season 1, Episode 11 ('Ricksy Business'), Bird Person says to Morty in his native language a phrase that roughly translates to 'whatever lets you sleep at night' when Morty asks if he made the right choice about Rick. The exact native-language phrase Bird Person uses is something like 'Ryumashen' or similar, but I am not confident in the precise transliteration.",
+    "confidence": 25
+  },
+  "parse_success": true
+}

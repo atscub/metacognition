@@ -1,0 +1,17 @@
+{
+  "task_id": "control-batch-02",
+  "qid": "ctrl-k-12",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the protocol.\nAsk yourself: what would I need to verify to be confident in this answer?\nIf you can't verify it, consider abstaining.\n\n\nAnswer the following question. If you genuinely don't know the answer or\nthe question is unanswerable, say so rather than guessing.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer or explanation of why you can't answer\", \"confidence\": 0-100, \"abstain\": false}\nSet \"abstain\" to true if you are choosing not to answer.\n\nQuestion: What is the capital of Australia?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":16369,\"duration_api_ms\":16342,\"num_turns\":3,\"result\":\"**Applying the Socratic Checklist:**\\n\\n- **What am I assuming?** That the question has a clear, stable answer and that my training data on this is reliable.\\n- **What evidence do I have?** This is established geographic/political fact \u2014 not inferred from naming conventions or code patterns. Canberra has been Australia's capital since 1913. It was a deliberate compromise between Sydney and Melbourne.\\n- **What would change my mind?** If Australia had changed its capital \u2014 I'd need a current source. But this is a durable constitutional fact, not volatile state.\\n- **Common confusion vector:** People often confuse Sydney (largest city) or Melbourne (former seat of government) with the capital. That's a real failure mode worth flagging \u2014 but I'm not confused by it here.\\n- **Cost of being wrong?** Low. Easily verifiable.\\n- **Error category:** This is the \\\"small, easily verifiable fact\\\" row in the cost-of-error table. Confidence should be high; overthinking would be its own failure.\\n\\n**Conclusion:** Canberra. High confidence, no abstention warranted.\\n\\n```json\\n{\\\"answer\\\": \\\"Canberra\\\", \\\"confidence\\\": 99, \\\"abstain\\\": false}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"8f69a49f-8403-4aed-b8ad-2e468c31558f\",\"total_cost_usd\":0.07053480000000001,\"usage\":{\"input_tokens\":5,\"cache_creation_input_tokens\":13112,\"cache_read_input_tokens\":33466,\"output_tokens\":754,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":13112},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":5,\"outputTokens\":754,\"cacheReadInputTokens\":33466,\"cacheCreationInputTokens\":13112,\"webSearchRequests\":0,\"costUSD\":0.07053480000000001,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"7d4e34f0-7ca5-405b-b6a3-c4c08a01c297\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-09T08:57:24.480881+00:00",
+  "duration_seconds": 21.83,
+  "parsed": {
+    "answer": "Canberra",
+    "confidence": 99,
+    "abstain": false
+  },
+  "parse_success": true
+}

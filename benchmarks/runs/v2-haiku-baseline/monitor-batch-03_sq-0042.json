@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-03",
+  "qid": "sq-0042",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: What was the population of Goldsboro, NC, in the 2020 census?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":4450,\"duration_api_ms\":4324,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"approximately 31,934\\\", \\\"confidence\\\": 35}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"511b5614-be10-4392-aaa6-19f1943c7004\",\"total_cost_usd\":0.0142571,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4524,\"cache_read_input_tokens\":68281,\"output_tokens\":353,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4524,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":353,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4524,\"webSearchRequests\":0,\"costUSD\":0.0142571,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"6fbe283b-b4a8-4e6c-bb1f-0cbc238c1dae\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:05:35.348472+00:00",
+  "duration_seconds": 11.38,
+  "parsed": {
+    "answer": "approximately 31,934",
+    "confidence": 35
+  },
+  "parse_success": true
+}

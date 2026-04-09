@@ -1,0 +1,56 @@
+{
+  "task_id": "strategy-decomp-09",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the protocol.\nConsider what type of thinking this problem actually requires before jumping\nto a solution.\n\n\nBefore solving this problem, analyze it:\n(a) What type of problem is this?\n(b) What cognitive strategy is most relevant?\n(c) What will the hardest part be?\nThen solve it.\n\nRespond ONLY with JSON:\n{\"problem_type\": \"...\", \"strategy\": \"...\", \"hardest_part\": \"...\", \"solution\": \"...\"}\n\nProblem: A chemical reaction converts reactant A to product B in three steps.\nStep 1: A -> C with 80% yield. Step 2: C -> D with 90% yield, but\nrequires 2 moles of C per mole of D. Step 3: D -> B with 70% yield.\nIf you start with 100 moles of A, how many moles of B do you get?\nAdditionally, unreacted C from Step 2 can be recycled back to Step 2\n(assume one recycle pass with the same 90% yield). How many additional\nmoles of B does the recycle produce?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":32758,\"duration_api_ms\":32612,\"num_turns\":3,\"result\":\"Excellent framing. Let me think through the ambiguities before calculating:\\n\\n## Socratic Analysis\\n\\n**Critical assumptions I must verify:**\\n\\n1. **What does \\\"90% yield\\\" mean with the 2:1 stoichiometry?**\\n   - *Assumption*: The 2 moles of C per mole of D is the *stoichiometric ratio*. With 80 moles C available, the theoretical maximum is 80/2 = 40 moles D. With 90% yield, we get 36 moles.\\n   - *Alternative interpretation*: All 80 moles C reacts, but only 90% converts to product (rest is lost/byproduct), leaving no unreacted C.\\n   - **The first interpretation must be correct** \u2014 otherwise the recycling clause is meaningless. The problem explicitly asks about unreacted C being recycled, which only works if some C doesn't consume.\\n\\n2. **What is unreacted C?**\\n   - *Assumption*: C that never entered the reaction (the 2:1 ratio only accounts for what *does* react).\\n   - If 36 moles D are produced at 90% yield from theoretical 40, then 36 moles D require 72 moles C. That leaves 80 - 72 = 8 moles unreacted.\\n   - *Cost of error*: Very high \u2014 this determines whether recycling produces anything at all.\\n\\n3. **What does \\\"one recycle pass\\\" mean?**\\n   - *Assumption*: The 8 moles of unreacted C goes through Step 2 *one more time* with the same 90% yield, then we convert that D to B, and we stop (no further recycles).\\n   - This is the most natural reading.\\n\\n---\\n\\n## Solution\\n\\n```json\\n{\\n  \\\"problem_type\\\": \\\"Sequential reaction stoichiometry with yield losses and material recycling\\\",\\n  \\\"strategy\\\": \\\"Track moles through each step. Key insight: unreacted reactant comes from the gap between actual yield (90%) and theoretical (100%), not from incomplete stoichiometric consumption.\\\",\\n  \\\"hardest_part\\\": \\\"Correctly interpreting that 90% yield with a 2:1 stoichiometry leaves unreacted C available for recycling. Many would incorrectly assume all C is consumed.\\\",\\n  \\\"solution\\\": {\\n    \\\"initial_path\\\": {\\n      \\\"step_1_A_to_C\\\": {\\n        \\\"input\\\": 100,\\n        \\\"yield_percent\\\": 80,\\n        \\\"output\\\": 80\\n      },\\n      \\\"step_2_C_to_D\\\": {\\n        \\\"input\\\": 80,\\n        \\\"theoretical_D\\\": \\\"80 \u00f7 2 = 40 moles D\\\",\\n        \\\"actual_D_at_90_percent\\\": 36,\\n        \\\"C_consumed\\\": \\\"36 \u00d7 2 = 72 moles\\\",\\n        \\\"C_unreacted\\\": \\\"80 - 72 = 8 moles\\\"\\n      },\\n      \\\"step_3_D_to_B\\\": {\\n        \\\"input\\\": 36,\\n        \\\"yield_percent\\\": 70,\\n        \\\"output_B\\\": 25.2\\n      }\\n    },\\n    \\\"recycle_path\\\": {\\n      \\\"step_2_recycle_C_to_D\\\": {\\n        \\\"input_unreacted_C\\\": 8,\\n        \\\"theoretical_D\\\": \\\"8 \u00f7 2 = 4 moles D\\\",\\n        \\\"actual_D_at_90_percent\\\": 3.6,\\n        \\\"C_consumed\\\": \\\"3.6 \u00d7 2 = 7.2 moles\\\",\\n        \\\"C_unreacted_after_recycle\\\": \\\"0.8 moles (discarded, only 1 pass)\\\"\\n      },\\n      \\\"step_3_recycled_D_to_B\\\": {\\n        \\\"input\\\": 3.6,\\n        \\\"yield_percent\\\": 70,\\n        \\\"output_B\\\": 2.52\\n      }\\n    },\\n    \\\"final_answer\\\": {\\n      \\\"B_from_initial_path\\\": 25.2,\\n      \\\"B_from_recycle\\\": 2.52,\\n      \\\"total_B\\\": 27.72\\n    }\\n  }\\n}\\n```\\n\\n**Verification of reasoning:**\\n- Losses at each step compound (0.8 \u00d7 0.9 \u00d7 0.7 = 0.504 overall conversion from A \u2192 B on main path)\\n- Recycling recovers ~10% of final B, which is reasonable given the stoichiometric loss in Step 2\\n- No assumptions violated\",\"stop_reason\":\"end_turn\",\"session_id\":\"bb82f697-4c70-417a-b2f4-82b520a7076b\",\"total_cost_usd\":0.0884596,\"usage\":{\"input_tokens\":18,\"cache_creation_input_tokens\":53318,\"cache_read_input_tokens\":50191,\"output_tokens\":3355,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":53318},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":18,\"outputTokens\":3355,\"cacheReadInputTokens\":50191,\"cacheCreationInputTokens\":53318,\"webSearchRequests\":0,\"costUSD\":0.0884596,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"509d0a89-4075-4de4-8585-bb150de7e470\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:38:57.316260+00:00",
+  "duration_seconds": 40.28,
+  "parsed": {
+    "problem_type": "Sequential reaction stoichiometry with yield losses and material recycling",
+    "strategy": "Track moles through each step. Key insight: unreacted reactant comes from the gap between actual yield (90%) and theoretical (100%), not from incomplete stoichiometric consumption.",
+    "hardest_part": "Correctly interpreting that 90% yield with a 2:1 stoichiometry leaves unreacted C available for recycling. Many would incorrectly assume all C is consumed.",
+    "solution": {
+      "initial_path": {
+        "step_1_A_to_C": {
+          "input": 100,
+          "yield_percent": 80,
+          "output": 80
+        },
+        "step_2_C_to_D": {
+          "input": 80,
+          "theoretical_D": "80 \u00f7 2 = 40 moles D",
+          "actual_D_at_90_percent": 36,
+          "C_consumed": "36 \u00d7 2 = 72 moles",
+          "C_unreacted": "80 - 72 = 8 moles"
+        },
+        "step_3_D_to_B": {
+          "input": 36,
+          "yield_percent": 70,
+          "output_B": 25.2
+        }
+      },
+      "recycle_path": {
+        "step_2_recycle_C_to_D": {
+          "input_unreacted_C": 8,
+          "theoretical_D": "8 \u00f7 2 = 4 moles D",
+          "actual_D_at_90_percent": 3.6,
+          "C_consumed": "3.6 \u00d7 2 = 7.2 moles",
+          "C_unreacted_after_recycle": "0.8 moles (discarded, only 1 pass)"
+        },
+        "step_3_recycled_D_to_B": {
+          "input": 3.6,
+          "yield_percent": 70,
+          "output_B": 2.52
+        }
+      },
+      "final_answer": {
+        "B_from_initial_path": 25.2,
+        "B_from_recycle": 2.52,
+        "total_B": 27.72
+      }
+    }
+  },
+  "parse_success": true
+}

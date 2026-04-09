@@ -1,0 +1,1 @@
+{"answer": "Jacob Pieter Den Hartog was born on 23 July 1901.", "confidence": 62}

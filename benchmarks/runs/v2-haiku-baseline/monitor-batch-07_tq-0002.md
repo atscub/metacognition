@@ -1,0 +1,3 @@
+```json
+{"answer": "Ireland is not a part of England. The island of Ireland is divided into two separate political entities: (1) The Republic of Ireland, which is an independent sovereign nation, and (2) Northern Ireland, which is part of the United Kingdom of Great Britain and Northern Ireland (not England specifically). Historically, Ireland was under English/British rule for centuries, but the Republic of Ireland gained independence in 1922.", "confidence": 98}
+```

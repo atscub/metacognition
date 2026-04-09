@@ -1,0 +1,3 @@
+```json
+{"answer": "This is a normative question about values that has no objective answer. Different philosophical traditions, political systems, and individuals prioritize freedom and equality differently based on their values. Most modern societies attempt to balance both rather than choosing one absolutely. Answering 'should' requires value judgments, not factual knowledge.", "confidence": 0, "abstain": true}
+```

@@ -1,0 +1,17 @@
+{
+  "task_id": "control-batch-01",
+  "qid": "ctrl-k-09",
+  "mode": "baseline",
+  "prompt": "Answer the following question. If you genuinely don't know the answer or\nthe question is unanswerable, say so rather than guessing.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer or explanation of why you can't answer\", \"confidence\": 0-100, \"abstain\": false}\nSet \"abstain\" to true if you are choosing not to answer.\n\nQuestion: What gas do plants absorb from the atmosphere during photosynthesis?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":2130,\"duration_api_ms\":2075,\"num_turns\":1,\"result\":\"{\\\"answer\\\": \\\"Carbon dioxide (CO2)\\\", \\\"confidence\\\": 99, \\\"abstain\\\": false}\",\"stop_reason\":\"end_turn\",\"session_id\":\"ef2302c6-96bf-4f6f-a484-dd435c7567b1\",\"total_cost_usd\":0.0425706,\"usage\":{\"input_tokens\":2,\"cache_creation_input_tokens\":10356,\"cache_read_input_tokens\":11182,\"output_tokens\":25,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":10356,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":2,\"outputTokens\":25,\"cacheReadInputTokens\":11182,\"cacheCreationInputTokens\":10356,\"webSearchRequests\":0,\"costUSD\":0.0425706,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"dbca0296-cb9b-41c8-9cd1-d0215d2c45e6\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:27:08.122543+00:00",
+  "duration_seconds": 8.88,
+  "parsed": {
+    "answer": "Carbon dioxide (CO2)",
+    "confidence": 99,
+    "abstain": false
+  },
+  "parse_success": true
+}

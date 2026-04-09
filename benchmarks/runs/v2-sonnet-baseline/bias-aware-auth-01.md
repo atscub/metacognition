@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Appeal to Authority", "explanation": "The reasoner abandons a well-grounded technical position (simpler DB with audit logging) solely because an expert endorsed blockchain, without evaluating the actual arguments or evidence. The expert's credibility is treated as sufficient justification to reverse the decision, even while acknowledging the downsides ('might add complexity'). Expertise in distributed systems research does not automatically translate to correct prescriptions for every specific use case."}
+```

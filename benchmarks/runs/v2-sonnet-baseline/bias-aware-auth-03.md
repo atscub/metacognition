@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Appeal to Authority (Argument from Authority)", "explanation": "The reasoner defers to Dr. Werner's conclusion primarily because he is a Nobel laureate, despite recognizing contradicting evidence they already hold ('substantial evidence that renewables plus storage are becoming cost-competitive'). A Nobel Prize in physics does not confer special expertise in energy policy or techno-economic analysis of energy systems. The reasoner abandons their evidence-based position in favor of credential-based deference, without any engagement with the actual arguments Dr. Werner offered."}
+```

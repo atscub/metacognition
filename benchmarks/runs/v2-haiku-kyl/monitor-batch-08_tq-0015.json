@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-08",
+  "qid": "tq-0015",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the confidence\ncalibration step. Pay attention to what you actually know vs. what you're\nguessing. Then answer the question.\n\n\nAnswer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: How many people have absolute pitch?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":10995,\"duration_api_ms\":10971,\"num_turns\":1,\"result\":\"{\\\"answer\\\": \\\"Absolute pitch (perfect pitch) is rare, affecting approximately 1 in 1,000 to 1 in 10,000 people in the general population. Prevalence is significantly higher among trained musicians (estimates range from 1 in 100 to 1 in 10 among music students). The exact prevalence varies by study methodology, population sampled, and how strictly absolute pitch is defined. Globally, this would translate to roughly 8-80 million people with some degree of absolute pitch ability, depending on the threshold used.\\\", \\\"confidence\\\": 62}\",\"stop_reason\":\"end_turn\",\"session_id\":\"9e4a576d-2841-406e-84d1-b065036463fe\",\"total_cost_usd\":0.017879600000000002,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":5030,\"cache_read_input_tokens\":68281,\"output_tokens\":951,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":5030,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":951,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":5030,\"webSearchRequests\":0,\"costUSD\":0.017879600000000002,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"007809b4-b441-4ac6-bc3f-2ae13f97990c\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:14:09.664151+00:00",
+  "duration_seconds": 14.09,
+  "parsed": {
+    "answer": "Absolute pitch (perfect pitch) is rare, affecting approximately 1 in 1,000 to 1 in 10,000 people in the general population. Prevalence is significantly higher among trained musicians (estimates range from 1 in 100 to 1 in 10 among music students). The exact prevalence varies by study methodology, population sampled, and how strictly absolute pitch is defined. Globally, this would translate to roughly 8-80 million people with some degree of absolute pitch ability, depending on the threshold used.",
+    "confidence": 62
+  },
+  "parse_success": true
+}

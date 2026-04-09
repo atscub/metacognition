@@ -1,0 +1,16 @@
+{
+  "task_id": "bias-aware-clean-03",
+  "mode": "baseline",
+  "prompt": "Read the following reasoning trace carefully. Your task is to analyze whether\nit contains any cognitive biases.\n\nRespond ONLY with JSON:\n{\"has_bias\": true/false, \"bias_name\": \"name of bias or none\", \"explanation\": \"how the bias manifests in this reasoning\"}\n\n--- Reasoning Trace ---\nThe patient presents with right lower quadrant pain, low-grade fever, and\nelevated WBC. Appendicitis is the leading differential, but I need to rule\nout alternatives before committing to a surgical pathway. The urinary\nfrequency could indicate a urinary tract infection or even a ureteral stone.\nIn a female patient of reproductive age, ectopic pregnancy and ovarian\ntorsion should be considered. I'm ordering a CT abdomen/pelvis, urinalysis,\nand a pregnancy test before calling surgery. If the CT confirms appendicitis,\nwe proceed quickly. If it shows something else, we've avoided an unnecessary\noperation. The extra hour for imaging is worth the diagnostic certainty.\n--- End Trace ---\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":3707,\"duration_api_ms\":3232,\"num_turns\":1,\"result\":\"```json\\n{\\\"has_bias\\\": false, \\\"bias_name\\\": \\\"none\\\", \\\"explanation\\\": \\\"The reasoning is methodical and appropriately considers multiple differentials before committing to a diagnosis. The clinician explicitly resists premature closure on appendicitis, orders targeted confirmatory tests, and weighs the cost of diagnostic delay against surgical risk. This is sound clinical reasoning, not a cognitive bias.\\\"}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"b3ea7be1-deeb-48ca-8f30-bb8fa3565c04\",\"total_cost_usd\":0.04094685,\"usage\":{\"input_tokens\":2,\"cache_creation_input_tokens\":9663,\"cache_read_input_tokens\":11182,\"output_tokens\":90,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":9663},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":2,\"outputTokens\":90,\"cacheReadInputTokens\":11182,\"cacheCreationInputTokens\":9663,\"webSearchRequests\":0,\"costUSD\":0.04094685,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"ba837659-20f3-49c7-a635-c85b3d9cff88\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:40:43.565315+00:00",
+  "duration_seconds": 13.7,
+  "parsed": {
+    "has_bias": false,
+    "bias_name": "none",
+    "explanation": "The reasoning is methodical and appropriately considers multiple differentials before committing to a diagnosis. The clinician explicitly resists premature closure on appendicitis, orders targeted confirmatory tests, and weighs the cost of diagnostic delay against surgical risk. This is sound clinical reasoning, not a cognitive bias."
+  },
+  "parse_success": true
+}

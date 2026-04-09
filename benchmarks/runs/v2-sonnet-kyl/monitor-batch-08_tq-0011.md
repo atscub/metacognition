@@ -1,0 +1,1 @@
+{"answer": "Parents (or guardians/caregivers) collect the baby teeth and typically leave money in their place. The Tooth Fairy is a cultural tradition, not a real entity.", "confidence": 99}

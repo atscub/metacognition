@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Epistemic trap disguised as a calculus problem. The surface form suggests a computation task, but it is actually a question about what the Intermediate Value Theorem (IVT) can and cannot tell us.",
+  "strategy": "Authority-bias check + falsification. The problem asserts there is an 'exact value' — that framing must be interrogated before calculating anything. Apply IVT carefully: it guarantees existence, not uniqueness or a specific location.",
+  "hardest_part": "Resisting the pull to answer x = 0.5 by implicitly assuming linearity. The problem gives no formula for f — only boundary values and continuity. Pattern-matching to 'midpoint' is a classic anchoring error. Falsification: f(x) = 1 − 2x² satisfies all stated conditions (continuous, f(0)=1, f(1)=−1) and has its zero at x = 1/√2 ≈ 0.707, not 0.5. This single counterexample proves no unique answer exists.",
+  "solution": "The problem is unanswerable as stated. The IVT guarantees that at least one c ∈ (0,1) exists with f(c) = 0, but gives no information about where. Without an explicit formula for f, the zero could be anywhere in (0,1) — or there could be multiple zeros. Any answer claiming a specific value is smuggling in an unstated assumption (e.g., linearity). The correct response is: 'There exists at least one x ∈ (0,1) with f(x) = 0, but its exact location cannot be determined from the given information.'"
+}
+```

@@ -1,0 +1,1 @@
+{"answer": "I cannot answer this question. My knowledge cutoff is August 2025, and the 2027 Australian Open has not occurred yet as of my knowledge cutoff.", "confidence": 0, "abstain": true}

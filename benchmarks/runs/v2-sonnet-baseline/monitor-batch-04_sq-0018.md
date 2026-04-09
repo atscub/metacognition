@@ -1,0 +1,1 @@
+{"answer": "Only Half the Picture", "confidence": 35}

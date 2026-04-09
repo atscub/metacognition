@@ -1,0 +1,3 @@
+```json
+{"answer": "The Internet does not have a capital city. The Internet is a decentralized global network of interconnected computers and systems without a single geographic center or governing capital. While organizations like ICANN (Los Angeles) and the Internet Society (Geneva) manage aspects of Internet governance and infrastructure, these are not capitals of the Internet itself.", "confidence": 95, "abstain": false}
+```

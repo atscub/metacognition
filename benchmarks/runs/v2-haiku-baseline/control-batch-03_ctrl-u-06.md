@@ -1,0 +1,3 @@
+```json
+{"answer": "I don't have access to specific voter registration data for Pembroke, New Hampshire in November 2018. This type of granular local election statistics would require accessing official New Hampshire election commission records or town-level archives, which are not available in my training data. You would need to contact the Pembroke Town Clerk, the New Hampshire Secretary of State's office, or the NH Department of Elections for this specific information.", "confidence": 0, "abstain": true}
+```

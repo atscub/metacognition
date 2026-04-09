@@ -1,0 +1,3 @@
+```json
+{"answer": "Canberra", "confidence": 99, "abstain": false}
+```

@@ -1,0 +1,1 @@
+{"answer": "I don't have reliable specific data for the exact number of ships that passed through the Kiel Canal in calendar year 2023.", "confidence": 0, "abstain": true}

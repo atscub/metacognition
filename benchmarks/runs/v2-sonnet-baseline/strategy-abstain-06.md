@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Constraint satisfaction logic puzzle with a referential ambiguity trap",
+  "strategy": "Deductive elimination — apply each constraint in sequence, watch for the referential distinction between 'labeled Mixed' vs. 'actually mixed'",
+  "hardest_part": "The phrase 'the mixed box contains two' refers to whichever box ACTUALLY contains a mix, not the one LABELED Mixed. Missing this creates an apparent contradiction.",
+  "solution": "Step 1 — parse 'the mixed box': All labels are wrong, so the box labeled Mixed is NOT the mixed box. The truly mixed box (1 apple + 1 orange = 2 fruits) must be one of the other two. Step 2 — draw from the labeled-Mixed box: We pull an apple. Since this box is not the mixed box, it holds exactly 1 fruit — that apple. Confirmed: labeled-Mixed = [apple]. Step 3 — place the truly mixed box: Two candidates remain — labeled-Apples and labeled-Oranges. Try labeled-Apples as the mixed box [apple+orange]: that uses both apples (1 already in labeled-Mixed, 1 here), leaving 2 oranges. labeled-Oranges would get 1 orange — but its label would then be CORRECT. Contradiction. Try labeled-Oranges as the mixed box [apple+orange]: labeled-Apples gets the remaining 1 orange. Check all labels wrong: labeled-Mixed holds apple (not mixed ✓), labeled-Oranges holds apple+orange (not just oranges ✓), labeled-Apples holds orange (not apples ✓). Fruit count: 2 apples + 2 oranges ✓. FINAL ANSWER — Box labeled Apples: 1 orange | Box labeled Oranges: 1 apple + 1 orange (the truly mixed box) | Box labeled Mixed: 1 apple"
+}
+```

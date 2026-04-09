@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Combinatorics / number theory — divisor-counting problem disguised as a state-machine simulation",
+  "strategy": "Count divisors algebraically rather than simulate. A locker ends open iff it is toggled an odd number of times, which happens iff it has an odd number of divisors, which happens iff it is a perfect square. For the variant, identify exactly which lockers person 47 would have toggled and invert their final states.",
+  "hardest_part": "The variant: resisting the urge to re-simulate all 100 lockers. Person 47 only affects multiples of 47 ≤ 100 (i.e., 47 and 94). The key move is to determine each locker's state in the standard solution, then flip only those two.",
+  "solution": "STANDARD SOLUTION — Locker n is toggled once per divisor of n. It ends open iff it has an odd number of divisors. Only perfect squares have an odd number of divisors (divisors pair as d↔n/d; only when d²=n does a divisor go unpaired). Perfect squares 1–100: {1, 4, 9, 16, 25, 36, 49, 64, 81, 100} — these 10 lockers are open. All others are closed. WITH PERSON 47 ABSENT — Person 47 toggles multiples of 47 ≤ 100: lockers 47 and 94. Skipping their turn removes one toggle from each. Standard divisor counts: locker 47 (prime, divisors: 1,47) → 2 toggles → closed. Minus one toggle → 1 toggle → NOW OPEN. Locker 94 (=2×47, divisors: 1,2,47,94) → 4 toggles → closed. Minus one toggle → 3 toggles → NOW OPEN. Result: lockers 47 and 94 are in a different state (both flip from closed to open). No other locker is affected."
+}
+```

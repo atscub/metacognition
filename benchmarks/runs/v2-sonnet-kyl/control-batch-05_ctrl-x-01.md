@@ -1,0 +1,1 @@
+{"answer": "Albert Einstein never visited the surface of Mars. No human being has ever visited Mars. Einstein (1879–1955) died well before any Mars missions, and as of 2026, no crewed mission to Mars has taken place.", "confidence": 100, "abstain": false}

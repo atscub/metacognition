@@ -1,0 +1,1 @@
+{"answer": "I do not have reliable specific information about the exact opening date of Mira Sintra-Meleças railway station.", "confidence": 10}

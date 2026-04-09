@@ -1,0 +1,1 @@
+{"answer": "The Internet does not have a capital city. It is a decentralized global network with no physical capital or central governing location.", "confidence": 95, "abstain": false}

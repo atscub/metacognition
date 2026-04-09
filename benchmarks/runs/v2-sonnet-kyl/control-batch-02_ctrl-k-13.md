@@ -1,0 +1,1 @@
+{"answer": "Albert Einstein developed the theory of general relativity, published in 1915.", "confidence": 99, "abstain": false}

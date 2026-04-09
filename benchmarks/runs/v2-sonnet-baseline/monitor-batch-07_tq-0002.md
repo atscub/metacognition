@@ -1,0 +1,1 @@
+{"answer": "Ireland is not part of England. Ireland is an independent sovereign nation (the Republic of Ireland) since 1922. Northern Ireland is part of the United Kingdom (not England specifically), which also includes England, Scotland, and Wales.", "confidence": 99}

@@ -1,0 +1,1 @@
+{"answer": "The question 'Is it better?' cannot be answered without context. Better than what, in what regard, and compared to what alternative? Please provide more details.", "confidence": 0, "abstain": true}

@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Anchoring Bias", "explanation": "The reasoner starts from the $500,000 listing price and adjusts downward by the estimated repair costs ($65,000-$100,000+), arriving at ~$470,000. This adjustment is insufficient relative to the identified defects. A deanchored analysis would start from comparable sales of homes without these defects and work from there. Instead, the listing price serves as the anchor, and the final offer ($470,000) remains far too close to it despite documented repair estimates that total at least $65,000 at the low end — which would logically suggest an offer closer to $400,000-$435,000."}
+```

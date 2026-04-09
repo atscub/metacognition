@@ -1,0 +1,3 @@
+```json
+{"answer": "No. While climate change poses severe and urgent threats to human civilization (food systems, water availability, economic disruption, mass displacement), the scientific consensus does not indicate certain extinction. Humans have high adaptive capacity, technological capabilities for mitigation and adaptation, and resources to respond. IPCC assessments emphasize serious existential risks requiring urgent action, but not inevitable extinction. However, without aggressive emissions reduction and adaptation, climate change could cause catastrophic suffering, societal collapse in regions, and increased existential risk.", "confidence": 87}
+```

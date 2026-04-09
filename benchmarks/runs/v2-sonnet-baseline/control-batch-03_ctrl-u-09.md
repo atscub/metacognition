@@ -1,0 +1,1 @@
+{"answer": "I don't have access to specific weather station data for Vostok, Antarctica in January 2026. While my knowledge cutoff is August 2025, I cannot reliably report specific meteorological measurements from that location and time period.", "confidence": 0, "abstain": true}

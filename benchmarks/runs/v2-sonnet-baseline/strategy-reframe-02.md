@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Constraint satisfaction / lateral thinking puzzle with embedded numerical misdirection",
+  "strategy": "Work the math explicitly before accepting the framing that a solution exists — resist the pull toward the 'intended' trick answer until numbers confirm it",
+  "hardest_part": "Resisting the implicit suggestion that fuel consumption is the key, and having the epistemic honesty to conclude the puzzle may be flawed rather than forcing a non-solution to fit",
+  "solution": "The puzzle appears to be flawed — the fuel consumption angle does not close the gap.\n\nLet's work the numbers:\n  - Truck: 8 tons\n  - Crates: 4 × 1 ton = 4 tons\n  - Full tank: 0.5 tons\n  - Total at bridge entry: 12.5 tons — exceeds the 10-ton limit by 2.5 tons\n\nFuel burned crossing the 50-mile bridge:\n  - 50 miles ÷ 5 mpg = 10 gallons consumed\n  - 10 gal × 6 lbs/gal = 60 lbs = 0.03 tons saved\n  - Weight at bridge exit: ~12.47 tons — still 2.47 tons over limit\n\nTo burn enough fuel to bring 12.5 tons down to 10 tons:\n  - Need to eliminate 2.5 tons = 5,000 lbs of fuel\n  - At 6 lbs/gal: need to burn ~833 gallons\n  - But the full tank only holds 1,000 lbs ÷ 6 lbs/gal ≈ 167 gallons\n  - Even burning the entire tank still only saves 0.5 tons — nowhere near enough\n\nConclusion: As stated, there is no valid single-trip solution. The fuel detail is either a red herring or the problem is numerically inconsistent. A genuine solution would require: (a) the bridge weight limit to be at least 12 tons, (b) the truck or crates to be lighter than stated, or (c) an out-of-scope lateral move such as a different vehicle carrying some crates. The numbers do not support 'burn fuel before the bridge' or any within-constraints trick."
+}
+```

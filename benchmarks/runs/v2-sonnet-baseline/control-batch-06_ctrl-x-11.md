@@ -1,0 +1,1 @@
+{"answer": "No one has swum across the Pacific Ocean unassisted. The Pacific Ocean is approximately 12,000 miles wide, making it physically impossible to swim across without rest, food, and support. No such feat has been accomplished.", "confidence": 95, "abstain": false}

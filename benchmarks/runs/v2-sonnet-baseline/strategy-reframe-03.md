@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Counterintuitive systems problem / assumption inversion",
+  "strategy": "Reframe the metric: identify what satisfaction actually measures, then work backward from the anomaly (fewer beds = higher scores) to find the causal variable",
+  "hardest_part": "Resisting the face-valid resource-scarcity explanation. The 40% volume spike feels like a capacity problem, so 'add capacity' feels correct. The anomaly forces you to ask what capacity actually delivers.",
+  "solution": "The high-scoring department likely prioritizes perceived attentiveness and communication speed over throughput capacity. Fewer beds forces tighter triage, faster disposition decisions, and — critically — staff who are always visibly present and engaged rather than spread across a large floor. Patient satisfaction in EDs correlates most strongly with: (1) whether someone acknowledged them quickly, (2) whether they felt informed about wait reasons, and (3) whether staff seemed calm and in control. A larger physical plant can make staff less visible, create longer walking distances, and dilute the sense of coordinated attention. What drops in winter isn't capacity per se — it's communication frequency and perceived control. The high-scorer likely uses structured hourly rounding, proactive wait-time updates, and a tight geographic layout that keeps staff in line-of-sight. The real driver of satisfaction is the experience of being seen and kept informed, not the elimination of wait time itself. This suggests the hospital should invest in communication protocols, rounding discipline, and real-time expectation-setting before adding square footage — and measure staff-to-acknowledged-patient ratios, not beds-to-patient ratios."
+}
+```

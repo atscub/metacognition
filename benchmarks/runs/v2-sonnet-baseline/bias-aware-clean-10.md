@@ -1,0 +1,3 @@
+```json
+{"has_bias": false, "bias_name": "none", "explanation": "The reasoning explicitly guards against halo effect by separating prestige (Stanford/Google) from role-specific criteria. The interviewer acknowledges strong technical performance but weights behavioral evidence appropriately for the role requirements. The recommendation to gather more data before deciding is calibrated and evidence-based, not driven by credential anchoring or confirmation bias."}
+```

@@ -1,0 +1,1 @@
+{"answer": "2019 (based on Global Burden of Disease Study data commonly cited in WHO reports)", "confidence": 25}

@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-10",
+  "qid": "tq-0036",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: Which existed first, the Aztec Empire or Oxford University?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":4148,\"duration_api_ms\":4001,\"num_turns\":1,\"result\":\"```json\\n{\\n  \\\"answer\\\": \\\"Oxford University existed first. Oxford was established in the late 12th century (around 1096), while the Aztec Empire was founded in the 14th-15th century (around 1325-1428).\\\",\\n  \\\"confidence\\\": 95\\n}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"6d1509db-23e3-4b1b-b8e6-0d9ad9cb2197\",\"total_cost_usd\":0.01390835,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4517,\"cache_read_input_tokens\":68281,\"output_tokens\":285,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4517,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":285,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4517,\"webSearchRequests\":0,\"costUSD\":0.01390835,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"e1ea42bd-fe81-4bca-9927-f1acc3be78ea\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:12:02.831878+00:00",
+  "duration_seconds": 10.01,
+  "parsed": {
+    "answer": "Oxford University existed first. Oxford was established in the late 12th century (around 1096), while the Aztec Empire was founded in the 14th-15th century (around 1325-1428).",
+    "confidence": 95
+  },
+  "parse_success": true
+}

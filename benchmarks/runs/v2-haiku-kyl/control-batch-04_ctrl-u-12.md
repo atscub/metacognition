@@ -1,0 +1,3 @@
+```json
+{"answer": "I don't have reliable access to historical Russian agricultural statistics, particularly oblast-level grain production data from 1997. This would require access to Russian Ministry of Agriculture archives or historical databases that I cannot verify. I cannot confidently provide a specific figure for Kurgan Oblast grain output in that year.", "confidence": 5, "abstain": true}
+```

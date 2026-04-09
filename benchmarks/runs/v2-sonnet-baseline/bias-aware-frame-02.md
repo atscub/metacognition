@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Framing Effect", "explanation": "The reasoner accepts the proposal's framing of '10,000 families at risk' while dismissing the colleague's reframe of the same data ('90,000 families would be fine without it'). Both figures come from the same dataset, but the reasoner treats the loss-framed statistic as morally decisive and characterizes the gain-framed counterpoint as 'missing the point.' The decision is being driven by how the information is presented (potential losers) rather than a full evaluation of the underlying data, which is the hallmark of the framing effect."}
+```

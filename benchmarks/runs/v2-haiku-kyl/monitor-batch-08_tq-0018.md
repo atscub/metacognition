@@ -1,0 +1,3 @@
+```json
+{"answer": "Waking a sleepwalker is generally safe and causes no physical harm, despite the common myth. The person will likely experience confusion, disorientation, and grogginess when woken, and may have difficulty falling back asleep. The main reason to avoid waking them is comfort rather than danger. In some cases, gently guiding a sleepwalker back to bed without fully waking them is preferable.", "confidence": 72}
+```

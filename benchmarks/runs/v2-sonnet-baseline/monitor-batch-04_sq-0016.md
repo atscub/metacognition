@@ -1,0 +1,1 @@
+{"answer": "I don't have reliable specific information about the exact date the South African Geographical Names Council approved the 'King Shaka International Airport' name. The airport opened in May 2010, so approval would have preceded that, likely in 2009 or early 2010.", "confidence": 10}

@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Base Rate Neglect (also: neglect of prior probability / false positive fallacy)", "explanation": "The reasoning focuses entirely on the 95% sensitivity (true positive rate) while ignoring the base rate of the condition in the screened population. In any low-prevalence condition, even a 95% sensitivity combined with an unspecified specificity can produce a majority of false positives. For example, if prevalence is 1% and specificity is 95%, roughly half of all positive tests would be false positives. Without knowing the base rate and specificity, the 95% figure is insufficient to justify a blanket 'strong endorsement' — yet the reasoning treats it as decisive evidence of value."}
+```

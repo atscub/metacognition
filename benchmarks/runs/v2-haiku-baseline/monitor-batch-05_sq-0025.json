@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-05",
+  "qid": "sq-0025",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: What is the third largest island in the Mediterranean?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":3608,\"duration_api_ms\":3582,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"Cyprus\\\", \\\"confidence\\\": 92}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"ea4898a2-f8c3-4218-b351-f8c5fa28de42\",\"total_cost_usd\":0.01451585,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4951,\"cache_read_input_tokens\":68281,\"output_tokens\":298,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4951,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":298,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4951,\"webSearchRequests\":0,\"costUSD\":0.01451585,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"c76b8457-652c-4e63-9622-37c379a6c4de\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:08:13.548053+00:00",
+  "duration_seconds": 6.95,
+  "parsed": {
+    "answer": "Cyprus",
+    "confidence": 92
+  },
+  "parse_success": true
+}

@@ -1,0 +1,1 @@
+{"answer": "Ciprian Manolescu", "confidence": 72}

@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-01",
+  "qid": "sq-0033",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: Who received an honorable mention at the 1999 Frank and Brennie Morgan Prize for Outstanding Research in Mathematics by an Undergraduate Student?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":21283,\"duration_api_ms\":20975,\"num_turns\":2,\"result\":\"{\\\"answer\\\": \\\"Ciprian Manolescu\\\", \\\"confidence\\\": 72}\",\"stop_reason\":\"end_turn\",\"session_id\":\"f57bc28b-3a65-47ae-bcfe-4fa0d1ee6949\",\"total_cost_usd\":0.11075819999999999,\"usage\":{\"input_tokens\":3,\"cache_creation_input_tokens\":9989,\"cache_read_input_tokens\":31869,\"output_tokens\":205,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":9989,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":11,\"outputTokens\":690,\"cacheReadInputTokens\":68534,\"cacheCreationInputTokens\":21284,\"webSearchRequests\":0,\"costUSD\":0.11075819999999999,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[{\"tool_name\":\"Bash\",\"tool_use_id\":\"toolu_01BYrHLjewmoegLsrWsegCof\",\"tool_input\":{\"command\":\"curl -s \\\"https://www.ams.org/profession/prizes-awards/pabrowse?purl=morgan-prize\\\" 2>/dev/null | head -200\"}},{\"tool_name\":\"WebSearch\",\"tool_use_id\":\"toolu_01YUbsx7UFCF31uJEXBrf6LQ\",\"tool_input\":{\"query\":\"1999 Frank and Brennie Morgan Prize Outstanding Research Mathematics Undergraduate honorable mention\"}}],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"d0ba1864-a309-47c0-8eb5-e5fdfbc03c71\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:04:21.092772+00:00",
+  "duration_seconds": 30.51,
+  "parsed": {
+    "answer": "Ciprian Manolescu",
+    "confidence": 72
+  },
+  "parse_success": true
+}

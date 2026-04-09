@@ -1,0 +1,1 @@
+{"answer": "Nicaragua (Violeta Chamorro, 1990)", "confidence": 72}

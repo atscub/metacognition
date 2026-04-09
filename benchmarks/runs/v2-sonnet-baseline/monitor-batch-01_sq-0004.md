@@ -1,0 +1,1 @@
+{"answer": "Hofuku-ji temple", "confidence": 62}

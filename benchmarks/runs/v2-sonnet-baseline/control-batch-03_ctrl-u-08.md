@@ -1,0 +1,1 @@
+{"answer": "I don't have reliable information about who served as the third postmaster of Deadwood, South Dakota in the 1870s. This is a very specific historical detail about early postal appointments in a frontier town that I cannot answer with confidence.", "confidence": 5, "abstain": true}

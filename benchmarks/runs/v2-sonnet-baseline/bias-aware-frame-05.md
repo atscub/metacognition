@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Framing Effect", "explanation": "The reasoner explicitly acknowledges that both options describe identical outcomes ('The fact that both options describe the same outcome hasn't changed my preference'), yet still prefers Option 1 solely because of how it is framed — as a gain ('60% reduction') rather than a loss ('40% still occur'). This is a textbook framing effect: the same information presented positively vs. negatively drives different preferences despite identical objective content. The reasoner even plans to exploit this bias in others when presenting to the board."}
+```

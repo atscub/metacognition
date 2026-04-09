@@ -1,0 +1,17 @@
+{
+  "task_id": "control-batch-01",
+  "qid": "ctrl-k-03",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the protocol.\nAsk yourself: what would I need to verify to be confident in this answer?\nIf you can't verify it, consider abstaining.\n\n\nAnswer the following question. If you genuinely don't know the answer or\nthe question is unanswerable, say so rather than guessing.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer or explanation of why you can't answer\", \"confidence\": 0-100, \"abstain\": false}\nSet \"abstain\" to true if you are choosing not to answer.\n\nQuestion: What is the chemical symbol for gold?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":5140,\"duration_api_ms\":5047,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"Au\\\", \\\"confidence\\\": 100, \\\"abstain\\\": false}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"38ed4268-9b4f-4918-bcfd-c7b5f8da0546\",\"total_cost_usd\":0.014142700000000001,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":5082,\"cache_read_input_tokens\":62562,\"output_tokens\":305,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":5082},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":305,\"cacheReadInputTokens\":62562,\"cacheCreationInputTokens\":5082,\"webSearchRequests\":0,\"costUSD\":0.014142700000000001,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"bc5fa8bc-f011-4f91-9f8e-191afddff3fc\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:29:11.720325+00:00",
+  "duration_seconds": 12.9,
+  "parsed": {
+    "answer": "Au",
+    "confidence": 100,
+    "abstain": false
+  },
+  "parse_success": true
+}

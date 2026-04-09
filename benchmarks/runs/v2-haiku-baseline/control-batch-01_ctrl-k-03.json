@@ -1,0 +1,17 @@
+{
+  "task_id": "control-batch-01",
+  "qid": "ctrl-k-03",
+  "mode": "baseline",
+  "prompt": "Answer the following question. If you genuinely don't know the answer or\nthe question is unanswerable, say so rather than guessing.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer or explanation of why you can't answer\", \"confidence\": 0-100, \"abstain\": false}\nSet \"abstain\" to true if you are choosing not to answer.\n\nQuestion: What is the chemical symbol for gold?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":2180,\"duration_api_ms\":2079,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"Au\\\", \\\"confidence\\\": 100, \\\"abstain\\\": false}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"0b716ede-9db0-4196-9967-aed3b311bc03\",\"total_cost_usd\":0.01312085,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4559,\"cache_read_input_tokens\":68281,\"output_tokens\":117,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4559,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":117,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4559,\"webSearchRequests\":0,\"costUSD\":0.01312085,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"b5915466-acae-4ee9-9869-537d5c386ca9\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:26:17.607903+00:00",
+  "duration_seconds": 6.76,
+  "parsed": {
+    "answer": "Au",
+    "confidence": 100,
+    "abstain": false
+  },
+  "parse_success": true
+}

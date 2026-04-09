@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-09",
+  "qid": "tq-0029",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: How much of what they read do people remember?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":8142,\"duration_api_ms\":7973,\"num_turns\":1,\"result\":\"```json\\n{\\n  \\\"answer\\\": \\\"People's reading retention varies significantly based on multiple factors, but research suggests: immediately after reading, comprehension is typically 50% or higher; however, retention drops substantially over time following the forgetting curve\u2014down to about 10% after several weeks without reinforcement. The commonly cited claim that people remember only 10% of what they read is often misattributed to the 'learning pyramid' but is not well-supported by rigorous research. Retention depends on attention level, prior knowledge, active engagement, reading speed, and whether material is reviewed afterward.\\\",\\n  \\\"confidence\\\": 65\\n}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"6e52aa85-048f-4842-9a75-4e20a5c2ee3c\",\"total_cost_usd\":0.0151796,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4514,\"cache_read_input_tokens\":68281,\"output_tokens\":540,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4514,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":540,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":4514,\"webSearchRequests\":0,\"costUSD\":0.0151796,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"15f1eb79-d79e-4a3e-b469-ad64b33d924a\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:12:05.173201+00:00",
+  "duration_seconds": 13.29,
+  "parsed": {
+    "answer": "People's reading retention varies significantly based on multiple factors, but research suggests: immediately after reading, comprehension is typically 50% or higher; however, retention drops substantially over time following the forgetting curve\u2014down to about 10% after several weeks without reinforcement. The commonly cited claim that people remember only 10% of what they read is often misattributed to the 'learning pyramid' but is not well-supported by rigorous research. Retention depends on attention level, prior knowledge, active engagement, reading speed, and whether material is reviewed afterward.",
+    "confidence": 65
+  },
+  "parse_success": true
+}

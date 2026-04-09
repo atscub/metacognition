@@ -1,0 +1,3 @@
+Applying the socratic protocol: This is a basic geography fact with very low error cost. My assumption is "largest" means by surface area. The Pacific Ocean is the largest — covering ~165 million km², more than 30% of Earth's surface, and also largest by volume. This is not in dispute. No tool calls needed to verify settled geography.
+
+{"answer": "The Pacific Ocean is the largest ocean on Earth, covering approximately 165 million square kilometers — more than 30% of Earth's total surface area. It is also the largest by volume.", "confidence": 99, "abstain": false}

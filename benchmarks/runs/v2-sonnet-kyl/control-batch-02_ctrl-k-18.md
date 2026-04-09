@@ -1,0 +1,1 @@
+{"answer": "George Orwell (pen name of Eric Arthur Blair)", "confidence": 99, "abstain": false}

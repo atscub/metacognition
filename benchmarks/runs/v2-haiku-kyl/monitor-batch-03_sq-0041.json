@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-03",
+  "qid": "sq-0041",
+  "mode": "kyl",
+  "prompt": "Before answering, invoke /meta:socratic and work through the confidence\ncalibration step. Pay attention to what you actually know vs. what you're\nguessing. Then answer the question.\n\n\nAnswer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: What is the name of the 28th song on the official CD release of Kirby Star Allies: The Original Soundtrack?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":6446,\"duration_api_ms\":6392,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"I don't have reliable information about the 28th track on the Kirby Star Allies: The Original Soundtrack. I lack access to the complete official track listing and cannot provide this specific detail with confidence.\\\", \\\"confidence\\\": 5}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"735628ee-d9e5-4a09-9afa-ccd182dc0c26\",\"total_cost_usd\":0.01515085,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":5051,\"cache_read_input_tokens\":68281,\"output_tokens\":400,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":5051,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":400,\"cacheReadInputTokens\":68281,\"cacheCreationInputTokens\":5051,\"webSearchRequests\":0,\"costUSD\":0.01515085,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"a2d2c428-5863-48ce-86ca-641690d313fb\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:06:42.716287+00:00",
+  "duration_seconds": 11.63,
+  "parsed": {
+    "answer": "I don't have reliable information about the 28th track on the Kirby Star Allies: The Original Soundtrack. I lack access to the complete official track listing and cannot provide this specific detail with confidence.",
+    "confidence": 5
+  },
+  "parse_success": true
+}

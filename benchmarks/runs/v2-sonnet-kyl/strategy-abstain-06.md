@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Constraint satisfaction puzzle with a hidden internal contradiction introduced by the 'updated constraints'",
+  "strategy": "Exhaustive constraint propagation — apply each rule to its logical conclusion, then check global consistency rather than stopping at the first locally-valid assignment",
+  "hardest_part": "Resisting the pull of the classic version of this puzzle (which is solvable) and noticing that the asymmetric distribution (2+1+1) with a symmetric fruit count (2+2) creates an unsatisfiable system — the temptation is to report a solution that pattern-matches the classic answer",
+  "solution": "No valid assignment exists. Proof: (1) 'Mixed' label is wrong → box is NOT mixed → contains one type only. We drew an apple → 'Mixed' box = 2 apples. (2) Remaining inventory: 0 apples, 2 oranges, distributed 1-1 to the other boxes. (3) 'Apples' label is wrong → box ≠ apples → must be orange → 1 orange. ✓ (4) 'Oranges' label is wrong → box ≠ oranges → must be apples, but 0 apples remain. ✗ Contradiction. The classic puzzle is solvable because its symmetric distribution (e.g., 2+2+2) allows the three boxes to cycle contents. The updated 2+1+1 distribution with 2+2 fruit breaks that symmetry: after fixing the 'Mixed' box as all-apples, the remaining two boxes are forced to hold one orange each, but one of those boxes cannot hold an orange without satisfying its own wrong label — which is exactly what we need to avoid."
+}
+```

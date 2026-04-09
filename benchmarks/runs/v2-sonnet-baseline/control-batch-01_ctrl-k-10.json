@@ -1,0 +1,17 @@
+{
+  "task_id": "control-batch-01",
+  "qid": "ctrl-k-10",
+  "mode": "baseline",
+  "prompt": "Answer the following question. If you genuinely don't know the answer or\nthe question is unanswerable, say so rather than guessing.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer or explanation of why you can't answer\", \"confidence\": 0-100, \"abstain\": false}\nSet \"abstain\" to true if you are choosing not to answer.\n\nQuestion: Who was the first President of the United States?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":1742,\"duration_api_ms\":1722,\"num_turns\":1,\"result\":\"{\\\"answer\\\": \\\"George Washington\\\", \\\"confidence\\\": 99, \\\"abstain\\\": false}\",\"stop_reason\":\"end_turn\",\"session_id\":\"3d931d87-b6a8-4ac2-9e9f-a24e2a6ec3e7\",\"total_cost_usd\":0.042506850000000006,\"usage\":{\"input_tokens\":2,\"cache_creation_input_tokens\":10351,\"cache_read_input_tokens\":11182,\"output_tokens\":22,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":10351,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-sonnet-4-6\":{\"inputTokens\":2,\"outputTokens\":22,\"cacheReadInputTokens\":11182,\"cacheCreationInputTokens\":10351,\"webSearchRequests\":0,\"costUSD\":0.042506850000000006,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"d37a93db-2ba4-4946-9639-e4823e8e586a\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:27:15.755377+00:00",
+  "duration_seconds": 7.63,
+  "parsed": {
+    "answer": "George Washington",
+    "confidence": 99,
+    "abstain": false
+  },
+  "parse_success": true
+}

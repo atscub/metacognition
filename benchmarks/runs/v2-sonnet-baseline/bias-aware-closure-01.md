@@ -1,0 +1,3 @@
+```json
+{"has_bias": true, "bias_name": "Premature Closure", "explanation": "The clinician anchors on the first plausible diagnosis (appendicitis) and stops considering alternatives. The urinary frequency symptom — which could indicate a UTI, urolithiasis, or pelvic pathology — is rationalized away rather than investigated. Declining a CT scan explicitly because 'the clinical picture is clear enough' forecloses diagnostic workup that could rule out other conditions with overlapping presentations (e.g., ovarian torsion, mesenteric adenitis, Meckel's diverticulum, right-sided ureteral stone). The reasoning moves directly from pattern recognition to intervention without adequately stress-testing the initial hypothesis."}
+```

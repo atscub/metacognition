@@ -1,0 +1,16 @@
+{
+  "task_id": "monitor-batch-05",
+  "qid": "sq-0053",
+  "mode": "baseline",
+  "prompt": "Answer the following question, then rate your confidence in your answer.\nRespond ONLY with JSON in this exact format, no other text:\n{\"answer\": \"your answer here\", \"confidence\": 0-100}\n\nQuestion: In which year was the Kangri cancer effect first studied?\n",
+  "response": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":4578,\"duration_api_ms\":4537,\"num_turns\":1,\"result\":\"```json\\n{\\\"answer\\\": \\\"I don't have reliable information about the 'Kangri cancer effect' or when it was first studied. This term is not in my training data, and I cannot provide a confident answer.\\\", \\\"confidence\\\": 5}\\n```\",\"stop_reason\":\"end_turn\",\"session_id\":\"a284919b-6263-43ab-a928-7cb987841354\",\"total_cost_usd\":0.014263900000000001,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":4792,\"cache_read_input_tokens\":67599,\"output_tokens\":301,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":4792,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":9,\"outputTokens\":301,\"cacheReadInputTokens\":67599,\"cacheCreationInputTokens\":4792,\"webSearchRequests\":0,\"costUSD\":0.014263900000000001,\"contextWindow\":200000,\"maxOutputTokens\":32000}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"uuid\":\"17351a1f-aff2-4cf9-827e-941c7ecfa134\"}\n",
+  "stderr": "",
+  "returncode": 0,
+  "timestamp": "2026-04-08T22:07:45.641174+00:00",
+  "duration_seconds": 10.43,
+  "parsed": {
+    "answer": "I don't have reliable information about the 'Kangri cancer effect' or when it was first studied. This term is not in my training data, and I cannot provide a confident answer.",
+    "confidence": 5
+  },
+  "parse_success": true
+}

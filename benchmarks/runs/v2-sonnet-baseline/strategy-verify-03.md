@@ -1,0 +1,8 @@
+```json
+{
+  "problem_type": "Statistical reasoning / research methodology critique",
+  "strategy": "Systematic validity audit: separate statistical mechanics from sampling validity, then evaluate whether the conclusion follows from the data",
+  "hardest_part": "Distinguishing the two independent failure modes — the sampling bias (which invalidates everything) vs. the statistical claim (which is actually internally correct) — without conflating them",
+  "solution": "The conclusion is INVALID. Two distinct issues: (1) FATAL — Sampling bias: Drawing from the company's existing customer email list is a non-probability, convenience sample heavily biased toward people who already chose Brand A. This violates the foundational assumption of inferential statistics that the sample represents the target population. No margin of error calculation can fix this — the MoE formula assumes random sampling. The 'population' this sample actually represents is existing customers, not the general public. (2) MINOR — The statistical mechanics are internally consistent but misapplied: for n=500 at 95% confidence, MoE ≈ ±4.4% is approximately correct. Since 60% - 4% = 56% > 50%, the claim that a majority prefer Brand A would technically hold IF the sample were valid. But it isn't. The correct conclusion, even if all math is right, would be: 'Among our existing customers surveyed, 60% prefer Brand A — this cannot be generalized to the broader population due to sampling bias.' The researcher conflates internal statistical validity with external generalizability. The confidence interval addresses sampling variability, not systematic bias."
+}
+```
