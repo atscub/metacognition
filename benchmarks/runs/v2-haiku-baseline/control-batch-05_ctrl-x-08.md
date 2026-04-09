@@ -1,3 +1,0 @@
-```json
-{"answer": "Thoughts do not have measurable weight in grams. Thoughts are neural processes—patterns of electrical and chemical signals in the brain—not physical objects. While the brain that generates thoughts has mass, individual thoughts do not add measurable weight. Neural activity involves ion movement and neurotransmitter release, but these don't result in quantifiable mass changes to the brain that could be attributed to specific thoughts.", "confidence": 95, "abstain": false}
-```

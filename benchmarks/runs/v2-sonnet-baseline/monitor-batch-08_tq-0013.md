@@ -1,1 +1,0 @@
-{"answer": "Equal - approximately 50% with both siblings and parents", "confidence": 95}

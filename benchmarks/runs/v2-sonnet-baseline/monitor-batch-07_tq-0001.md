@@ -1,1 +1,0 @@
-{"answer": "Elon Huntington Hooker", "confidence": 72}

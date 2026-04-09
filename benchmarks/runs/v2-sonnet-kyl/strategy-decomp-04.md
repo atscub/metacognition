@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "Constraint satisfaction / topological scheduling — find a valid feature ordering under dependency and parallelism constraints within a fixed time horizon",
-  "strategy": "Critical path analysis first, then topological sort to find the earliest legal start for each feature, then check if the resource constraint (≤2 parallel) is ever violated. Assumption audit: 'takes N sprints' means N consecutive sprint-slots; a feature can only START once all its predecessors COMPLETE; parallelism cap is 2 active features per sprint, not 2 starts.",
-  "hardest_part": "Recognizing that F3 (2 sprints) must be overlapped with the F1→F2 chain rather than sequenced after it — otherwise the critical path F1→F2→F4→F5 alone consumes 4 sprints, and F3 would push F4 into Sprint 5. The temptation is to schedule F3 after F1 completes, burning Sprint 2 on {F2, F3-start} and Sprint 3 on {F3-end}, but that's actually fine — the key insight is that F3 must START in Sprint 1 alongside F1, not after it.",
-  "solution": "YES — all features can be delivered in exactly 4 sprints. Schedule: Sprint 1: {F1, F3} | Sprint 2: {F2, F3} | Sprint 3: {F4} | Sprint 4: {F5}. Verification — F1 done after S1 ✓; F2 starts S2 (F1 done) ✓; F3 done after S2 (2 sprints) ✓; F4 starts S3 (F2 ✓ and F3 ✓ both done) ✓; F5 starts S4 (F4 done) ✓. Parallelism: S1=2, S2=2, S3=1, S4=1 — never exceeds 2 ✓. Note: Sprint 3 has one idle slot with no available work, which is unavoidable given the dependency graph."
-}
-```

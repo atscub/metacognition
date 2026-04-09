@@ -1,1 +1,0 @@
-{"answer": "Tokyo", "confidence": 99, "abstain": false}

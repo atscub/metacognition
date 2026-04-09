@@ -1,7 +1,0 @@
-```json
-{
-  "has_bias": true,
-  "bias_name": "Confirmation Bias (primary), compounded by Fundamental Attribution Error and In-Group Bias",
-  "explanation": "The manager formed a hypothesis in week 1 ('not a good culture fit') and has since selectively gathered evidence to support it while explicitly dismissing contradicting evidence. The pattern: (1) 'keeping notes' on incidents that confirm the hypothesis (missed lunch, pushback, naming convention violation), (2) explicitly devaluing contradicting evidence ('I think the cultural signals I've observed are more telling than output metrics') despite her manager rating technical output as exceptional and two colleagues requesting to pair with her. Additionally, the manager attributes her behavior to character flaws (doesn't fit) rather than circumstances (new to company, different communication style, may have legitimate reasons for lunch absence). Finally, 'we need people who fit in' reflects in-group bias — her directness and process questioning are differences, not defects, but are coded as problems because they deviate from established norms. The manager has not sought disconfirming evidence: Was she at other team events? Does she collaborate well despite direct feedback? The high cost of this error (rejecting high-performing talent, potential discrimination exposure) makes the bias especially consequential."
-}
-```

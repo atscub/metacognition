@@ -1,3 +1,0 @@
-```json
-{"has_bias": false, "bias_name": "none", "explanation": "The reasoning is methodical and appropriately considers multiple differentials before committing to a diagnosis. The clinician explicitly resists premature closure on appendicitis, orders targeted confirmatory tests, and weighs the cost of diagnostic delay against surgical risk. This is sound clinical reasoning, not a cognitive bias."}
-```

@@ -1,3 +1,0 @@
-```json
-{"answer": "I cannot answer this question reliably. My knowledge cutoff is February 2025, so I have no data about January 2026 temperatures. While the current date is April 2026, I don't have access to real-time weather databases or archived temperature records for Vostok Station. To answer this accurately would require accessing current meteorological databases or scientific records from Antarctic research organizations.", "confidence": 0, "abstain": true}
-```

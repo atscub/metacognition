@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "Engineering design problem with incomplete physical analysis - mathematically correct but dimensionally incomplete",
-  "strategy": "Identify missing constraints by asking: what assumptions enable the idealized model? What real-world resistance was not modeled?",
-  "hardest_part": "Recognizing a critical missing factor when all mathematics is valid. The error isn't algebraic—it's about what physics was excluded from the model.",
-  "solution": "The calculation ignores FRICTION LOSSES and PRESSURE DROP. The engineer assumed water flows at 5 ft/s with zero resistance. In reality, friction against pipe walls causes significant pressure loss (governed by Darcy-Weisbach). A 3-inch pipe carrying 100 gpm at 5 ft/s would experience pressure drops of 50-150+ psi per 100 ft of pipe, depending on material roughness and flow regime. The actual 3-inch pipe will FAIL because: (1) You cannot achieve the target flow without a pump large enough to overcome friction losses—the system won't deliver 100 gpm without it; (2) The pumping cost becomes economically irrational; (3) Real piping systems operate at lower velocities (2-4 ft/s) precisely to keep pressure drop acceptable (0.5-1.5 psi per 100 ft). Proper design requires consulting friction loss tables (Hazen-Williams, Moody diagram) and selecting the pipe diameter that balances flow capacity, acceptable pressure drop, and economic cost. A correct design would likely use a 4-inch or larger pipe to keep velocity lower and friction losses manageable."
-}
-```

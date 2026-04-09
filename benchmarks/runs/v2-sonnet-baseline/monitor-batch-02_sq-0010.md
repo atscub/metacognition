@@ -1,1 +1,0 @@
-{"answer": "I don't have reliable information about the specific hotel mentioned in Joseph Toler's June 17, 1834 Halifax Times advertisement", "confidence": 5}

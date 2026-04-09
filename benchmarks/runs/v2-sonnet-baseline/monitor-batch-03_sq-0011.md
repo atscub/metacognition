@@ -1,1 +1,0 @@
-{"answer": "Sir William Beechey's father was Richard Beechey (a solicitor) and his mother was Hannah Beechey (née Reed). However, I have low confidence in the mother's maiden name specifically.", "confidence": 25}

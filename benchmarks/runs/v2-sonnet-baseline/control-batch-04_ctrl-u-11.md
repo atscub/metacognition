@@ -1,1 +1,0 @@
-{"answer": "I cannot answer this question. My knowledge cutoff is August 2025, and Q3 2026 has not occurred yet from my knowledge perspective. I have no data on funding events in Q3 2026.", "confidence": 0, "abstain": true}

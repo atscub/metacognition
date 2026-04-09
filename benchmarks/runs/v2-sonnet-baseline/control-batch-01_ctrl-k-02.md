@@ -1,1 +1,0 @@
-{"answer": "William Shakespeare", "confidence": 99, "abstain": false}

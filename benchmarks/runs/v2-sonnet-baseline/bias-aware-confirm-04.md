@@ -1,3 +1,0 @@
-```json
-{"has_bias": true, "bias_name": "Confirmation bias", "explanation": "The reasoner formed an early negative judgment ('first week') and then selectively collected evidence supporting that conclusion (missed lunch, pushback in retro, naming conventions, blunt comments) while explicitly discounting strong counter-evidence (exceptional manager rating, teammates requesting to pair with her). The phrase 'I've been keeping notes' signals deliberate evidence-gathering in service of a pre-existing belief rather than open inquiry. The dismissal of output metrics as less 'telling' than subjective cultural signals completes the pattern: disconfirming evidence is rationalized away rather than integrated."}
-```

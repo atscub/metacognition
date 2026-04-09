@@ -1,1 +1,0 @@
-{"answer": "unknown", "confidence": 5}

@@ -1,1 +1,0 @@
-{"answer": "Walmart", "confidence": 85}

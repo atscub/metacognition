@@ -1,1 +1,0 @@
-{"answer": "Approximately 1 in 10,000 people in the general population have absolute pitch (perfect pitch), though rates are higher among musicians and in populations with tonal languages (e.g., some studies suggest 1 in 1,500 among music students).", "confidence": 62}

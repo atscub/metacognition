@@ -1,3 +1,0 @@
-```json
-{"has_bias": false, "bias_name": "none", "explanation": "The reasoning explicitly acknowledges and actively corrects for anchoring bias by setting aside the listing price and grounding the offer in an independent appraisal plus concrete repair cost deductions. The methodology is sound: appraised value ($430k) minus repair costs ($55k-$80k midpoint) yields the stated offer range. No other systematic distortions are evident."}
-```

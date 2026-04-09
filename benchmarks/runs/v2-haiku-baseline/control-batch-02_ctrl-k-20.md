@@ -1,3 +1,0 @@
-```json
-{"answer": "Mandarin Chinese has the most native speakers worldwide, with approximately 900+ million native speakers. This is primarily due to China's large population. English is second with around 370 million native speakers, followed by Spanish with around 460 million. It's important to note that English has more total speakers globally when including non-native speakers, but Mandarin Chinese leads in native speakers specifically.", "confidence": 88, "abstain": false}
-```

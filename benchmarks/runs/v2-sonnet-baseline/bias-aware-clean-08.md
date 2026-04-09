@@ -1,3 +1,0 @@
-```json
-{"has_bias": false, "bias_name": "none", "explanation": "The reasoning trace explicitly identifies and corrects for appeal to authority bias. The analyst acknowledges Dr. Werner's credentials, notes they don't transfer to adjacent domains (economics, grid engineering, policy), and commits to evaluating arguments on their merits using independent evidence (IPCC/IEA scenarios, LCOE data). This is sound epistemic practice, not a cognitive bias."}
-```

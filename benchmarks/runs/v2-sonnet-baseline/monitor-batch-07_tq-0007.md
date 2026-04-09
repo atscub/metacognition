@@ -1,1 +1,0 @@
-{"answer": "Apples provide fiber (supporting digestion and gut health), vitamin C (immune support), antioxidants like quercetin (reducing inflammation and oxidative stress), and polyphenols linked to reduced risk of heart disease, type 2 diabetes, and certain cancers. They also support weight management due to their water and fiber content promoting satiety.", "confidence": 85}

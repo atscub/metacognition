@@ -1,1 +1,0 @@
-{"answer": "Mozang (Mozang Chungi area)", "confidence": 18}

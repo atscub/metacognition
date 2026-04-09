@@ -1,1 +1,0 @@
-{"answer": "They weigh the same. Both are exactly one kilogram.", "confidence": 100, "abstain": false}

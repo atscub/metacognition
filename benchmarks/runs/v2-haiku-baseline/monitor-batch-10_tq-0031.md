@@ -1,3 +1,0 @@
-```json
-{"answer": "The term 'buck' for a dollar likely originates from colonial America's use of buckskin (deerskin) as a valuable trade good and medium of exchange. Deerskins were hunted and traded extensively, making a buckskin (or 'buck') synonymous with a unit of value. This evolved into slang for currency, particularly in trading and gambling contexts, and eventually became standard slang for a dollar.", "confidence": 78}
-```

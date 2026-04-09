@@ -1,1 +1,0 @@
-{"answer": "I don't have specific data on the grain output of Kurgan Oblast, Russia in 1997.", "confidence": 0, "abstain": true}

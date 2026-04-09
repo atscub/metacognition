@@ -1,1 +1,0 @@
-{"answer": "A monkey's paw is used for grasping and climbing, functioning similarly to a hand with opposable thumbs that allow the monkey to grip branches and manipulate objects. In folklore (W.W. Jacobs' story), a monkey's paw is a cursed talisman that grants three wishes but with terrible consequences.", "confidence": 85}

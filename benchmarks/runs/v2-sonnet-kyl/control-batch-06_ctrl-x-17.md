@@ -1,1 +1,0 @@
-{"answer": "This question is unanswerable. Happiness is a human emotion, not an invention — it has no inventor. No single person can be credited with 'inventing' happiness, so there is no associated phone number. The premise of the question is false.", "confidence": 99, "abstain": false}

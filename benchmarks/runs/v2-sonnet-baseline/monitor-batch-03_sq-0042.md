@@ -1,1 +1,0 @@
-{"answer": "Approximately 33,804", "confidence": 42}

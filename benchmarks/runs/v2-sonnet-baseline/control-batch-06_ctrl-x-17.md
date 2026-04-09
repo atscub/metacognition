@@ -1,1 +1,0 @@
-{"answer": "This question is unanswerable. Happiness is not something that was 'invented' by a single person — it is a fundamental human emotion/experience that has existed throughout human history. There is no inventor of happiness and therefore no associated phone number.", "confidence": 99, "abstain": false}

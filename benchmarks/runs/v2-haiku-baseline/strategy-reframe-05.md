@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "Root cause analysis with resource allocation decision-making. The core issue is distinguishing between symptoms and underlying causes before committing capital.",
-  "strategy": "First-principles decomposition (meta-decompose): break the problem into (1) What is actually causing accidents? (2) What are we currently planning to fix? (3) Is there a mismatch? Then apply cheap validation before expensive solutions.",
-  "hardest_part": "Recognizing that an obvious, expensive solution may be treating symptoms rather than causes. This requires epistemic humility — admitting that the initial traffic-engineering analysis might have skipped root cause verification in favor of standard interventions.",
-  "solution": "FIRST: Verify the tree hypothesis is causal, not just correlated. Analyze accident data: location (do they cluster at the obstructed sight line?), type (rear-end collisions, side-impact from missed stop signs — consistent with poor visibility?). Second: Cost-benefit test. Removing/trimming the tree costs $5-20K and takes weeks. If accidents drop significantly, the $500K project is unnecessary — massive resource saving. If they persist, you have real data to justify infrastructure investment. Third: Why this changes the analysis — it reframes the decision from 'which traffic control measures?' to 'what is the actual failure mode?' Committing $500K without testing the simplest hypothesis first is wasteful; the traffic light solves a different problem than poor sight lines do."
-}
-```

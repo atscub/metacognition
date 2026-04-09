@@ -1,1 +1,0 @@
-{"answer": "Tradition and visual spectacle for the audience. Bulls are actually colorblind to red — they react to the movement of the cape, not its color. The red color is used to hide bloodstains and for dramatic theatrical effect.", "confidence": 92}

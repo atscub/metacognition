@@ -1,1 +1,0 @@
-{"answer": "The kcat of human carbonic anhydrase II (HCA II) for CO2 hydration at 25°C is approximately 1 × 10^6 s^-1 (one million per second), making it one of the fastest enzymes known. More precisely, reported values are typically in the range of 0.6–1.4 × 10^6 s^-1, with a commonly cited value around 1.0 × 10^6 s^-1.", "confidence": 75, "abstain": false}

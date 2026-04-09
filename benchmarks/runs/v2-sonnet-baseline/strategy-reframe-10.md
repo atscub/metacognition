@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "Statistical validity / experimental design critique",
-  "strategy": "Threat-to-validity analysis — enumerate confounds before accepting a causal claim",
-  "hardest_part": "The numbers look clean (large N, p<0.05, powered), so the flaw is non-obvious. The hard part is recognizing that the *external validity* is compromised even though internal statistics are fine.",
-  "solution": "The core problem is confounding via timing: the test ran exclusively during a holiday sale period. This means the 15% lift is likely an interaction effect between button color AND holiday purchase intent, not a generalizable color preference. Holiday shoppers are already primed to buy — they may be less sensitive to UI friction, more impulsive, or responding differently to visual cues than typical visitors. The green button's effect could be zero, positive, or even negative under normal traffic. Additional concerns: (1) novelty effect — users may click green simply because it changed, an effect that decays; (2) p=0.03 is marginal — with multiple comparisons or optional stopping it may not replicate; (3) holiday traffic mix (demographics, intent, device) likely differs from baseline. What the team should do: re-run the test during a representative non-holiday period before implementing. Also check segmentation — does the lift hold across device types, acquisition channels, and returning vs. new visitors? If re-running is infeasible, treat the result as a hypothesis, not a conclusion, and ship behind a gradual rollout with continued measurement post-holiday to confirm the effect persists."
-}
-```

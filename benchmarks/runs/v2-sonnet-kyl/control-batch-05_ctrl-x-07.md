@@ -1,1 +1,0 @@
-{"answer": "Roosters don't lay eggs. Only hens lay eggs, so the premise is impossible.", "confidence": 99, "abstain": false}

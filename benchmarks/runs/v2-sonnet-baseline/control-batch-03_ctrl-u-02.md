@@ -1,1 +1,0 @@
-{"answer": "I don't have reliable specific information about the exact final score of the 1987 NCAA Division III men's basketball championship game.", "confidence": 0, "abstain": true}

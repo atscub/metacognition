@@ -1,1 +1,0 @@
-{"answer": "The Pacific Ocean is the largest ocean on Earth, covering approximately 165 million square kilometers (about 63.8 million square miles), which is more than all of Earth's landmasses combined.", "confidence": 99, "abstain": false}

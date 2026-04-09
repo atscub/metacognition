@@ -1,1 +1,0 @@
-{"answer": "Parents (or other family members/caregivers) collect the teeth while the child sleeps and leave money or a small gift in exchange, perpetuating the Tooth Fairy myth.", "confidence": 99}

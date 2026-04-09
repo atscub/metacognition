@@ -1,3 +1,0 @@
-```json
-{"answer": "I cannot confidently answer this question. This requires specific historical knowledge about parish priest appointments in Ballyvourney, County Cork in 1891. While I have general knowledge about Ireland and its Catholic Church history, I lack access to the parish records, church appointment documents, or verified historical sources needed to identify the specific priest serving in that parish at that time. Without being able to verify the answer, I should not guess.", "confidence": 5, "abstain": true}
-```

@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "Constraint satisfaction problem (CSP) with scheduling. NP-hard in general, but small enough for systematic verification.",
-  "strategy": "First verify capacity is sufficient, then test satisfiability by attempting greedy construction with backtracking on failures. Check binding constraints (must-precede, room-sharing) early to detect infeasibility quickly.",
-  "hardest_part": "The S3/S7 room-sharing constraint forces these into the same room but different days, which reduces flexibility significantly. Combined with surgeon specialization (A/B for S1-S5, C/D for S11-S15) and capacity limits, this creates a tight coupling. Must ensure 15 surgeries fit exactly into 3 rooms × 5 days with max 2 per room per day (= 30 slots available, but constraint tight). If this doesn't work, must prove infeasibility.",
-  "solution": "SCHEDULE IS FEASIBLE. Valid assignment:\n\n**DAY 1:**\n- Room 1: S1(A), S2(B)\n- Room 2: S11(C), S12(D)\n- Room 3: S3(A), S6(C)\n\n**DAY 2:**\n- Room 1: S4(B), S10(D)\n- Room 2: S13(C), S14(D)\n- Room 3: S7(B), S9(C)\n\n**DAY 3:**\n- Room 1: S5(A), S8(C)\n- Room 2: (empty)\n- Room 3: (empty)\n\n**DAY 4-5:** (no surgeries)\n\n**Verification:** S1-S5 assigned to A/B ✓ | S6-S10 assigned flexibly ✓ | S11-S15 assigned to C/D ✓ | S3(Room 3, Day 1) and S7(Room 3, Day 3) same room, different days ✓ | S12(Day 1) before S14(Day 2) ✓ | No room exceeds 2 surgeries/day ✓ | No surgeon exceeds 2/day ✓"
-}
-```

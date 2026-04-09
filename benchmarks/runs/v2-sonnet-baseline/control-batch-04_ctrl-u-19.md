@@ -1,1 +1,0 @@
-{"answer": "I don't have access to the specific data from Robie and Hemingway (1995) for tephroite at 800K.", "confidence": 0, "abstain": true}

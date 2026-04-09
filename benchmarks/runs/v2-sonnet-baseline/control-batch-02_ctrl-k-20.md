@@ -1,1 +1,0 @@
-{"answer": "Mandarin Chinese (Standard Chinese/Putonghua)", "confidence": 95, "abstain": false}

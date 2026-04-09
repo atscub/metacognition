@@ -1,3 +1,0 @@
-```json
-{"answer": "I cannot answer this question because it lacks necessary context. I don't know who 'she' refers to, which meeting is being referenced, or when 'last Tuesday' occurred in relation to any meeting I would have information about. I have no access to meeting notes, recordings, or transcripts. The question would need to specify the person, meeting, and provide relevant context for me to attempt an answer.", "confidence": 0, "abstain": true}
-```

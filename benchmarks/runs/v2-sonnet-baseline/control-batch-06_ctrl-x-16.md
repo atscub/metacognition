@@ -1,1 +1,0 @@
-{"answer": "No photograph has been provided in this conversation. I cannot determine where a photograph was taken without seeing one.", "confidence": 99, "abstain": false}

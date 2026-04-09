@@ -1,1 +1,0 @@
-{"answer": "Dimapur", "confidence": 72}

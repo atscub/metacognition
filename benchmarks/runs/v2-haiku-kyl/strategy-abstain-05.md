@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "Conditional probability with incomplete information / Bayesian inference",
-  "strategy": "Recognize underspecification first. The problem lacks the initial jar composition (how many red vs blue originally?). Any numerical answer depends on unstated assumptions. Identify what we actually know vs. what we'd need to know.",
-  "hardest_part": "Resisting the urge to apply a formula. The cognitive trap is thinking 'this is a probability problem, so I should just calculate' without first asking 'do I have the inputs I need?' The problem is designed to test whether you recognize incomplete information.",
-  "solution": "We cannot give a definitive numerical answer without knowing the initial composition. The answer depends on N_red_initial and N_blue_initial:\n\nGiven: first marble drawn was red.\nAfter drawing it: (N_red_initial - 1) red marbles remain, total marbles = N_red_initial + N_blue_initial - 1\n\nP(2nd is red | 1st was red) = (N_red_initial - 1) / (N_red_initial + N_blue_initial - 1)\n\nWithout knowing these numbers, the probability ranges from nearly 0 (if there was only 1 red marble originally) to nearly 1 (if almost all were red). We need either:\n- The specific composition (e.g., '5 red, 3 blue initially')\n- A prior assumption (e.g., 'assume all initial compositions equally likely')\n- Context suggesting a standard setup\n\nThe question's real answer is: 'This depends on information not given in the problem.'"
-}
-```

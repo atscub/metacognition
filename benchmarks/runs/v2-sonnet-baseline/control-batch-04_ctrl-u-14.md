@@ -1,1 +1,0 @@
-{"answer": "I don't have specific statistics for Hideo Fujimoto's batting average in the 1978 Japanese Central League season.", "confidence": 0, "abstain": true}

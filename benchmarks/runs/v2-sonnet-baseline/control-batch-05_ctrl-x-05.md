@@ -1,1 +1,0 @@
-{"answer": "There is no single 'best' programming language. The best language depends on the use case: Python for data science/ML, JavaScript/TypeScript for web, Rust/C++ for systems programming, SQL for databases, Swift/Kotlin for mobile, etc. Each language has trade-offs in performance, expressiveness, ecosystem, and developer experience.", "confidence": 95, "abstain": false}

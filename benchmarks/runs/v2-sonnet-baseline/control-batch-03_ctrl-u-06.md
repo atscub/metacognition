@@ -1,1 +1,0 @@
-{"answer": "I don't have specific data on the number of registered voters in Pembroke, New Hampshire for the November 2018 general election.", "confidence": 0, "abstain": true}

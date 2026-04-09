@@ -1,1 +1,0 @@
-{"answer": "Roosters don't lay eggs. Only hens lay eggs, so there is no egg to roll down either side.", "confidence": 100, "abstain": false}

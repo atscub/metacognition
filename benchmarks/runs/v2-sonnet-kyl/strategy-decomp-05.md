@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "Constrained integer linear optimization — maximize one variable subject to budget, allocation, and minimum-proportion constraints",
-  "strategy": "Reduce to one decision variable by minimizing all other cost-driving allocations first, then solve the budget binding constraint algebraically. Verify by checking all constraints against the candidate solution.",
-  "hardest_part": "Correctly identifying who counts as 'non-restricted guests' for the 20% minimum variety constraint, and deciding whether to round 15.6 up to 16 (must, since 'at least 20%' is a floor on a proportion).",
-  "solution": "Define three guest groups: A=24 (must get vegetarian), B=18 (no fish; can get chicken or vegetarian), C=78 (unrestricted). Fish plates come only from group C. Let c_c, c_f, c_v be group C allocations. Constraints: c_c+c_f+c_v=78; c_c≥16 (≥20% of 78); c_f≥16 (≥20% of 78). Budget: 15×(24+b_v+c_v)+18×(b_c+c_c)+24×c_f≤2400. Substituting b_v=18−b_c and c_v=78−c_c−c_f, the budget simplifies to 3b_c+3c_c+9c_f≤600, i.e. b_c+c_c+3c_f≤200. To maximize c_f, minimize b_c (set to 0) and c_c (set to 16): 0+16+3c_f≤200 → c_f≤61.33 → c_f=61. Verification with c_f=61, c_c=16, c_v=1, b_c=0, b_v=18: total plates=43 veg+16 chicken+61 fish=120✓; cost=43×15+16×18+61×24=$645+$288+$1,464=$2,397≤$2,400✓; all proportion constraints met✓. At c_f=62: cost=$2,406>$2,400✗. Maximum fish plates = 61."
-}
-```

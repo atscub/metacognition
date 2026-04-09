@@ -1,1 +1,0 @@
-{"answer": "Once. Cats are mortal and die once like all living creatures. The 'nine lives' saying is a myth referring to their agility and ability to survive dangerous situations.", "confidence": 99}

@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "Two-part mathematical puzzle: (1) a classic kinematics problem with an elegant shortcut, (2) a convergent infinite-series problem disguised as a counting problem",
-  "strategy": "Part 1 — resist computing the bird's individual legs; use relative speed to find total time, then multiply by bird speed. Part 2 — apply epistemic humility: the intuitive impulse is to find a finite count, but the correct move is to recognize a geometric series of direction-change intervals that converges in time but has infinitely many terms.",
-  "hardest_part": "Part 2 is the trap. The urge to compute leg-by-leg and sum to a finite number is pattern-matching (Zeno-style series) applied prematurely. The honest answer requires confirming that each leg time is a constant fraction of the prior, so the series has infinitely many terms summing to finite time — i.e., the bird changes direction infinitely many times. Sycophancy risk: the question implies there IS a finite answer. There isn't, and I should not invent one.",
-  "solution": "Part 1 — How far does the bird fly? The trains close at 60+80=140 mph over 280 miles, so they meet in 2 hours. The bird flies at 100 mph for 2 hours = 200 miles. Part 2 — How many direction changes? Infinitely many. Each leg takes a fraction of the time of the prior leg (the gap between trains shrinks geometrically — by factor 1/36 every two legs, verified algebraically). The series of leg-durations is geometric with ratio < 1, so it sums to exactly 2 hours, but contains infinitely many terms. There is no finite count. Any specific finite answer would be wrong. This is the same structure as Zeno's paradox: infinite events, finite total time."
-}
-```

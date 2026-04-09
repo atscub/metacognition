@@ -1,1 +1,0 @@
-{"answer": "Leah Shaw", "confidence": 45}

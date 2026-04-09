@@ -1,3 +1,0 @@
-```json
-{"has_bias": true, "bias_name": "Authority Bias", "explanation": "The engineer held a clear position (flatter structure is better) based on technical reasoning, then revised that position after a VP expressed a contrary opinion. The trigger for reconsideration was not new technical evidence or a compelling argument — it was the seniority of who spoke. The post-meeting rationalization ('clients can always flatten responses') reads as motivated reasoning to justify a socially-pressured position change rather than genuine persuasion by logic."}
-```

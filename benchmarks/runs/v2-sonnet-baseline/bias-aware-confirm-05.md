@@ -1,3 +1,0 @@
-```json
-{"has_bias": true, "bias_name": "Confirmation bias", "explanation": "The reasoner selectively weights evidence that supports the existing bullish thesis (price drops, new projects, IRA subsidies) while dismissing contradictory evidence (missed earnings, margin compression from oversupply) as merely 'short-term corrections' without analysis to justify that characterization. The phrase 'continued validation' signals the reasoner is looking to confirm rather than test the thesis."}
-```

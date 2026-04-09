@@ -1,3 +1,0 @@
-```json
-{"has_bias": true, "bias_name": "Authority/Social Pressure Bias (Groupthink)", "explanation": "The reasoning shifts from a professionally grounded recommendation (full hydrological study) to a more permissive one (standard retention ponds) not because of new technical evidence, but because the COO asserted a non-negotiable timeline and 'several committee members nodded.' The revised recommendation is rationalized after the social pressure, not derived independently. The framing 'on reflection' suggests deliberation, but no new data was introduced — only stakeholder pushback. This is a classic pattern where authority and conformity pressure override expert judgment."}
-```

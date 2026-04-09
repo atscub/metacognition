@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "Statistical hypothesis testing comparing two proportions; involves both calculation and interpretation",
-  "strategy": "Two-proportion z-test with emphasis on epistemic humility about what p-values actually mean. The framing 'determine which drug is superior' contains a trap—statistical significance is not the same as superiority, and a single p-value doesn't settle the question.",
-  "hardest_part": "Not the math (straightforward z-test), but avoiding false confidence. The naive answer declares a winner based on p < 0.05. The sound answer recognizes: (1) p-value only answers 'is this difference likely due to chance?', not 'is this clinically meaningful?'; (2) a null result (p > 0.05) means 'no significant difference detected', not 'drugs are equivalent'; (3) effect size (5% absolute difference) must be weighed against statistical significance; (4) real-world factors (cost, side effects, subpopulations) matter more than p-value.",
-  "solution": "Drug X: 70% improvement rate (140/200). Drug Y: 65% improvement rate (130/200). Two-proportion z-test: z ≈ 1.07, p-value ≈ 0.286 (two-tailed). Conclusion: The 5% difference is NOT statistically significant (p > 0.05). We cannot conclude Drug X is superior. The observed difference is consistent with random variation. Clinical decision requires additional evidence: side effect profiles, cost, patient populations, prior trials, and whether a 5% absolute difference (if it were real) justifies switching treatments."
-}
-```

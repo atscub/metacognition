@@ -1,1 +1,0 @@
-{"answer": "I don't have sufficient confidence to answer this question. I cannot reliably identify a Swiss painter who murdered a landlady named Anne King.", "confidence": 5}

@@ -1,3 +1,0 @@
-```json
-{"answer": "This refers to the 1996 Supreme Court judgment in Balaji Raghavan v. Union of India. The five-judge Constitution Bench consisted of Chief Justice A.M. Ahmadi, Justice Kuldip Singh, Justice B.P. Jeevan Reddy, Justice S.C. Agrawal, and Justice N.P. Singh. The bench held that Bharat Ratna and Padma awards are not 'titles' prohibited under Article 18(1) of the Constitution.", "confidence": 35}
-```

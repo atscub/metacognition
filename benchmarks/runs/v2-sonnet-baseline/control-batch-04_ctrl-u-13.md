@@ -1,1 +1,0 @@
-{"answer": "I don't know who the director of the Bureau of Reclamation field office in Yuma, Arizona was in 1962. This is a highly specific historical administrative detail that I cannot reliably answer without risking fabrication.", "confidence": 0, "abstain": true}

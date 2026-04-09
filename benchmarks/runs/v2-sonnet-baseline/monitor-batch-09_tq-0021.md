@@ -1,1 +1,0 @@
-{"answer": "There is no unequivocally best form of government. This is a normative political philosophy question where reasonable people deeply disagree based on differing values, historical contexts, and empirical assessments. Different systems (democracy, republic, constitutional monarchy, etc.) have different trade-offs.", "confidence": 99}

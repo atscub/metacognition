@@ -1,1 +1,0 @@
-{"answer": "This is a medieval philosophical/theological thought experiment (often attributed to scholastic debates) used to mock what were seen as trivial metaphysical disputes. There is no empirical or logical answer — it is intentionally unanswerable. The question is a rhetorical device, not a genuine inquiry.", "confidence": 95, "abstain": false}

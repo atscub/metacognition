@@ -1,1 +1,0 @@
-{"answer": "August", "confidence": 45}

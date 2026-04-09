@@ -1,1 +1,0 @@
-{"answer": "I don't have verified knowledge of the Jaynes Covered Bridge's location. My training data doesn't contain a reliable, specific record of this bridge's town — I would be fabricating if I named one.", "confidence": 5}

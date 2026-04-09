@@ -1,1 +1,0 @@
-{"answer": "Kalma Chowk", "confidence": 35}

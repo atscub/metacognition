@@ -1,3 +1,0 @@
-```json
-{"answer": "This question is unanswerable as posed. 'Best' is entirely context-dependent. There is no single best programming language — the right choice depends on use case (systems programming, ML, web, mobile, data analysis), team expertise, ecosystem maturity, performance requirements, and tooling. Any confident answer would be pattern-matching bias, not reasoning. Python dominates ML; Rust wins for memory-safe systems; JavaScript is unavoidable for browsers; SQL is unmatched for relational queries. No language is universally best.", "confidence": 98, "abstain": false}
-```

@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "Constraint Satisfaction Problem (CSP) — resource allocation with temporal, capacity, and assignment constraints",
-  "strategy": "Constraint propagation first (identify hard anchors like the S3/S7 room-link and S12→S14 ordering), then greedy assignment with backtracking awareness to fill remaining slots",
-  "hardest_part": "S3 and S7 must share a room but not a day — this chains room assignment across days and interacts with per-room daily capacity (max 2), creating a ripple effect on surgeon load balancing",
-  "solution": "VALID SCHEDULE FOUND:\n\nDay 1 | Room 1: S3(SurgA), S11(SurgC) | Room 2: S1(SurgB), S6(SurgD) | Room 3: S2(SurgA), S12(SurgC)\nDay 2 | Room 1: S7(SurgA), S13(SurgC) | Room 2: S4(SurgB), S8(SurgD) | Room 3: S5(SurgA), S14(SurgC)\nDay 3 | Room 1: S9(SurgB), S15(SurgD) | Room 2: S10(SurgA)\n\nVERIFICATION:\n• S1–S5 → Surgeon A or B only: S1(B),S2(A),S3(A),S4(B),S5(A) ✓\n• S6–S10 → any surgeon: S6(D),S7(A),S8(D),S9(B),S10(A) ✓\n• S11–S15 → Surgeon C or D only: S11(C),S12(C),S13(C),S14(C),S15(D) ✓\n• S3 & S7 same room, different days: both Room 1, Day 1 vs Day 2 ✓\n• S12 before S14: S12=Day1, S14=Day2 ✓\n• Room capacity ≤2/day: Day1[2,2,2], Day2[2,2,2], Day3[2,1] ✓\n• Surgeon capacity ≤2/day:\n  Day1: A=2(S3,S2), B=1(S1), C=2(S11,S12), D=1(S6) ✓\n  Day2: A=2(S7,S5), B=1(S4), C=2(S13,S14), D=1(S8) ✓\n  Day3: A=1(S10), B=1(S9), D=1(S15) ✓\nAll 15 surgeries scheduled. No constraint violated."
-}
-```

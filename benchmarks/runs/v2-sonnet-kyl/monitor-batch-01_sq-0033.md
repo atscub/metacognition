@@ -1,1 +1,0 @@
-{"answer": "I cannot confidently identify who received the honorable mention at the 1999 Frank and Brennie Morgan Prize. The 1999 prize winner was Sean McLaughlin (for work related to the Kepler sphere-packing conjecture), but I do not have reliable recall of the honorable mention recipient(s) for that year.", "confidence": 12}

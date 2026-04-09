@@ -1,1 +1,0 @@
-{"answer": "I'm Claude, an AI assistant made by Anthropic. I help with a wide range of tasks including answering questions, writing, coding, analysis, research, math, and creative projects.", "confidence": 99}

@@ -1,1 +1,0 @@
-{"answer": "Cyprus", "confidence": 82}

@@ -1,1 +1,0 @@
-{"answer": "1997", "confidence": 72}

@@ -1,1 +1,0 @@
-{"answer": "Thoughts are mental/cognitive events and have no physical mass or weight. They cannot be measured in grams.", "confidence": 99, "abstain": false}

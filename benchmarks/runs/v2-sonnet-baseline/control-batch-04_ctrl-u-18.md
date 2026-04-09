@@ -1,1 +1,0 @@
-{"answer": "I don't have specific information about the parish priest of Ballyvourney, County Cork, Ireland in 1891.", "confidence": 0, "abstain": true}

@@ -1,3 +1,0 @@
-```json
-{"answer": "I don't have reliable information about who was the first person to swim across the Pacific Ocean unassisted. While there have been notable long-distance swimming achievements, I'm not confident enough in the specific details of Pacific Ocean swimming records to provide a definitive answer. The definition of 'unassisted' also matters (solo vs. with boat support, support crew, etc.), and I cannot verify the accuracy of any specific claim I might make.", "confidence": 15, "abstain": true}
-```

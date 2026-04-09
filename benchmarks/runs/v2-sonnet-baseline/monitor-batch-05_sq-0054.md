@@ -1,1 +1,0 @@
-{"answer": "KPIX (CBS affiliate in San Francisco)", "confidence": 42}

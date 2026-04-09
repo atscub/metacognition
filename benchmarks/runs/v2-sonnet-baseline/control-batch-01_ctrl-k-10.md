@@ -1,1 +1,0 @@
-{"answer": "George Washington", "confidence": 99, "abstain": false}

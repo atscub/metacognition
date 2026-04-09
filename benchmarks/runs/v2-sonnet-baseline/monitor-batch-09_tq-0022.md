@@ -1,1 +1,0 @@
-{"answer": "18 in most countries, including the US, UK, Canada, and Australia", "confidence": 85}

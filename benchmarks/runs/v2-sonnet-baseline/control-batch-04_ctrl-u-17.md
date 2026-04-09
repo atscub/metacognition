@@ -1,1 +1,0 @@
-{"answer": "I don't have information about the 2026 IWF World Weightlifting Championships results. My knowledge cutoff is August 2025, and this event would have occurred after that date.", "confidence": 0, "abstain": true}

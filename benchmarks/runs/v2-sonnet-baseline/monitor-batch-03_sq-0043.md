@@ -1,1 +1,0 @@
-{"answer": "University of Michigan", "confidence": 25}

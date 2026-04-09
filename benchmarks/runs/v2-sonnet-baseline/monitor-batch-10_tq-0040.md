@@ -1,3 +1,0 @@
-```json
-{"answer": "It depends on the reference point. Compared to the early 20th century (6-day workweeks, no FLSA protections), Californians work fewer days. However, compared to the mid-20th century (1960s-70s post-war era), research suggests Americans including Californians work somewhat more hours annually today — driven by longer workdays, less vacation time, and the blurring of work/life boundaries. California has strong labor protections (8-hour day, overtime laws) but the general trend since the 1970s has been a modest increase in annual work hours for full-time workers.", "confidence": 42}
-```

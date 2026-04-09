@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "probability/expected-value with an embedded cognitive trap (stopping-rule fallacy)",
-  "strategy": "Socratic check first: resist anchoring on the intuition that 'stopping at a boy means more girls.' Then compute E[girls] and E[children] per family from first principles, verifying the stopping rule cannot change the per-birth probability.",
-  "hardest_part": "The intuitive trap is strong: families keep having children *until* they get a boy, so it feels like girls must outnumber boys. The Socratic move is to ask 'does the stopping rule change the 50/50 probability of any individual birth?' — it doesn't. Each birth is independent. The stopping rule only determines how many births occur, not their sex distribution.",
-  "solution": "FRACTION FEMALE: Exactly 1/2 (50%). Proof by expected value per family — family sequences and their probabilities: B (1/2)→0 girls; GB (1/4)→1 girl; GGB (1/8)→2 girls; etc. E[girls] = Σ k·(1/2)^(k+1) for k=0..∞ = (1/2)·Σ k·(1/2)^k = (1/2)·[x/(1-x)² at x=1/2] = (1/2)·2 = 1. Every family also has exactly 1 boy by rule. So girls:boys = 1:1. The sex ratio is 50/50 regardless of the stopping policy. POPULATION COMPARISON: E[children per family] = Σ k·(1/2)^k for k=1..∞ = x/(1-x)² at x=1/2 = (1/2)/(1/4) = 2. The stopping policy produces the same expected number of children (2) as the fixed-2-children policy. It neither increases nor decreases expected population size. (The distributions differ — stopping-rule families have high variance, ranging from 1 to many children; fixed-2 families have zero variance — but the means are identical.)"
-}
-```

@@ -1,1 +1,0 @@
-{"answer": "The United States never declared independence from Canada. The United States declared independence from Great Britain in 1776.", "confidence": 99, "abstain": false}

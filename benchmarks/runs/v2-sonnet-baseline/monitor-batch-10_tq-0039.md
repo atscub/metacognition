@@ -1,1 +1,0 @@
-{"answer": "Hemp/parchment paper (the Constitution was written on parchment made from animal skin, specifically vellum/parchment, not hemp paper as sometimes claimed)", "confidence": 72}

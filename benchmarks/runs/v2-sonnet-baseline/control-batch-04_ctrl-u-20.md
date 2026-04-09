@@ -1,1 +1,0 @@
-{"answer": "I don't have specific data on the vote counts for individual candidates in the 2019 Turku municipal mayoral election in Finland.", "confidence": 0, "abstain": true}

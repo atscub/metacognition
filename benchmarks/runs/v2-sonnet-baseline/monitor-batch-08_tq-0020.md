@@ -1,1 +1,0 @@
-{"answer": "British citizenship or nationality (being a citizen/national of the United Kingdom)", "confidence": 72}

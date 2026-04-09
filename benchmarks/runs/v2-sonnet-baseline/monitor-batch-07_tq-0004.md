@@ -1,1 +1,0 @@
-{"answer": "Miami, New Orleans, Houston, Atlanta, New York City, Boston, Miami, Vancouver (Canada), London, Singapore, Mumbai, Tokyo", "confidence": 85}

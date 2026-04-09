@@ -1,1 +1,0 @@
-{"answer": "The Long Library", "confidence": 35}

@@ -1,1 +1,0 @@
-{"answer": "Walmart (their slogan is 'Save money. Live better.' — though 'only company' is a marketing claim, not a verifiable fact)", "confidence": 88}

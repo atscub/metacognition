@@ -1,8 +1,0 @@
-```json
-{
-  "problem_type": "State-space search / constraint satisfaction, with embedded metacognitive trap (the farmer's false belief is part of the puzzle)",
-  "strategy": "Reconstruct the exact current state, enumerate all legal next moves, check each against constraints — resist the authority bias of accepting the farmer's 'stuck' framing as true before verifying it",
-  "hardest_part": "The puzzle is testing whether you inherit the farmer's false belief. The description is designed to make you accept 'stuck' as a premise. Socratic check: the farmer's conclusion is a claim, not a fact — verify it independently by enumerating next moves rather than pattern-matching to 'dead end'.",
-  "solution": "The farmer does NOT need to restart. His state is valid and he is two moves from completion. Reconstruction: two round-trips (take chicken over / return, take fox over / bring chicken back) produces exactly the described state — fox on far, farmer+chicken+grain on near — legally. His error: he is anchoring on the chicken as the problem item and cannot see past it. The overlooked move: take the GRAIN across next. Fox+grain on the far side is safe (fox eats chicken, not grain). Chicken alone on the near side is safe. Then return alone and take the chicken across. Done in three more crossings: (1) take grain to far, (2) return alone, (3) take chicken to far. The farmer's false belief is a cognitive anchoring failure — he fixated on chicken-as-danger and forgot that fox-grain is a safe pairing."
-}
-```

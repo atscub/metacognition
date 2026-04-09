@@ -1,3 +1,0 @@
-```json
-{"problem_type": "lateral thinking / constraint relaxation puzzle", "strategy": "meta-reframe: identify which constraints are load-bearing vs assumed", "hardest_part": "escaping the mental rut of the jug-pouring paradigm once you've seen it framed as a classic puzzle", "solution": "Use the kitchen scale. Place the 5-liter jug on the scale, tare it to zero, then fill it from the tap until the scale reads 4.000 kg. You now have exactly 4 liters. The jug-pouring cycles are unnecessary when you have a scale that directly measures mass, and water's density is 1 kg/L."}
-```

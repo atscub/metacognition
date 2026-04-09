@@ -1,1 +1,0 @@
-{"answer": "Leonardo da Vinci", "confidence": 99, "abstain": false}

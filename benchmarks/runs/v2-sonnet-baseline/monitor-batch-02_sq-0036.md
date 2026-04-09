@@ -1,1 +1,0 @@
-{"answer": "Nitschke", "confidence": 25}

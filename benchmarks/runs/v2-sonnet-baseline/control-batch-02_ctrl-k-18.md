@@ -1,1 +1,0 @@
-{"answer": "George Orwell", "confidence": 99, "abstain": false}

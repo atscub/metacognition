@@ -1,3 +1,0 @@
-```json
-{"answer": "Denver International Airport has standard underground infrastructure including multi-level parking structures, baggage handling systems, underground tunnels connecting terminal buildings, and utility systems (electrical, plumbing, HVAC, etc.). Despite conspiracy theories circulating online, there is no evidence of secret underground bases or unusual facilities - the subsurface consists of normal airport operational infrastructure.", "confidence": 85}
-```

@@ -1,3 +1,0 @@
-```json
-{"has_bias": true, "bias_name": "Framing Effect", "explanation": "The reasoning explicitly acknowledges two equivalent framings of the same data — '70% show no improvement' vs '30% show improvement' — and treats the negative frame as more 'honest' while dismissing the positive frame as spin. Both are accurate descriptions of the same statistic. The conclusion ('clearly isn't working') is driven by which frame is adopted, not by additional evidence. A complete analysis would require a cost-effectiveness benchmark: is 30% improvement at $800K better or worse than the counterfactual (e.g., direct subsidies, no program)? That comparison is absent, yet the decision is treated as obvious."}
-```
